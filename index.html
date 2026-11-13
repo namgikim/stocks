@@ -16,10 +16,6 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 header{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 14px) 20px 10px}
 header h1{font-size:20px;margin:0;font-weight:700}
 .sub{font-size:12px;color:var(--t3);margin-top:2px}
-.rf{width:40px;height:40px;border-radius:50%;background:var(--seg);display:grid;place-items:center}
-.rf svg{width:20px;height:20px;stroke:var(--t2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.rf.spin svg{animation:sp .8s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
 .hero{padding:10px 20px 0}
 .hero .lb{font-size:14px;color:var(--t3);display:flex;align-items:center;justify-content:space-between}
 .fxr{font-size:12px}
@@ -64,6 +60,10 @@ header h1{font-size:20px;margin:0;font-weight:700}
 #intro h2{margin:26px 0 6px;font-size:26px;font-weight:800;color:#191f28;animation:fu .6s .35s both}
 #intro p{margin:0;font-size:15px;color:#6b7684;animation:fu .6s .5s both}
 #intro em{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 36px);font-style:normal;font-size:13px;color:#b0b8c1;animation:fu .6s 1s both}
+#dots b{font-weight:400;animation:bl 1.2s infinite both}
+#dots b:nth-child(2){animation-delay:.2s}
+#dots b:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,80%,100%{opacity:.15}40%{opacity:1}}
 @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes fu{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -73,7 +73,7 @@ header h1{font-size:20px;margin:0;font-weight:700}
 <div id="intro" role="button" aria-label="시작하기">
   <div class="logo"><svg viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg></div>
   <h2>우리집 주식</h2>
-  <p>보유 종목을 한눈에 확인해요</p>
+  <p><span id="introMsg">최신 시세를 조회하고 있어요</span><span id="dots"><b>.</b><b>.</b><b>.</b></span></p>
   <em>화면을 누르면 바로 시작해요</em>
 </div>
 
@@ -81,7 +81,6 @@ header h1{font-size:20px;margin:0;font-weight:700}
   <div class="top">
   <header>
     <div><h1>우리집 주식</h1><div class="sub" id="upd">불러오는 중</div></div>
-    <button class="rf" id="rf" aria-label="새로고침"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg></button>
   </header>
   <section class="hero">
     <div class="lb"><span>총 평가금액</span><span id="fx" class="fxr"></span></div>
@@ -180,8 +179,7 @@ function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");cle
 const clock=()=>new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});
 
 async function load(manual){
- $("rf").classList.add("spin");
- let why="";
+ let why="",ok=false;
  const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),12000);
  try{
   const res=await fetch(CSV_URL+"&_="+Date.now(),{signal:ctl.signal});
@@ -190,25 +188,28 @@ async function load(manual){
   if(text.trim().startsWith("<")||!text.includes("종목명")){why="CSV가 아닌 응답";throw 0}
   const next=build(text);
   if(!next.length){why="데이터 없음";throw 0}
-  items=next;src="구글시트 · "+clock()+" 업데이트";render();
+  items=next;src="구글시트 · "+clock()+" 업데이트";render();ok=true;
   if(manual)toast("최신 데이터로 바꿨어요");
  }catch(e){
   if(!why)why=e&&e.name==="AbortError"?"시간 초과":"네트워크 또는 보안 차단";
   src=src.replace(/ \(갱신 실패.*$/,"")+" (갱신 실패: "+why+")";
   $("upd").textContent=src;
   if(manual)toast("불러오지 못했어요 · "+why);
- }finally{clearTimeout(tm);setTimeout(()=>$("rf").classList.remove("spin"),400)}
+ }finally{clearTimeout(tm);$("introMsg").textContent=ok?"조회를 마쳤어요":"저장된 데이터로 시작해요";$("dots").style.display="none";loaded=true;tryClose()}
 }
 
-$("rf").onclick=()=>load(true);
 $("mode").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.m===mode)return;
  if(b.dataset.m==="net"&&!NET){toast("시트에서 순입금액(O열 첫 행) 값을 찾지 못했어요");return}
  setMode(b.dataset.m);render()};
 $("list").onclick=e=>{const b=e.target.closest(".rw");if(!b)return;
  const k=b.dataset.k;openKey=openKey===k?null:k;render()};
 
+let introMin=false,loaded=false;
 function closeIntro(){$("intro").classList.add("out")}
-$("intro").onclick=closeIntro;setTimeout(closeIntro,2200);
+function tryClose(){if(introMin&&loaded)closeIntro()}
+$("intro").onclick=closeIntro;
+setTimeout(()=>{introMin=true;tryClose()},2200);
+setTimeout(closeIntro,6000);
 
 items=build(SNAPSHOT);render();load(false);
 </script>
