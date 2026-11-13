@@ -1,1 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2f4f6">
+<title>내 종목</title>
+<style>
+:root{--bg:#f2f4f6;--card:#fff;--t1:#191f28;--t2:#4e5968;--t3:#8b95a1;--line:#f2f4f6;--blue:#3182f6;--up:#f04452;--down:#3182f6;--seg:#e5e8eb}
+@media(prefers-color-scheme:dark){:root{--bg:#101012;--card:#1c1c1e;--t1:#f2f4f6;--t2:#c3c7cd;--t3:#8b95a1;--line:#2c2c2e;--seg:#2c2c2e}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--t1);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic","Noto Sans KR",sans-serif;letter-spacing:-.01em}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+#app{max-width:480px;margin:0 auto;min-height:100vh;padding:env(safe-area-inset-top,0) 0 calc(env(safe-area-inset-bottom,0px) + 32px)}
+header{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 14px) 20px 10px}
+header h1{font-size:20px;margin:0;font-weight:700}
+.sub{font-size:12px;color:var(--t3);margin-top:2px}
+.rf{width:40px;height:40px;border-radius:50%;background:var(--seg);display:grid;place-items:center}
+.rf svg{width:20px;height:20px;stroke:var(--t2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rf.spin svg{animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.hero{padding:18px 20px 8px}
+.hero .lb{font-size:14px;color:var(--t3);display:flex;align-items:center;justify-content:space-between}
+.seg{position:relative;display:inline-flex;background:var(--seg);border-radius:10px;padding:3px}
+.seg i{position:absolute;top:3px;bottom:3px;left:3px;width:calc(50% - 3px);background:var(--card);border-radius:8px;transition:transform .22s cubic-bezier(.3,.9,.3,1);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.seg.usd i{transform:translateX(100%)}
+.seg button{position:relative;z-index:1;padding:6px 14px;font-size:13px;font-weight:600;color:var(--t3);min-width:52px}
+.seg button.on{color:var(--t1)}
+.total{font-size:32px;font-weight:800;margin:10px 0 4px;line-height:1.2}
+.pl{font-size:15px;font-weight:600}
+.up{color:var(--up)}.dn{color:var(--down)}.fl{color:var(--t3)}
+.alloc{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:20px 20px 0;gap:2px}
+.alloc span{display:block;height:100%}
+.sec{background:var(--card);border-radius:20px;margin:14px 16px 0;padding:8px 0 6px}
+.sh{display:flex;justify-content:space-between;align-items:center;padding:12px 20px 6px}
+.sh b{font-size:16px}
+.sh span{font-size:13px;color:var(--t3)}
+.row{padding:0 4px}
+.rw{display:flex;align-items:center;gap:12px;width:100%;padding:12px 16px;text-align:left;border-radius:14px}
+.rw:active{background:var(--line)}
+.av{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px}
+.nm{flex:1;min-width:0}
+.nm b{display:block;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nm small{font-size:12px;color:var(--t3)}
+.vl{text-align:right;flex:none}
+.vl b{display:block;font-size:15px;font-weight:600}
+.vl small{font-size:12px;font-weight:500}
+.dt{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin:0 16px 8px;padding:14px 16px;background:var(--line);border-radius:14px;font-size:13px}
+.dt div span{display:block;color:var(--t3);font-size:12px;margin-bottom:2px}
+.dt div b{font-weight:600}
+.dt[hidden]{display:none}
+.note{text-align:center;color:var(--t3);font-size:12px;padding:20px}
+#toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 28px);transform:translate(-50%,20px);background:rgba(25,31,40,.92);color:#fff;font-size:14px;padding:12px 18px;border-radius:14px;opacity:0;pointer-events:none;transition:.25s;white-space:nowrap}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#intro{position:fixed;inset:0;z-index:20;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s;cursor:pointer}
+#intro.out{opacity:0;visibility:hidden}
+.logo{width:88px;height:88px;border-radius:28px;background:var(--blue);display:grid;place-items:center;animation:pop .7s cubic-bezier(.2,1.4,.4,1) both}
+.logo svg{width:46px;height:46px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+#intro h2{margin:26px 0 6px;font-size:26px;font-weight:800;color:#191f28;animation:fu .6s .35s both}
+#intro p{margin:0;font-size:15px;color:#6b7684;animation:fu .6s .5s both}
+#intro em{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 36px);font-style:normal;font-size:13px;color:#b0b8c1;animation:fu .6s 1s both}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes fu{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="intro" role="button" aria-label="시작하기">
+  <div class="logo"><svg viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg></div>
+  <h2>내 종목</h2>
+  <p>보유 종목을 한눈에 확인해요</p>
+  <em>화면을 누르면 바로 시작해요</em>
+</div>
 
+<div id="app">
+  <header>
+    <div><h1>내 종목</h1><div class="sub" id="upd">불러오는 중</div></div>
+    <button class="rf" id="rf" aria-label="새로고침"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg></button>
+  </header>
+  <section class="hero">
+    <div class="lb"><span>총 평가금액</span>
+      <div class="seg" id="seg"><i></i><button data-c="KRW" class="on">원화</button><button data-c="USD">달러</button></div>
+    </div>
+    <div class="total" id="total">-</div>
+    <div class="pl" id="pl"></div>
+  </section>
+  <div class="alloc" id="alloc"></div>
+  <main id="list"></main>
+  <div class="note" id="note"></div>
+</div>
+<div id="toast"></div>
+
+<script>
+const CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTq_lLeMyEq0Lp57xFHAkZakHbHERiBrmgtgNiw70DS7wA2481vOB3P4Okfoxx-YJiVkebt1bQ5XzD8/pub?gid=1608565878&single=true&output=csv";
+const SNAPSHOT=`섹터구분,종목명,티커,해외종목여부,현재가,매수단가,수량,평가금액,평가금액(원화),기준환율,평균매입환율,수익률,수익률(+환차익)
+A,QLD (나스닥 100 2배),QLD,USD,$81.3000,$82.7216,426,"$34,633.8000","₩46,349,722",1338.28,1408.27,-1.72%,-6.60%
+A,QQQM (나스닥100),QQQM,USD,$283.3900,$254.9907,38,"$10,768.8200","₩14,411,696",1338.28,1475.60,11.14%,0.79%
+A,KODEX 미국나스닥100,379810,원화,"₩24,915","₩26,983",2560,"₩63,782,400","₩63,782,400",1338.28,0.00,-7.66%,-7.66%
+B,VOO (S&P500),VOO,USD,$696.0000,$633.4410,31,"$21,576.0000","₩28,874,729",1338.28,1466.76,9.88%,0.25%
+B,TIGER 미국S&P500,360750,원화,"₩25,120","₩24,293","1,734","₩43,558,080","₩43,558,080",1338.28,0.00,3.40%,3.40%
+C,알파벳,GOOGL,USD,$298.7000,$284.6359,25,"$7,467.5000","₩9,993,606",1338.28,1335.11,4.94%,5.19%
+C,버크셔 해서웨이,BRK.B,USD,$589.8300,$494.8193,60,"$35,389.8000","₩47,361,462",1338.28,1425.37,19.20%,11.92%
+C,월마트,WMT,USD,$126.1900,$106.0152,150,"$18,928.5000","₩25,331,633",1338.28,1341.09,19.03%,18.78%
+D,셀트리온,068270,원화,"₩214,000","₩174,500",14,"₩2,996,000","₩2,996,000",1338.28,0.00,22.64%,22.64%
+D,KODEX 200,069500,원화,"₩83,115","₩83,796",34,"₩2,825,910","₩2,825,910",1338.28,0.00,-0.81%,-0.81%
+D,금 (1g),411060,원화,"₩167,081","₩213,471",15,"₩2,506,219","₩2,506,219",1338.28,0.00,-21.73%,-21.73%
+E,VGIT (3~10년 채권),VGIT,USD,$56.9500,$58.6600,206,"$11,731.7000","₩15,700,299",1338.28,1342.59,-2.92%,-3.23%
+E,SGOV (0~3개월 채권),SGOV,USD,$100.5300,$100.5969,62,"$6,232.8600","₩8,341,312",1338.28,1403.53,-0.07%,-4.71%`;
+
+const $=id=>document.getElementById(id);
+const COLORS=["#3182f6","#6b5cf6","#13b5a3","#f59f00","#f04452","#4e5968"];
+let items=[],cur="KRW",openKey=null,src="저장된 데이터";
+
+function parseCSV(t){const o=[];let r=[],f="",q=false;for(let i=0;i<t.length;i++){const c=t[i];
+ if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}
+ else if(c=='"')q=true;else if(c==","){r.push(f);f=""}
+ else if(c=="\n"||c=="\r"){if(c=="\r"&&t[i+1]=="\n")i++;r.push(f);f="";o.push(r);r=[]}else f+=c}
+ if(f||r.length){r.push(f);o.push(r)}return o.filter(x=>x.some(y=>y.trim()))}
+const num=s=>{const v=parseFloat(String(s||"").replace(/[^0-9.\-]/g,""));return isNaN(v)?0:v};
+
+function build(text){
+ const t=parseCSV(text),h=t[0].map(x=>x.trim()),g=(r,k)=>(r[h.indexOf(k)]||"").trim();
+ return t.slice(1).map(r=>{
+  const usd=g(r,"해외종목여부").toUpperCase()==="USD",fx=num(g(r,"기준환율"))||1,avg=num(g(r,"평균매입환율"))||fx;
+  const qty=num(g(r,"수량")),price=num(g(r,"현재가")),cost=num(g(r,"매수단가"));
+  const vL=price*qty,cL=cost*qty;
+  const vK=num(g(r,"평가금액(원화)"))||(usd?vL*fx:vL),cK=usd?cL*avg:cL;
+  return{sector:g(r,"섹터구분"),name:g(r,"종목명"),ticker:g(r,"티커"),usd,fx,avg,qty,price,cost,
+   v:{KRW:vK,USD:usd?vL:vL/fx},c:{KRW:cK,USD:usd?cL:cL/fx}}}).filter(x=>x.name)}
+
+const won=v=>Math.round(v).toLocaleString("ko-KR")+"원";
+const dol=v=>"$"+v.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const money=v=>cur==="KRW"?won(v):dol(v);
+const sign=v=>v>0?"+":v<0?"-":"";
+const cls=v=>v>0?"up":v<0?"dn":"fl";
+const pct=v=>sign(v)+Math.abs(v).toFixed(2)+"%";
+const native=(it,v)=>it.usd?"$"+v.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}):won(v);
+
+function render(){
+ const sum=(a,k)=>a.reduce((s,x)=>s+x[k][cur],0);
+ const tv=sum(items,"v"),tc=sum(items,"c"),tp=tv-tc;
+ $("total").textContent=money(tv);
+ $("pl").className="pl "+cls(tp);
+ $("pl").textContent=sign(tp)+money(Math.abs(tp))+" ("+pct(tc?tp/tc*100:0)+")";
+ const secs=[...new Set(items.map(x=>x.sector))];
+ $("alloc").innerHTML=secs.map((s,i)=>{const w=sum(items.filter(x=>x.sector===s),"v")/tv*100;return`<span style="width:${w}%;background:${COLORS[i%COLORS.length]}"></span>`}).join("");
+ $("list").innerHTML=secs.map((s,i)=>{
+  const g=items.filter(x=>x.sector===s),sv=sum(g,"v");
+  return`<section class="sec"><div class="sh"><b><span style="color:${COLORS[i%COLORS.length]}">●</span> 섹터 ${s}</b><span>${money(sv)} · ${(sv/tv*100).toFixed(1)}%</span></div>`+
+  g.map(it=>{
+   const p=it.v[cur]-it.c[cur],r=it.c[cur]?p/it.c[cur]*100:0,k=it.ticker,o=openKey===k;
+   const ab=/^[A-Za-z]/.test(it.ticker)?it.ticker.slice(0,2):it.name.slice(0,1);
+   const fxr=it.usd&&cur==="KRW"?`<div><span>평균매입환율</span><b>${it.avg.toLocaleString("ko-KR",{maximumFractionDigits:2})}원</b></div>`:"";
+   return`<div class="row"><button class="rw" data-k="${k}"><div class="av" style="background:${COLORS[i%COLORS.length]}">${ab}</div>
+   <div class="nm"><b>${it.name}</b><small>${it.ticker} · ${it.qty.toLocaleString("ko-KR")}주</small></div>
+   <div class="vl"><b>${money(it.v[cur])}</b><small class="${cls(p)}">${pct(r)}</small></div></button>
+   <div class="dt" ${o?"":"hidden"}>
+    <div><span>현재가</span><b>${native(it,it.price)}</b></div><div><span>매수단가</span><b>${native(it,it.cost)}</b></div>
+    <div><span>평가손익</span><b class="${cls(p)}">${sign(p)}${money(Math.abs(p))}</b></div><div><span>섹터 내 비중</span><b>${(it.v[cur]/sv*100).toFixed(1)}%</b></div>${fxr}
+   </div></div>`}).join("")+`</section>`}).join("");
+ $("note").textContent=cur==="USD"?"원화 종목은 시트의 기준환율로 달러 환산했어요":"달러 종목은 시트의 기준환율로 원화 환산했어요. 수익률에는 환차익이 포함돼요";
+ $("upd").textContent=src;
+}
+
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.id);toast.id=setTimeout(()=>t.classList.remove("show"),2200)}
+const clock=()=>new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});
+
+async function load(manual){
+ $("rf").classList.add("spin");
+ try{
+  const res=await fetch(CSV_URL+"&_="+Date.now(),{cache:"no-store"});
+  if(!res.ok)throw 0;
+  const next=build(await res.text());
+  if(!next.length)throw 0;
+  items=next;src="구글시트 · "+clock()+" 업데이트";render();
+  if(manual)toast("최신 데이터로 바꿨어요");
+ }catch(e){
+  if(manual)toast("불러오지 못했어요. 잠시 후 다시 눌러주세요");
+  $("upd").textContent=items.length?src+" (갱신 실패)":src;
+ }finally{setTimeout(()=>$("rf").classList.remove("spin"),400)}
+}
+
+$("rf").onclick=()=>load(true);
+$("seg").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.c===cur)return;
+ cur=b.dataset.c;$("seg").classList.toggle("usd",cur==="USD");
+ [...$("seg").querySelectorAll("button")].forEach(x=>x.classList.toggle("on",x===b));render()};
+$("list").onclick=e=>{const b=e.target.closest(".rw");if(!b)return;
+ const k=b.dataset.k;openKey=openKey===k?null:k;render()};
+
+function closeIntro(){$("intro").classList.add("out")}
+$("intro").onclick=closeIntro;setTimeout(closeIntro,2200);
+
+items=build(SNAPSHOT);render();load(false);
+</script>
+</body>
+</html>
