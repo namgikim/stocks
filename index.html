@@ -53,13 +53,12 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .note{white-space:pre-line;text-align:center;color:var(--t3);font-size:12px;padding:20px}
 #toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 28px);transform:translate(-50%,20px);background:rgba(25,31,40,.92);color:#fff;font-size:14px;padding:12px 18px;border-radius:14px;opacity:0;pointer-events:none;transition:.25s;white-space:nowrap}
 #toast.show{opacity:1;transform:translate(-50%,0)}
-#intro{position:fixed;inset:0;z-index:20;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s;cursor:pointer}
+#intro{position:fixed;inset:0;z-index:20;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s}
 #intro.out{opacity:0;visibility:hidden}
 .logo{width:88px;height:88px;border-radius:28px;background:var(--blue);display:grid;place-items:center;animation:pop .7s cubic-bezier(.2,1.4,.4,1) both}
 .logo svg{width:46px;height:46px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 #intro h2{margin:26px 0 6px;font-size:26px;font-weight:800;color:#191f28;animation:fu .6s .35s both}
 #intro p{margin:0;font-size:15px;color:#6b7684;animation:fu .6s .5s both}
-#intro em{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 36px);font-style:normal;font-size:13px;color:#b0b8c1;animation:fu .6s 1s both}
 #dots b{font-weight:400;animation:bl 1.2s infinite both}
 #dots b:nth-child(2){animation-delay:.2s}
 #dots b:nth-child(3){animation-delay:.4s}
@@ -70,11 +69,10 @@ header h1{font-size:20px;margin:0;font-weight:700}
 </style>
 </head>
 <body>
-<div id="intro" role="button" aria-label="시작하기">
+<div id="intro">
   <div class="logo"><svg viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg></div>
   <h2>우리집 주식</h2>
   <p><span id="introMsg">최신 시세를 조회하고 있어요</span><span id="dots"><b>.</b><b>.</b><b>.</b></span></p>
-  <em>화면을 누르면 바로 시작해요</em>
 </div>
 
 <div id="app">
@@ -207,7 +205,6 @@ $("list").onclick=e=>{const b=e.target.closest(".rw");if(!b)return;
 let introMin=false,loaded=false;
 function closeIntro(){$("intro").classList.add("out")}
 function tryClose(){if(introMin&&loaded)closeIntro()}
-$("intro").onclick=closeIntro;
 setTimeout(()=>{introMin=true;tryClose()},2200);
 setTimeout(closeIntro,6000);
 
