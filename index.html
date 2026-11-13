@@ -193,7 +193,7 @@ async function load(manual){
   src=src.replace(/ \(갱신 실패.*$/,"")+" (갱신 실패: "+why+")";
   $("upd").textContent=src;
   if(manual)toast("불러오지 못했어요 · "+why);
- }finally{clearTimeout(tm);$("introMsg").textContent=ok?"조회를 마쳤어요":"저장된 데이터로 시작해요";$("dots").style.display="none";loaded=true;tryClose()}
+ }finally{clearTimeout(tm);if(ok)$("introMsg").parentNode.style.visibility="hidden";else{$("introMsg").textContent="저장된 데이터로 시작해요";$("dots").style.display="none"}loaded=true;tryClose()}
 }
 
 $("mode").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.m===mode)return;
