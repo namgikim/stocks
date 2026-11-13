@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f2f4f6">
 <title>우리집 주식</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 :root{--bg:#f2f4f6;--card:#fff;--t1:#191f28;--t2:#4e5968;--t3:#8b95a1;--line:#f2f4f6;--blue:#3182f6;--up:#f04452;--down:#3182f6;--seg:#e5e8eb}
 @media(prefers-color-scheme:dark){:root{--bg:#101012;--card:#1c1c1e;--t1:#f2f4f6;--t2:#c3c7cd;--t3:#8b95a1;--line:#2c2c2e;--seg:#2c2c2e}}
@@ -29,6 +30,7 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .vw button{display:grid;place-items:center;min-width:44px;padding:7px 0}
 .vw svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .ph{margin:6px 16px 14px;height:150px;border-radius:14px;background:var(--line);display:grid;place-items:center;color:var(--t3);font-size:14px}
+.cbox{position:relative;margin:8px 16px 14px;height:210px}
 .total{font-size:32px;font-weight:800;margin:10px 0 4px;line-height:1.2}
 .pl{font-size:15px;font-weight:600}
 .up{color:var(--up)}.dn{color:var(--down)}.fl{color:var(--t3)}
@@ -102,6 +104,7 @@ header h1{font-size:20px;margin:0;font-weight:700}
 
 <script>
 const CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTq_lLeMyEq0Lp57xFHAkZakHbHERiBrmgtgNiw70DS7wA2481vOB3P4Okfoxx-YJiVkebt1bQ5XzD8/pub?gid=1608565878&single=true&output=csv";
+const CHART_CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTq_lLeMyEq0Lp57xFHAkZakHbHERiBrmgtgNiw70DS7wA2481vOB3P4Okfoxx-YJiVkebt1bQ5XzD8/pub?gid=1980434521&single=true&output=csv";
 const SNAPSHOT=`섹터구분,종목명,티커,해외종목여부,현재가,매수단가,수량,평가금액,평가금액(원화),기준환율,평균매입환율,수익률,수익률(+환차익)
 A,QLD (나스닥 100 2배),QLD,USD,$81.3000,$82.7216,426,"$34,633.8000","₩46,349,722",1338.28,1408.27,-1.72%,-6.60%
 A,QQQM (나스닥100),QQQM,USD,$283.3900,$254.9907,38,"$10,768.8200","₩14,411,696",1338.28,1475.60,11.14%,0.79%
@@ -123,6 +126,7 @@ const SC={A:"#f04452",B:"#f8939b",C:"#2f4a9e",D:"#f59f00",E:"#12b886"};
 const col=(s,i)=>SC[s]||COLORS[i%COLORS.length];
 const SN={A:"나스닥100",B:"S&P500",C:"가치주",D:"소액 투자",E:"현금성 자산"};
 let view="list",mode="avg",NET=0,items=[],cur="KRW",openKey=null,src="저장된 데이터";
+let chartRows=[],chartInst=null;
 
 function parseCSV(t){const o=[];let r=[],f="",q=false;for(let i=0;i<t.length;i++){const c=t[i];
  if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}
@@ -142,6 +146,16 @@ function build(text){
   return{logo:(r[13]||"").trim(),sector:g(r,"섹터구분"),name:g(r,"종목명"),ticker:g(r,"티커"),usd,fx,avg,qty,price,cost,
    v:{KRW:vK,USD:usd?vL:vL/fx},c:{KRW:cK,USD:usd?cL:cL/fx}}}).filter(x=>x.name)}
 
+function buildChart(text){
+ const t=parseCSV(text);
+ return t.slice(1).map(r=>{
+  const x=(r[1]||"").trim();
+  const rawY=(r[2]||"").trim();
+  const y=num(rawY);
+  return{x,y,valid:Boolean(x)&&rawY!==""&&!isNaN(parseFloat(rawY.replace(/[^0-9.\-]/g,"")))};
+ }).filter(d=>d.valid);
+}
+
 const won=v=>Math.round(v).toLocaleString("ko-KR")+"원";
 const dol=v=>"$"+v.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
 const money=v=>cur==="KRW"?won(v):dol(v);
@@ -149,6 +163,79 @@ const sign=v=>v>0?"+":v<0?"-":"";
 const cls=v=>v>0?"up":v<0?"dn":"fl";
 const pct=v=>sign(v)+Math.abs(v).toFixed(2)+"%";
 const native=(it,v)=>it.usd?"$"+v.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}):won(v);
+
+function fmtAxis(v){
+ if(Math.abs(v)>=1e8)return(v/1e8).toFixed(1).replace(/\.0$/,"")+"억";
+ if(Math.abs(v)>=1e4)return Math.round(v/1e4).toLocaleString("ko-KR")+"만";
+ return v.toLocaleString("ko-KR");
+}
+
+function drawTotalChart(){
+ const cv=$("totalChart");
+ if(!cv)return;
+ if(chartInst){chartInst.destroy();chartInst=null}
+ if(!chartRows.length||typeof Chart==="undefined")return;
+ const dark=window.matchMedia("(prefers-color-scheme: dark)").matches;
+ const tickCol=dark?"#8b95a1":"#8b95a1";
+ const gridCol=dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.05)";
+ const ctx=cv.getContext("2d");
+ const grad=ctx.createLinearGradient(0,0,0,210);
+ grad.addColorStop(0,"rgba(49,130,246,0.22)");
+ grad.addColorStop(1,"rgba(49,130,246,0.0)");
+ const pts=chartRows.length;
+ chartInst=new Chart(ctx,{
+  type:"line",
+  data:{
+   labels:chartRows.map(d=>d.x),
+   datasets:[{
+    data:chartRows.map(d=>d.y),
+    borderColor:"#3182f6",
+    backgroundColor:grad,
+    borderWidth:2.5,
+    fill:true,
+    tension:0.32,
+    pointRadius:pts<=15?3.5:0,
+    pointHoverRadius:5,
+    pointBackgroundColor:"#3182f6",
+    pointBorderColor:dark?"#1c1c1e":"#fff",
+    pointBorderWidth:2
+   }]
+  },
+  options:{
+   responsive:true,
+   maintainAspectRatio:false,
+   interaction:{mode:"index",intersect:false},
+   plugins:{
+    legend:{display:false},
+    tooltip:{
+     backgroundColor:dark?"rgba(44,44,46,0.95)":"rgba(25,31,40,0.92)",
+     titleColor:"#aeb6bf",
+     bodyColor:"#fff",
+     bodyFont:{size:14,weight:"700"},
+     padding:10,
+     cornerRadius:10,
+     displayColors:false,
+     callbacks:{
+      label:c=>won(c.parsed.y)
+     }
+    }
+   },
+   scales:{
+    x:{
+     grid:{display:false},
+     border:{display:false},
+     ticks:{color:tickCol,font:{size:11},maxRotation:0,autoSkip:true,maxTicksLimit:6}
+    },
+    y:{
+     position:"right",
+     border:{display:false},
+     grid:{color:gridCol},
+     ticks:{color:tickCol,font:{size:11},maxTicksLimit:5,callback:v=>fmtAxis(v)}
+    }
+   }
+  }
+ });
+}
 
 function setMode(m){mode=m;$("mode").classList.toggle("b",m==="avg");[...$("mode").querySelectorAll("button")].forEach(x=>x.classList.toggle("on",x.dataset.m===m))}
 function render(){
@@ -176,25 +263,44 @@ function render(){
     <div><span>현재가</span><b>${native(it,it.price)}</b></div><div><span>매수단가</span><b>${native(it,it.cost)}</b></div>
     <div><span>평가손익</span><b class="${cls(p)}">${sign(p)}${f(Math.abs(p))}</b></div><div><span>섹터 내 비중</span><b>${(it.v[cur]/sv*100).toFixed(1)}%</b></div>${ex}
    </div></div>`}).join("")+`</section>`}).join("");
- $("charts").innerHTML=["수익률 추이","자산 비중","월별 손익","섹터별 수익률","환율 추이"].map(t=>`<section class="sec"><div class="sh"><b>${t}</b></div><div class="ph">차트 준비 중이에요</div></section>`).join("");
+
+ const latestVal=chartRows.length?won(chartRows[chartRows.length-1].y):"";
+ $("charts").innerHTML=`<section class="sec"><div class="sh"><b>총 평가금액 추이</b><span>${latestVal}</span></div>`+
+  (chartRows.length?`<div class="cbox"><canvas id="totalChart"></canvas></div>`:`<div class="ph">추이 데이터를 불러오는 중이에요</div>`)+`</section>`;
+
  $("list").hidden=view!=="list";$("charts").hidden=view!=="chart";$("note").hidden=view==="chart";
  $("note").textContent="달러 종목은 시트의 기준환율로 원화 환산했어요.\n수익률에는 환차익이 포함돼요"+(mode==="net"?"\n총 수익률은 순입금액 "+won(NET)+" 대비 값이에요":"");
  $("upd").textContent=src;
  if(items[0])$("fx").textContent="$1 = "+items[0].fx.toLocaleString("ko-KR",{maximumFractionDigits:2})+"원";
+ if(view==="chart")drawTotalChart();
 }
 
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.id);toast.id=setTimeout(()=>t.classList.remove("show"),2200)}
 const clock=()=>new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});
 
+async function fetchText(url,sig){
+ const res=await fetch(url+"&_="+Date.now(),{signal:sig});
+ if(!res.ok)throw new Error("HTTP "+res.status);
+ const text=await res.text();
+ if(text.trim().startsWith("<"))throw new Error("CSV가 아닌 응답");
+ return text;
+}
+
 async function load(manual){
  let why="",ok=false;
  const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),12000);
  try{
-  const res=await fetch(CSV_URL+"&_="+Date.now(),{signal:ctl.signal});
-  if(!res.ok){why="HTTP "+res.status;throw 0}
-  const text=await res.text();
-  if(text.trim().startsWith("<")||!text.includes("종목명")){why="CSV가 아닌 응답";throw 0}
-  const next=build(text);
+  const [mainRes,chartRes]=await Promise.allSettled([
+   fetchText(CSV_URL,ctl.signal),
+   fetchText(CHART_CSV_URL,ctl.signal)
+  ]);
+  if(chartRes.status==="fulfilled"){
+   const parsedChart=buildChart(chartRes.value);
+   if(parsedChart.length)chartRows=parsedChart;
+  }
+  if(mainRes.status!=="fulfilled"){why=mainRes.reason&&mainRes.reason.message||"불러오기 실패";throw 0}
+  if(!mainRes.value.includes("종목명")){why="CSV가 아닌 응답";throw 0}
+  const next=build(mainRes.value);
   if(!next.length){why="데이터 없음";throw 0}
   items=next;src="구글시트 · "+clock()+" 업데이트";render();ok=true;
   if(manual)toast("최신 데이터로 바꿨어요");
@@ -202,6 +308,7 @@ async function load(manual){
   if(!why)why=e&&e.name==="AbortError"?"시간 초과":"네트워크 또는 보안 차단";
   src=src.replace(/ \(갱신 실패.*$/,"")+" (갱신 실패: "+why+")";
   $("upd").textContent=src;
+  if(chartRows.length)render();
   if(manual)toast("불러오지 못했어요 · "+why);
  }finally{clearTimeout(tm);if(ok)$("introMsg").parentNode.style.visibility="hidden";else{$("introMsg").textContent="저장된 데이터로 시작해요";$("dots").style.display="none"}loaded=true;tryClose()}
 }
@@ -214,6 +321,7 @@ $("view").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.v===vi
  [...$("view").querySelectorAll("button")].forEach(x=>x.classList.toggle("on",x===b));render();scrollTo(0,0)};
 $("list").onclick=e=>{const b=e.target.closest(".rw");if(!b)return;
  const k=b.dataset.k;openKey=openKey===k?null:k;render()};
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{if(view==="chart")drawTotalChart()});
 
 let introMin=false,loaded=false;
 function closeIntro(){$("intro").classList.add("out")}
