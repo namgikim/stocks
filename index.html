@@ -23,6 +23,13 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .hero{padding:10px 20px 0}
 .hero .lb{font-size:14px;color:var(--t3);display:flex;align-items:center;justify-content:space-between}
 .fxr{font-size:12px}
+.plr{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.plr .pl{min-width:0}
+.seg{position:relative;display:inline-flex;flex:none;background:var(--seg);border-radius:9px;padding:2px}
+.seg i{position:absolute;top:2px;bottom:2px;left:2px;width:calc(50% - 2px);background:var(--card);border-radius:7px;transition:transform .22s cubic-bezier(.3,.9,.3,1);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.seg.b i{transform:translateX(100%)}
+.seg button{position:relative;z-index:1;padding:5px 10px;font-size:12px;font-weight:600;color:var(--t3);min-width:58px}
+.seg button.on{color:var(--t1)}
 .total{font-size:32px;font-weight:800;margin:10px 0 4px;line-height:1.2}
 .pl{font-size:15px;font-weight:600}
 .up{color:var(--up)}.dn{color:var(--down)}.fl{color:var(--t3)}
@@ -79,7 +86,7 @@ header h1{font-size:20px;margin:0;font-weight:700}
   <section class="hero">
     <div class="lb"><span>총 평가금액</span><span id="fx" class="fxr"></span></div>
     <div class="total" id="total">-</div>
-    <div class="pl" id="pl"></div>
+    <div class="plr"><div class="pl" id="pl"></div><div class="seg b" id="mode"><i></i><button data-m="net">순입금액</button><button data-m="avg" class="on">평단가</button></div></div>
   </section>
   <div class="alloc" id="alloc"></div>
   </div>
@@ -110,7 +117,7 @@ const COLORS=["#3182f6","#6b5cf6","#13b5a3","#f59f00","#f04452","#4e5968"];
 const SC={A:"#f04452",B:"#f8939b",C:"#2f4a9e",D:"#f59f00",E:"#12b886"};
 const col=(s,i)=>SC[s]||COLORS[i%COLORS.length];
 const SN={A:"나스닥100",B:"S&P500",C:"가치주",D:"소액 투자",E:"현금성 자산"};
-let items=[],cur="KRW",openKey=null,src="저장된 데이터";
+let mode="avg",NET=0,items=[],cur="KRW",openKey=null,src="저장된 데이터";
 
 function parseCSV(t){const o=[];let r=[],f="",q=false;for(let i=0;i<t.length;i++){const c=t[i];
  if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}
@@ -121,6 +128,7 @@ const num=s=>{const v=parseFloat(String(s||"").replace(/[^0-9.\-]/g,""));return 
 
 function build(text){
  const t=parseCSV(text),h=t[0].map(x=>x.trim()),g=(r,k)=>(r[h.indexOf(k)]||"").trim();
+ const ni=h.findIndex(x=>x.includes("순입금")),nk=ni>=0?ni:14;NET=num((t[1]||[])[nk]);
  return t.slice(1).map(r=>{
   const usd=g(r,"해외종목여부").toUpperCase()==="USD",fx=num(g(r,"기준환율"))||1,avg=num(g(r,"평균매입환율"))||fx;
   const qty=num(g(r,"수량")),price=num(g(r,"현재가")),cost=num(g(r,"매수단가"));
@@ -137,12 +145,14 @@ const cls=v=>v>0?"up":v<0?"dn":"fl";
 const pct=v=>sign(v)+Math.abs(v).toFixed(2)+"%";
 const native=(it,v)=>it.usd?"$"+v.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}):won(v);
 
+function setMode(m){mode=m;$("mode").classList.toggle("b",m==="avg");[...$("mode").querySelectorAll("button")].forEach(x=>x.classList.toggle("on",x.dataset.m===m))}
 function render(){
+ if(mode==="net"&&!NET)setMode("avg");
  const sum=(a,k)=>a.reduce((s,x)=>s+x[k][cur],0);
- const tv=sum(items,"v"),tc=sum(items,"c"),tp=tv-tc;
+ const tv=sum(items,"v"),tc=sum(items,"c"),base=mode==="net"?NET:tc,tp=tv-base;
  $("total").textContent=money(tv);
  $("pl").className="pl "+cls(tp);
- $("pl").textContent=sign(tp)+money(Math.abs(tp))+" ("+pct(tc?tp/tc*100:0)+")";
+ $("pl").textContent=sign(tp)+money(Math.abs(tp))+" ("+pct(base?tp/base*100:0)+")";
  const secs=[...new Set(items.map(x=>x.sector))];
  $("alloc").innerHTML=secs.map((s,i)=>{const w=sum(items.filter(x=>x.sector===s),"v")/tv*100;return`<span style="width:${w}%;background:${col(s,i)}"></span>`}).join("");
  $("list").innerHTML=secs.map((s,i)=>{
@@ -161,7 +171,7 @@ function render(){
     <div><span>현재가</span><b>${native(it,it.price)}</b></div><div><span>매수단가</span><b>${native(it,it.cost)}</b></div>
     <div><span>평가손익</span><b class="${cls(p)}">${sign(p)}${f(Math.abs(p))}</b></div><div><span>섹터 내 비중</span><b>${(it.v[cur]/sv*100).toFixed(1)}%</b></div>${ex}
    </div></div>`}).join("")+`</section>`}).join("");
- $("note").textContent="달러 종목은 시트의 기준환율로 원화 환산했어요.\n수익률에는 환차익이 포함돼요";
+ $("note").textContent="달러 종목은 시트의 기준환율로 원화 환산했어요.\n수익률에는 환차익이 포함돼요"+(mode==="net"?"\n총 수익률은 순입금액 "+won(NET)+" 대비 값이에요":"");
  $("upd").textContent=src;
  if(items[0])$("fx").textContent="$1 = "+items[0].fx.toLocaleString("ko-KR",{maximumFractionDigits:2})+"원";
 }
@@ -191,6 +201,9 @@ async function load(manual){
 }
 
 $("rf").onclick=()=>load(true);
+$("mode").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.m===mode)return;
+ if(b.dataset.m==="net"&&!NET){toast("시트에서 순입금액(O열 첫 행) 값을 찾지 못했어요");return}
+ setMode(b.dataset.m);render()};
 $("list").onclick=e=>{const b=e.target.closest(".rw");if(!b)return;
  const k=b.dataset.k;openKey=openKey===k?null:k;render()};
 
