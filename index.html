@@ -21,11 +21,6 @@ header h1{font-size:20px;margin:0;font-weight:700}
 @keyframes sp{to{transform:rotate(360deg)}}
 .hero{padding:18px 20px 8px}
 .hero .lb{font-size:14px;color:var(--t3);display:flex;align-items:center;justify-content:space-between}
-.seg{position:relative;display:inline-flex;background:var(--seg);border-radius:10px;padding:3px}
-.seg i{position:absolute;top:3px;bottom:3px;left:3px;width:calc(50% - 3px);background:var(--card);border-radius:8px;transition:transform .22s cubic-bezier(.3,.9,.3,1);box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.seg.usd i{transform:translateX(100%)}
-.seg button{position:relative;z-index:1;padding:6px 14px;font-size:13px;font-weight:600;color:var(--t3);min-width:52px}
-.seg button.on{color:var(--t1)}
 .total{font-size:32px;font-weight:800;margin:10px 0 4px;line-height:1.2}
 .pl{font-size:15px;font-weight:600}
 .up{color:var(--up)}.dn{color:var(--down)}.fl{color:var(--t3)}
@@ -38,7 +33,8 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .row{padding:0 4px}
 .rw{display:flex;align-items:center;gap:12px;width:100%;padding:12px 16px;text-align:left;border-radius:14px}
 .rw:active{background:var(--line)}
-.av{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px}
+.av{position:relative;overflow:hidden;flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#fff}
 .nm{flex:1;min-width:0}
 .nm b{display:block;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nm small{font-size:12px;color:var(--t3)}
@@ -78,9 +74,7 @@ header h1{font-size:20px;margin:0;font-weight:700}
     <button class="rf" id="rf" aria-label="새로고침"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg></button>
   </header>
   <section class="hero">
-    <div class="lb"><span>총 평가금액</span>
-      <div class="seg" id="seg"><i></i><button data-c="KRW" class="on">원화</button><button data-c="USD">달러</button></div>
-    </div>
+    <div class="lb"><span>총 평가금액</span></div>
     <div class="total" id="total">-</div>
     <div class="pl" id="pl"></div>
   </section>
@@ -109,6 +103,7 @@ E,SGOV (0~3개월 채권),SGOV,USD,$100.5300,$100.5969,62,"$6,232.8600","₩8,34
 
 const $=id=>document.getElementById(id);
 const COLORS=["#3182f6","#6b5cf6","#13b5a3","#f59f00","#f04452","#4e5968"];
+const SN={A:"나스닥100",B:"S&P500",C:"가치주",D:"소액 투자",E:"현금성 자산"};
 let items=[],cur="KRW",openKey=null,src="저장된 데이터";
 
 function parseCSV(t){const o=[];let r=[],f="",q=false;for(let i=0;i<t.length;i++){const c=t[i];
@@ -125,7 +120,7 @@ function build(text){
   const qty=num(g(r,"수량")),price=num(g(r,"현재가")),cost=num(g(r,"매수단가"));
   const vL=price*qty,cL=cost*qty;
   const vK=num(g(r,"평가금액(원화)"))||(usd?vL*fx:vL),cK=usd?cL*avg:cL;
-  return{sector:g(r,"섹터구분"),name:g(r,"종목명"),ticker:g(r,"티커"),usd,fx,avg,qty,price,cost,
+  return{logo:(r[13]||"").trim(),sector:g(r,"섹터구분"),name:g(r,"종목명"),ticker:g(r,"티커"),usd,fx,avg,qty,price,cost,
    v:{KRW:vK,USD:usd?vL:vL/fx},c:{KRW:cK,USD:usd?cL:cL/fx}}}).filter(x=>x.name)}
 
 const won=v=>Math.round(v).toLocaleString("ko-KR")+"원";
@@ -146,19 +141,20 @@ function render(){
  $("alloc").innerHTML=secs.map((s,i)=>{const w=sum(items.filter(x=>x.sector===s),"v")/tv*100;return`<span style="width:${w}%;background:${COLORS[i%COLORS.length]}"></span>`}).join("");
  $("list").innerHTML=secs.map((s,i)=>{
   const g=items.filter(x=>x.sector===s),sv=sum(g,"v");
-  return`<section class="sec"><div class="sh"><b><span style="color:${COLORS[i%COLORS.length]}">●</span> 섹터 ${s}</b><span>${money(sv)} · ${(sv/tv*100).toFixed(1)}%</span></div>`+
+  return`<section class="sec"><div class="sh"><b><span style="color:${COLORS[i%COLORS.length]}">●</span> ${SN[s]||"섹터 "+s}</b><span>${money(sv)} · ${(sv/tv*100).toFixed(1)}%</span></div>`+
   g.map(it=>{
-   const p=it.v[cur]-it.c[cur],r=it.c[cur]?p/it.c[cur]*100:0,k=it.ticker,o=openKey===k;
+   const m=(cur==="USD"&&!it.usd)?"KRW":cur,f=m==="KRW"?won:dol;
+   const p=it.v[m]-it.c[m],r=it.c[m]?p/it.c[m]*100:0,k=it.ticker,o=openKey===k;
    const ab=/^[A-Za-z]/.test(it.ticker)?it.ticker.slice(0,2):it.name.slice(0,1);
    const fxr=it.usd&&cur==="KRW"?`<div><span>평균매입환율</span><b>${it.avg.toLocaleString("ko-KR",{maximumFractionDigits:2})}원</b></div>`:"";
-   return`<div class="row"><button class="rw" data-k="${k}"><div class="av" style="background:${COLORS[i%COLORS.length]}">${ab}</div>
+   return`<div class="row"><button class="rw" data-k="${k}"><div class="av" style="background:${COLORS[i%COLORS.length]}">${ab}${/^(https?:\/\/|data:image)/i.test(it.logo)?`<img src="${it.logo.replace(/"/g,"&quot;")}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`:""}</div>
    <div class="nm"><b>${it.name}</b><small>${it.ticker} · ${it.qty.toLocaleString("ko-KR")}주</small></div>
-   <div class="vl"><b>${money(it.v[cur])}</b><small class="${cls(p)}">${pct(r)}</small></div></button>
+   <div class="vl"><b>${f(it.v[m])}</b><small class="${cls(p)}">${pct(r)}</small></div></button>
    <div class="dt" ${o?"":"hidden"}>
     <div><span>현재가</span><b>${native(it,it.price)}</b></div><div><span>매수단가</span><b>${native(it,it.cost)}</b></div>
-    <div><span>평가손익</span><b class="${cls(p)}">${sign(p)}${money(Math.abs(p))}</b></div><div><span>섹터 내 비중</span><b>${(it.v[cur]/sv*100).toFixed(1)}%</b></div>${fxr}
+    <div><span>평가손익</span><b class="${cls(p)}">${sign(p)}${f(Math.abs(p))}</b></div><div><span>섹터 내 비중</span><b>${(it.v[cur]/sv*100).toFixed(1)}%</b></div>${fxr}
    </div></div>`}).join("")+`</section>`}).join("");
- $("note").textContent=cur==="USD"?"원화 종목은 시트의 기준환율로 달러 환산했어요":"달러 종목은 시트의 기준환율로 원화 환산했어요. 수익률에는 환차익이 포함돼요";
+ $("note").textContent="달러 종목은 시트의 기준환율로 원화 환산했어요. 수익률에는 환차익이 포함돼요";
  $("upd").textContent=src;
 }
 
@@ -167,23 +163,26 @@ const clock=()=>new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-
 
 async function load(manual){
  $("rf").classList.add("spin");
+ let why="";
+ const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),12000);
  try{
-  const res=await fetch(CSV_URL+"&_="+Date.now(),{cache:"no-store"});
-  if(!res.ok)throw 0;
-  const next=build(await res.text());
-  if(!next.length)throw 0;
+  const res=await fetch(CSV_URL+"&_="+Date.now(),{signal:ctl.signal});
+  if(!res.ok){why="HTTP "+res.status;throw 0}
+  const text=await res.text();
+  if(text.trim().startsWith("<")||!text.includes("종목명")){why="CSV가 아닌 응답";throw 0}
+  const next=build(text);
+  if(!next.length){why="데이터 없음";throw 0}
   items=next;src="구글시트 · "+clock()+" 업데이트";render();
   if(manual)toast("최신 데이터로 바꿨어요");
  }catch(e){
-  if(manual)toast("불러오지 못했어요. 잠시 후 다시 눌러주세요");
-  $("upd").textContent=items.length?src+" (갱신 실패)":src;
- }finally{setTimeout(()=>$("rf").classList.remove("spin"),400)}
+  if(!why)why=e&&e.name==="AbortError"?"시간 초과":"네트워크 또는 보안 차단";
+  src=src.replace(/ \(갱신 실패.*$/,"")+" (갱신 실패: "+why+")";
+  $("upd").textContent=src;
+  if(manual)toast("불러오지 못했어요 · "+why);
+ }finally{clearTimeout(tm);setTimeout(()=>$("rf").classList.remove("spin"),400)}
 }
 
 $("rf").onclick=()=>load(true);
-$("seg").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.c===cur)return;
- cur=b.dataset.c;$("seg").classList.toggle("usd",cur==="USD");
- [...$("seg").querySelectorAll("button")].forEach(x=>x.classList.toggle("on",x===b));render()};
 $("list").onclick=e=>{const b=e.target.closest(".rw");if(!b)return;
  const k=b.dataset.k;openKey=openKey===k?null:k;render()};
 
