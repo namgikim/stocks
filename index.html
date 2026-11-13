@@ -170,13 +170,18 @@ function fmtAxis(v){
  return v.toLocaleString("ko-KR");
 }
 
+function fmtDay(str){
+ const m=String(str).trim().match(/(\d{1,2})\s*일?$/);
+ return m?Number(m[1])+"일":str;
+}
+
 function drawTotalChart(){
  const cv=$("totalChart");
  if(!cv)return;
  if(chartInst){chartInst.destroy();chartInst=null}
  if(!chartRows.length||typeof Chart==="undefined")return;
  const dark=window.matchMedia("(prefers-color-scheme: dark)").matches;
- const tickCol=dark?"#8b95a1":"#8b95a1";
+ const tickCol="#8b95a1";
  const gridCol=dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.05)";
  const ctx=cv.getContext("2d");
  const grad=ctx.createLinearGradient(0,0,0,210);
@@ -216,6 +221,7 @@ function drawTotalChart(){
      cornerRadius:10,
      displayColors:false,
      callbacks:{
+      title:items=>items[0]?items[0].label:"",
       label:c=>won(c.parsed.y)
      }
     }
@@ -224,7 +230,14 @@ function drawTotalChart(){
     x:{
      grid:{display:false},
      border:{display:false},
-     ticks:{color:tickCol,font:{size:11},maxRotation:0,autoSkip:true,maxTicksLimit:6}
+     ticks:{
+      color:tickCol,
+      font:{size:11},
+      maxRotation:0,
+      autoSkip:true,
+      maxTicksLimit:6,
+      callback:function(val){return fmtDay(this.getLabelForValue(val))}
+     }
     },
     y:{
      position:"right",
@@ -264,8 +277,7 @@ function render(){
     <div><span>평가손익</span><b class="${cls(p)}">${sign(p)}${f(Math.abs(p))}</b></div><div><span>섹터 내 비중</span><b>${(it.v[cur]/sv*100).toFixed(1)}%</b></div>${ex}
    </div></div>`}).join("")+`</section>`}).join("");
 
- const latestVal=chartRows.length?won(chartRows[chartRows.length-1].y):"";
- $("charts").innerHTML=`<section class="sec"><div class="sh"><b>총 평가금액 추이</b><span>${latestVal}</span></div>`+
+ $("charts").innerHTML=`<section class="sec"><div class="sh"><b>총 평가금액 추이</b></div>`+
   (chartRows.length?`<div class="cbox"><canvas id="totalChart"></canvas></div>`:`<div class="ph">추이 데이터를 불러오는 중이에요</div>`)+`</section>`;
 
  $("list").hidden=view!=="list";$("charts").hidden=view!=="chart";$("note").hidden=view==="chart";
