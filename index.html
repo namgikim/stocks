@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f2f4f6">
-<title>내 종목</title>
+<title>우리집 주식</title>
 <style>
 :root{--bg:#f2f4f6;--card:#fff;--t1:#191f28;--t2:#4e5968;--t3:#8b95a1;--line:#f2f4f6;--blue:#3182f6;--up:#f04452;--down:#3182f6;--seg:#e5e8eb}
 @media(prefers-color-scheme:dark){:root{--bg:#101012;--card:#1c1c1e;--t1:#f2f4f6;--t2:#c3c7cd;--t3:#8b95a1;--line:#2c2c2e;--seg:#2c2c2e}}
@@ -22,6 +22,7 @@ header h1{font-size:20px;margin:0;font-weight:700}
 @keyframes sp{to{transform:rotate(360deg)}}
 .hero{padding:10px 20px 0}
 .hero .lb{font-size:14px;color:var(--t3);display:flex;align-items:center;justify-content:space-between}
+.fxr{font-size:12px}
 .total{font-size:32px;font-weight:800;margin:10px 0 4px;line-height:1.2}
 .pl{font-size:15px;font-weight:600}
 .up{color:var(--up)}.dn{color:var(--down)}.fl{color:var(--t3)}
@@ -46,7 +47,7 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .dt div span{display:block;color:var(--t3);font-size:12px;margin-bottom:2px}
 .dt div b{font-weight:600}
 .dt[hidden]{display:none}
-.note{text-align:center;color:var(--t3);font-size:12px;padding:20px}
+.note{white-space:pre-line;text-align:center;color:var(--t3);font-size:12px;padding:20px}
 #toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 28px);transform:translate(-50%,20px);background:rgba(25,31,40,.92);color:#fff;font-size:14px;padding:12px 18px;border-radius:14px;opacity:0;pointer-events:none;transition:.25s;white-space:nowrap}
 #toast.show{opacity:1;transform:translate(-50%,0)}
 #intro{position:fixed;inset:0;z-index:20;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s;cursor:pointer}
@@ -64,7 +65,7 @@ header h1{font-size:20px;margin:0;font-weight:700}
 <body>
 <div id="intro" role="button" aria-label="시작하기">
   <div class="logo"><svg viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg></div>
-  <h2>내 종목</h2>
+  <h2>우리집 주식</h2>
   <p>보유 종목을 한눈에 확인해요</p>
   <em>화면을 누르면 바로 시작해요</em>
 </div>
@@ -72,11 +73,11 @@ header h1{font-size:20px;margin:0;font-weight:700}
 <div id="app">
   <div class="top">
   <header>
-    <div><h1>내 종목</h1><div class="sub" id="upd">불러오는 중</div></div>
+    <div><h1>우리집 주식</h1><div class="sub" id="upd">불러오는 중</div></div>
     <button class="rf" id="rf" aria-label="새로고침"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg></button>
   </header>
   <section class="hero">
-    <div class="lb"><span>총 평가금액</span></div>
+    <div class="lb"><span>총 평가금액</span><span id="fx" class="fxr"></span></div>
     <div class="total" id="total">-</div>
     <div class="pl" id="pl"></div>
   </section>
@@ -106,6 +107,8 @@ E,SGOV (0~3개월 채권),SGOV,USD,$100.5300,$100.5969,62,"$6,232.8600","₩8,34
 
 const $=id=>document.getElementById(id);
 const COLORS=["#3182f6","#6b5cf6","#13b5a3","#f59f00","#f04452","#4e5968"];
+const SC={A:"#f04452",B:"#f8939b",C:"#2f4a9e",D:"#f59f00",E:"#12b886"};
+const col=(s,i)=>SC[s]||COLORS[i%COLORS.length];
 const SN={A:"나스닥100",B:"S&P500",C:"가치주",D:"소액 투자",E:"현금성 자산"};
 let items=[],cur="KRW",openKey=null,src="저장된 데이터";
 
@@ -141,25 +144,26 @@ function render(){
  $("pl").className="pl "+cls(tp);
  $("pl").textContent=sign(tp)+money(Math.abs(tp))+" ("+pct(tc?tp/tc*100:0)+")";
  const secs=[...new Set(items.map(x=>x.sector))];
- $("alloc").innerHTML=secs.map((s,i)=>{const w=sum(items.filter(x=>x.sector===s),"v")/tv*100;return`<span style="width:${w}%;background:${COLORS[i%COLORS.length]}"></span>`}).join("");
+ $("alloc").innerHTML=secs.map((s,i)=>{const w=sum(items.filter(x=>x.sector===s),"v")/tv*100;return`<span style="width:${w}%;background:${col(s,i)}"></span>`}).join("");
  $("list").innerHTML=secs.map((s,i)=>{
   const g=items.filter(x=>x.sector===s),sv=sum(g,"v");
-  return`<section class="sec"><div class="sh"><b><span style="color:${COLORS[i%COLORS.length]}">●</span> ${SN[s]||"섹터 "+s}</b><span>${money(sv)} · ${(sv/tv*100).toFixed(1)}%</span></div>`+
+  return`<section class="sec"><div class="sh"><b><span style="color:${col(s,i)}">●</span> ${SN[s]||"섹터 "+s}</b><span>${money(sv)} · ${(sv/tv*100).toFixed(1)}%</span></div>`+
   g.map(it=>{
    const m=(cur==="USD"&&!it.usd)?"KRW":cur,f=m==="KRW"?won:dol;
    const p=it.v[m]-it.c[m],r=it.c[m]?p/it.c[m]*100:0,k=it.ticker,o=openKey===k;
    const ab=/^[A-Za-z]/.test(it.ticker)?it.ticker.slice(0,2):it.name.slice(0,1);
    const pu=(it.price-it.cost)*it.qty,ru=it.cost?(it.price/it.cost-1)*100:0;
    const ex=it.usd?`<div><span>환율 미적용 손익</span><b class="${cls(pu)}">${sign(pu)}${dol(Math.abs(pu))}</b></div><div><span>환율 미적용 수익률</span><b class="${cls(ru)}">${pct(ru)}</b></div><div><span>평균매입환율</span><b>${it.avg.toLocaleString("ko-KR",{maximumFractionDigits:2})}원</b></div>`:"";
-   return`<div class="row"><button class="rw" data-k="${k}"><div class="av" style="background:${COLORS[i%COLORS.length]}">${ab}${/^(https?:\/\/|data:image)/i.test(it.logo)?`<img src="${it.logo.replace(/"/g,"&quot;")}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`:""}</div>
+   return`<div class="row"><button class="rw" data-k="${k}"><div class="av" style="background:${col(s,i)}">${ab}${/^(https?:\/\/|data:image)/i.test(it.logo)?`<img src="${it.logo.replace(/"/g,"&quot;")}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`:""}</div>
    <div class="nm"><b>${it.name}</b><small>${it.ticker} · ${it.qty.toLocaleString("ko-KR")}주</small></div>
    <div class="vl"><b>${f(it.v[m])}</b><small class="${cls(p)}">${pct(r)}</small></div></button>
    <div class="dt" ${o?"":"hidden"}>
     <div><span>현재가</span><b>${native(it,it.price)}</b></div><div><span>매수단가</span><b>${native(it,it.cost)}</b></div>
     <div><span>평가손익</span><b class="${cls(p)}">${sign(p)}${f(Math.abs(p))}</b></div><div><span>섹터 내 비중</span><b>${(it.v[cur]/sv*100).toFixed(1)}%</b></div>${ex}
    </div></div>`}).join("")+`</section>`}).join("");
- $("note").textContent="달러 종목은 시트의 기준환율로 원화 환산했어요. 수익률에는 환차익이 포함돼요";
+ $("note").textContent="달러 종목은 시트의 기준환율로 원화 환산했어요.\n수익률에는 환차익이 포함돼요";
  $("upd").textContent=src;
+ if(items[0])$("fx").textContent="$1 = "+items[0].fx.toLocaleString("ko-KR",{maximumFractionDigits:2})+"원";
 }
 
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.id);toast.id=setTimeout(()=>t.classList.remove("show"),2200)}
