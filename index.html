@@ -12,6 +12,7 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--t1);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic","Noto Sans KR",sans-serif;letter-spacing:-.01em;-webkit-user-select:auto;user-select:auto}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+html,body{touch-action:pan-x pan-y}
 #app{max-width:480px;margin:0 auto;min-height:100vh;padding:env(safe-area-inset-top,0) 0 calc(env(safe-area-inset-bottom,0px) + 32px)}
 .top{position:sticky;top:0;z-index:5;background:var(--bg);padding-bottom:14px}
 header{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 14px) 20px 10px}
@@ -550,6 +551,21 @@ function closeIntro(){$("intro").classList.add("out")}
 function tryClose(){if(introMin&&loaded)closeIntro()}
 setTimeout(()=>{introMin=true;tryClose()},2200);
 setTimeout(closeIntro,6000);
+
+// 확대/축소 차단 (iOS 사파리는 user-scalable=no를 무시함)
+["gesturestart","gesturechange","gestureend"].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
+document.addEventListener("touchmove",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});
+
+// 차트 바깥을 누르면 툴팁 닫기 (다른 차트를 눌러도 이전 차트 툴팁이 닫힘)
+document.addEventListener("pointerdown",e=>{
+ const cv=e.target.closest&&e.target.closest("canvas");
+ [chartInst,compInst,pieInst].forEach(c=>{
+  if(!c||c.canvas===cv)return;
+  c.setActiveElements([]);
+  c.tooltip.setActiveElements([],{x:0,y:0});
+  c.update("none");
+ });
+});
 
 items=build(SNAPSHOT);render();load(false);
 </script>
