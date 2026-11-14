@@ -29,7 +29,7 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .seg button{position:relative;z-index:1;padding:5px 10px;font-size:12px;font-weight:600;color:var(--t3);min-width:58px}
 .seg button.on{color:var(--t1)}
 .tr{display:flex;align-items:center;justify-content:space-between;gap:10px}.cu button{min-width:30px;padding:5px 0}
-.swr{display:flex;align-items:center;gap:4px;flex:none}.swr .sw{padding:0}.swl{font-size:12px;font-weight:600;color:var(--t3);margin-right:4px}.swl.on{color:var(--t1)}.inf{position:relative;display:grid;place-items:center;width:13px;height:13px;border:1.3px solid var(--t3);border-radius:50%;color:var(--t3);font-size:9px;font-weight:800;line-height:1;padding:0}.inf::before{content:"";position:absolute;inset:-9px}
+.swr{display:flex;align-items:center;gap:4px;flex:none}.swr .sw{padding:0}.swl{font-size:12px;font-weight:600;color:var(--t3);margin-right:4px}.inf{position:relative;display:grid;place-items:center;width:13px;height:13px;border:1.3px solid var(--t3);border-radius:50%;color:var(--t3);font-size:9px;font-weight:800;line-height:1;padding:0}.inf::before{content:"";position:absolute;inset:-9px}
 #modal{position:fixed;inset:0;z-index:15;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:24px}#modal[hidden]{display:none}.mb{background:var(--card);border-radius:20px;padding:24px 20px 16px;width:100%;max-width:320px}.mb h3{margin:0 0 14px;font-size:17px}.mb .amt{font-size:22px;font-weight:800;margin-bottom:8px}.mb p.lead{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:18px}.mb .sub2{border-top:1px solid var(--seg);padding-top:16px;font-size:13px;color:var(--t3);margin-bottom:4px}.mb p{word-break:keep-all;margin:0 0 18px;font-size:14px;line-height:1.55;color:var(--t2)}.mb .ok{width:100%;padding:13px 0;border-radius:12px;background:var(--blue);color:#fff;font-weight:700;font-size:15px}
 .sw{display:inline-flex;align-items:center;gap:8px;flex:none;font-size:12px;font-weight:600;color:var(--t3)}.sw b{position:relative;width:34px;height:20px;border-radius:10px;background:var(--seg);transition:background .2s;flex:none}.sw b::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}.sw.on{color:var(--t1)}.sw.on b{background:var(--blue)}.sw.on b::after{transform:translateX(14px)}
 .vw button{display:grid;place-items:center;min-width:44px;padding:7px 0}
@@ -118,7 +118,7 @@ header h1{font-size:20px;margin:0;font-weight:700}
   <div class="note" id="note"></div>
 </div>
 <div id="toast"></div>
-<div id="modal" hidden><div class="mb" role="dialog" aria-modal="true"><h3>투자수익</h3><p class="lead">투자수익은 순입금액을 기준으로 상승한 금액을 의미해요.</p><div class="sub2">순입금액</div><div class="amt" id="modalAmt">-</div><p>이 금액은 삼성증권(해외, ISA), 신한증권(국내, ISA, 연금), KB증권(국내, 연금, 금현물) 계좌의 순입금액을 모두 합한 금액이에요.</p><button class="ok" id="modalOk">확인</button></div></div>
+<div id="modal" hidden><div class="mb" role="dialog" aria-modal="true"><h3>투자수익</h3><p class="lead">투자수익은 순입금액을 기준으로 상승한 금액을 의미해요. 종목을 사고팔아도 오차 없이 보이는 내 전체 성과예요.</p><div class="sub2">순입금액</div><div class="amt" id="modalAmt">-</div><p>이 금액은 삼성증권(해외, ISA), 신한증권(국내, ISA, 연금), KB증권(국내, 연금, 금현물) 계좌의 순입금액을 모두 합한 금액이에요.</p><button class="ok" id="modalOk">확인</button></div></div>
 
 <script>
 const CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTq_lLeMyEq0Lp57xFHAkZakHbHERiBrmgtgNiw70DS7wA2481vOB3P4Okfoxx-YJiVkebt1bQ5XzD8/pub?gid=1608565878&single=true&output=csv";
