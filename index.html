@@ -390,7 +390,7 @@ function drawCompChart(){
      boxHeight:8,
      callbacks:{
       title:items=>items[0]?items[0].label:"",
-      label:c=>" "+c.dataset.label+": "+fmtCompVal(c.parsed.y)
+      label:c=>{const v=c.parsed.y;return " "+c.dataset.label+": "+(v==null||isNaN(v)?"-":v.toLocaleString("ko-KR",{minimumFractionDigits:2,maximumFractionDigits:2})+"%")}
      }
     }
    },
