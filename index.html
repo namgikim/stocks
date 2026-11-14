@@ -207,6 +207,28 @@ function fmtDay(str){
  return m?Number(m[1])+"일":str;
 }
 
+const SUBGRID={id:"subgrid",beforeDatasetsDraw(chart){
+ const {ctx,chartArea:a,scales:{x,y}}=chart;
+ if(!x||!y||!a)return;
+ const dark=window.matchMedia("(prefers-color-scheme: dark)").matches;
+ ctx.save();
+ ctx.strokeStyle=dark?"rgba(255,255,255,0.045)":"rgba(0,0,0,0.04)";
+ ctx.lineWidth=1;
+ ctx.beginPath();
+ // 가로 보조선: 기존 눈금선 사이 중간에 한 줄씩 추가
+ const ys=y.ticks.map(k=>y.getPixelForValue(k.value)).sort((m,n)=>m-n);
+ for(let i=0;i<ys.length-1;i++){const m=Math.round((ys[i]+ys[i+1])/2)+.5;ctx.moveTo(a.left,m);ctx.lineTo(a.right,m)}
+ // 세로 보조선: 데이터 행(점)마다 한 줄, 행이 많으면 간격을 띄워서 그림
+ const n=chart.data.labels.length;
+ if(n>1){
+  const gap=Math.abs(x.getPixelForValue(1)-x.getPixelForValue(0));
+  const step=Math.max(1,Math.ceil(14/Math.max(gap,1)));
+  for(let i=0;i<n;i+=step){const px=Math.round(x.getPixelForValue(i))+.5;ctx.moveTo(px,a.top);ctx.lineTo(px,a.bottom)}
+ }
+ ctx.stroke();
+ ctx.restore();
+}};
+
 function drawTotalChart(){
  const cv=$("totalChart");
  if(!cv)return;
@@ -223,6 +245,7 @@ function drawTotalChart(){
  const pts=rows.length;
  chartInst=new Chart(ctx,{
   type:"line",
+  plugins:[SUBGRID],
   data:{
    labels:rows.map(d=>d.x),
    datasets:[{
@@ -244,6 +267,7 @@ function drawTotalChart(){
    maintainAspectRatio:false,
    animation:false,
    interaction:{mode:"index",intersect:false},
+   events:["mousemove","mouseout","click"],
    plugins:{
     legend:{display:false},
     tooltip:{
@@ -306,6 +330,7 @@ function drawCompChart(){
  ];
  compInst=new Chart(cv.getContext("2d"),{
   type:"line",
+  plugins:[SUBGRID],
   data:{
    labels:rows.map(d=>d.x),
    datasets:series.map(s=>({
@@ -331,6 +356,7 @@ function drawCompChart(){
    maintainAspectRatio:false,
    animation:false,
    interaction:{mode:"index",intersect:false},
+   events:["mousemove","mouseout","click"],
    plugins:{
     legend:{
      display:true,
@@ -556,16 +582,20 @@ setTimeout(closeIntro,6000);
 ["gesturestart","gesturechange","gestureend"].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
 document.addEventListener("touchmove",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});
 
-// 차트 바깥을 누르면 툴팁 닫기 (다른 차트를 눌러도 이전 차트 툴팁이 닫힘)
-document.addEventListener("pointerdown",e=>{
- const cv=e.target.closest&&e.target.closest("canvas");
+// 툴팁 닫기: 차트 바깥을 누르거나, 스크롤하면 닫힘 (스크롤 중에는 툴팁을 보이지 않음)
+function hideTips(except){
  [chartInst,compInst,pieInst].forEach(c=>{
-  if(!c||c.canvas===cv)return;
-  c.setActiveElements([]);
-  c.tooltip.setActiveElements([],{x:0,y:0});
-  c.update("none");
+  if(!c||c.canvas===except)return;
+  try{
+   if(!c.tooltip||!c.tooltip.getActiveElements().length)return;
+   c.setActiveElements([]);
+   c.tooltip.setActiveElements([],{x:0,y:0});
+   c.update("none");
+  }catch(err){}
  });
-});
+}
+document.addEventListener("pointerdown",e=>hideTips(e.target.closest&&e.target.closest("canvas")));
+window.addEventListener("scroll",()=>hideTips(null),{passive:true});
 
 items=build(SNAPSHOT);render();load(false);
 </script>
