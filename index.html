@@ -111,7 +111,7 @@ header h1{font-size:20px;margin:0;font-weight:700}
   </header>
   <section class="hero">
     <div class="lb"><span>총 평가금액</span><span id="fx" class="fxr"></span></div>
-    <div class="tr"><div class="total" id="total">-</div><div class="seg cu" id="mode"><i></i><button data-m="avg" class="on">₩</button><button data-m="usd">$</button></div></div>
+    <div class="tr"><div class="total" id="total">-</div><div class="seg cu b" id="mode"><i></i><button data-m="avg">₩</button><button data-m="usd" class="on">$</button></div></div>
     <div class="plr"><div class="pl" id="pl"></div><div class="swr"><button class="inf" id="infoBtn" aria-label="투자수익 설명">!</button><span class="swl" id="swl">투자수익</span><button class="sw" id="netBtn" aria-pressed="false" aria-label="투자수익 기준 전환"><b></b></button></div></div>
   </section>
   <div class="alloc" id="alloc"></div>
@@ -153,7 +153,7 @@ const SEC_SHADES={
 };
 const col=(s,i)=>SC[s]||COLORS[i%COLORS.length];
 const SN={A:"나스닥100",B:"S&P500",C:"가치주",D:"소액 투자",E:"현금성 자산"};
-let view="list",mode="avg",useNet=false,NET=0,items=[],cur="KRW",openKey=null,src="저장된 데이터";
+let view="list",mode="usd",useNet=false,NET=0,items=[],cur="KRW",openKey=null,src="저장된 데이터";
 let pieSort="sector";
 let chartRows=[],chartInst=null,compInst=null,pieInst=null;
 
