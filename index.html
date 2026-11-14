@@ -32,6 +32,8 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .seg button{position:relative;z-index:1;padding:5px 10px;font-size:12px;font-weight:600;color:var(--t3);min-width:58px}
 .seg button.on{color:var(--t1)}
 .tr{display:flex;align-items:center;justify-content:space-between;gap:10px}.cu button{min-width:30px;padding:5px 0}
+.lt{padding:0 16px;margin-top:2px}.lt[hidden]{display:none}.lv button{min-width:40px;padding:5px 12px}
+.sum{padding:6px 0}.sm{padding:14px 20px}.sm-t{display:flex;justify-content:space-between;align-items:baseline;font-size:15px}.sm-t b,.sm-t>span{font-weight:600}.sm-b{display:flex;align-items:center;gap:10px;margin-top:8px}.sm-bar{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}.sm-bar span{display:block;height:100%;border-radius:4px}.sm-b em{font-style:normal;font-size:13px;font-weight:700;min-width:44px;text-align:right}
 .swr{display:flex;align-items:center;gap:4px;flex:none}.swr .sw{padding:0}.swl{font-size:12px;font-weight:600;color:var(--t3);margin-right:4px}.inf{position:relative;display:grid;place-items:center;width:13px;height:13px;border:1.3px solid var(--t3);border-radius:50%;color:var(--t3);font-size:9px;font-weight:800;line-height:1;padding:0}.inf::before{content:"";position:absolute;inset:-9px}
 #modal{position:fixed;inset:0;z-index:15;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:24px}#modal[hidden]{display:none}.mb{background:var(--card);border-radius:20px;padding:24px 20px 16px;width:100%;max-width:320px}.mb h3{margin:0 0 14px;font-size:17px}.mb .amt{font-size:22px;font-weight:800;margin-bottom:8px}.mb p.lead{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:18px}.mb .sub2{border-top:1px solid var(--seg);padding-top:16px;font-size:13px;color:var(--t3);margin-bottom:4px}.mb p{word-break:keep-all;margin:0 0 18px;font-size:14px;line-height:1.55;color:var(--t2)}.mb .ok{width:100%;padding:13px 0;border-radius:12px;background:var(--blue);color:#fff;font-weight:700;font-size:15px}
 .sw{display:inline-flex;align-items:center;gap:8px;flex:none;font-size:12px;font-weight:600;color:var(--t3)}.sw b{position:relative;width:34px;height:20px;border-radius:10px;background:var(--seg);transition:background .2s;flex:none}.sw b::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}.sw.on{color:var(--t1)}.sw.on b{background:var(--blue)}.sw.on b::after{transform:translateX(14px)}
@@ -114,8 +116,8 @@ header h1{font-size:20px;margin:0;font-weight:700}
     <div class="tr"><div class="total" id="total">-</div><div class="seg cu b" id="mode"><i></i><button data-m="avg">₩</button><button data-m="usd" class="on">$</button></div></div>
     <div class="plr"><div class="pl" id="pl"></div><div class="swr"><button class="inf" id="infoBtn" aria-label="투자수익 설명">!</button><span class="swl" id="swl">투자수익</span><button class="sw" id="netBtn" aria-pressed="false" aria-label="투자수익 기준 전환"><b></b></button></div></div>
   </section>
-  <div class="alloc" id="alloc"></div>
   </div>
+  <div class="lt" id="lt"><div class="seg lv" id="lview"><i></i><button data-l="card" class="on">상세</button><button data-l="chart">요약</button></div></div>
   <main id="list"></main>
   <main id="charts" hidden></main>
   <div class="note" id="note"></div>
@@ -153,7 +155,8 @@ const SEC_SHADES={
 };
 const col=(s,i)=>SC[s]||COLORS[i%COLORS.length];
 const SN={A:"나스닥100",B:"S&P500",C:"가치주",D:"소액 투자",E:"현금성 자산"};
-let view="list",mode="usd",useNet=false,NET=0,items=[],cur="KRW",openKey=null,src="저장된 데이터";
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+let view="list",lview=(()=>{try{return localStorage.getItem("lv")==="chart"?"chart":"card"}catch(e){return"card"}})(),mode=LS.get("cu","usd")==="avg"?"avg":"usd",useNet=LS.get("net","0")==="1",NET=0,items=[],cur="KRW",openKey=null,src="저장된 데이터";
 let pieSort="sector";
 let chartRows=[],chartInst=null,compInst=null,pieInst=null;
 
@@ -482,6 +485,7 @@ function drawPieChart(){
  });
 }
 
+function syncL(){$("lview").classList.toggle("b",lview==="chart");[...$("lview").querySelectorAll("button")].forEach(x=>x.classList.toggle("on",x.dataset.l===lview))}
 function syncNet(){$("swl").classList.toggle("on",useNet);$("netBtn").classList.toggle("on",useNet);$("netBtn").setAttribute("aria-pressed",useNet)}
 function setMode(m){mode=m;$("mode").classList.toggle("b",m==="usd");[...$("mode").querySelectorAll("button")].forEach(x=>x.classList.toggle("on",x.dataset.m===m))}
 function render(){
@@ -492,7 +496,6 @@ function render(){
  $("pl").className="pl "+cls(tp);
  $("pl").textContent=sign(tp)+money(Math.abs(tp))+" ("+pct(base?tp/base*100:0)+")";
  const secs=[...new Set(items.map(x=>x.sector))];
- $("alloc").innerHTML=secs.map((s,i)=>{const w=sum(items.filter(x=>x.sector===s),"v")/tv*100;return`<span style="width:${w}%;background:${col(s,i)}"></span>`}).join("");
  $("list").innerHTML=secs.map((s,i)=>{
   const g=items.filter(x=>x.sector===s),sv=sum(g,"v");
   return`<section class="sec"><div class="sh"><b><span style="color:${col(s,i)}">●</span> ${SN[s]||"섹터 "+s}</b><span>${money(sv)} · ${(sv/tv*100).toFixed(1)}%</span></div>`+
@@ -510,6 +513,8 @@ function render(){
     <div><span>평가손익</span><b class="${cls(p)}">${sign(p)}${f(Math.abs(p))}</b></div><div><span>섹터 내 비중</span><b>${(it.v[cur]/sv*100).toFixed(1)}%</b></div>${ex}
    </div></div>`}).join("")+`</section>`}).join("");
 
+ if(lview==="chart")$("list").innerHTML=`<section class="sec sum">`+secs.map((s,i)=>{const sv=sum(items.filter(x=>x.sector===s),"v"),w=sv/tv*100;return`<div class="sm"><div class="sm-t"><b><span style="color:${col(s,i)}">●</span> ${SN[s]||"섹터 "+s}</b><span>${money(sv)}</span></div><div class="sm-b"><div class="sm-bar"><span style="width:${w}%;background:${col(s,i)}"></span></div><em>${w.toFixed(1)}%</em></div></div>`}).join("")+`</section>`;
+ $("lt").hidden=view!=="list";
  const hasTotal=chartRows.some(d=>d.y!==null);
  const hasComp=chartRows.some(d=>d.f!==null||d.g!==null||d.i!==null||d.k!==null||d.m!==null);
  const pieList=getPieItems();
@@ -573,11 +578,12 @@ async function load(manual){
 }
 
 $("mode").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.m===mode)return;
- setMode(b.dataset.m);render()};
+ setMode(b.dataset.m);LS.set("cu",mode);render()};
+$("lview").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.l===lview)return;lview=b.dataset.l;try{localStorage.setItem("lv",lview)}catch(err){}syncL();render()};
 $("infoBtn").onclick=()=>{$("modalAmt").textContent=NET?won(NET):"-";$("modal").hidden=false};
 $("modalOk").onclick=()=>{$("modal").hidden=true};
 $("modal").onclick=e=>{if(e.target===$("modal"))$("modal").hidden=true};
-$("netBtn").onclick=()=>{if(!useNet&&!NET){toast("시트에서 순입금액(O열 첫 행) 값을 찾지 못했어요");return}useNet=!useNet;syncNet();render()};
+$("netBtn").onclick=()=>{if(!useNet&&!NET){toast("시트에서 순입금액(O열 첫 행) 값을 찾지 못했어요");return}useNet=!useNet;LS.set("net",useNet?"1":"0");syncNet();render()};
 $("view").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.v===view)return;
  view=b.dataset.v;$("view").classList.toggle("b",view==="chart");
  [...$("view").querySelectorAll("button")].forEach(x=>x.classList.toggle("on",x===b));render();scrollTo(0,0)};
@@ -611,7 +617,7 @@ function hideTips(except){
 document.addEventListener("pointerdown",e=>hideTips(e.target.closest&&e.target.closest("canvas")));
 window.addEventListener("scroll",()=>hideTips(null),{passive:true});
 
-items=build(SNAPSHOT,295615604);render();load(false);
+setMode(mode);syncNet();syncL();items=build(SNAPSHOT,295615604);render();load(false);
 </script>
 </body>
 </html>
