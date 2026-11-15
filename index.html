@@ -3,25 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#f2f4f6">
-<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,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">
+<meta name="theme-color" content="#f2f4f6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101012" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,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">
 <meta name="apple-mobile-web-app-title" content="우리집 주식">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>우리집 주식</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-:root{--bg:#f2f4f6;--card:#fff;--t1:#191f28;--t2:#4e5968;--t3:#8b95a1;--line:#f2f4f6;--blue:#3182f6;--up:#f04452;--down:#3182f6;--seg:#e5e8eb}
+:root{--bg:#f2f4f6;--card:#fff;--t1:#191f28;--t2:#4e5968;--t3:#6b7684;--line:#f2f4f6;--blue:#3182f6;--up:#f04452;--down:#3182f6;--seg:#e5e8eb}
 @media(prefers-color-scheme:dark){:root{--bg:#101012;--card:#1c1c1e;--t1:#f2f4f6;--t2:#c3c7cd;--t3:#8b95a1;--line:#2c2c2e;--seg:#2c2c2e}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:var(--bg);color:var(--t1);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic","Noto Sans KR",sans-serif;letter-spacing:-.01em;-webkit-user-select:auto;user-select:auto}
+html,body{margin:0;background:var(--bg);color:var(--t1);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic","Noto Sans KR",sans-serif;letter-spacing:-.01em;-webkit-user-select:auto;user-select:auto;font-variant-numeric:tabular-nums}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+button:focus-visible,.sel:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.rw{transition:background .15s}
 html,body{touch-action:pan-x pan-y}
 #app{max-width:480px;margin:0 auto;min-height:100vh;padding:env(safe-area-inset-top,0) 0 calc(env(safe-area-inset-bottom,0px) + 32px)}
 .top{position:sticky;top:0;z-index:5;background:var(--bg);padding-bottom:14px}
-header{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 14px) 20px 10px}
+header{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 10px) 20px 6px}
 header h1{font-size:20px;margin:0;font-weight:700}
 .sub{font-size:12px;color:var(--t3);margin-top:2px}
-.hero{padding:10px 20px 0}
+.hero{padding:6px 20px 0}
 .hero .lb{font-size:14px;color:var(--t3);display:flex;align-items:center;justify-content:space-between}
 .fxr{font-size:12px}
 .plr{display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -31,8 +34,14 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .seg.b i{transform:translateX(100%)}
 .seg button{position:relative;z-index:1;padding:5px 10px;font-size:12px;font-weight:600;color:var(--t3);min-width:58px}
 .seg button.on{color:var(--t1)}
-.tr{display:flex;align-items:center;justify-content:space-between;gap:10px}.cu button{min-width:30px;padding:5px 0}
-.lt{padding:0 16px;margin-top:2px}.lt[hidden]{display:none}.lv button{min-width:40px;padding:5px 12px}
+.tr{display:flex;align-items:center;justify-content:space-between;gap:10px}.cu button{min-width:34px;padding:6px 0}
+.lt{padding:4px 16px 0}
+.lv{display:inline-flex}.lv i{width:calc((100% - 4px)/3)}.lv.p1 i{transform:translateX(100%)}.lv.p2 i{transform:translateX(200%)}
+.lv button{min-width:44px;padding:7px 0;display:grid;place-items:center}
+.lv svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.flat{padding:0 16px}.flat .row{padding:0}.flat .rw{padding:12px 4px}.flat .rw:active{background:var(--seg)}.flat .dt{background:var(--card);margin:0 0 8px}
+.fh{display:flex;justify-content:space-between;align-items:center;padding:14px 4px 6px;font-size:13px;color:var(--t3)}.fh b{font-size:16px;color:var(--t1)}
+.pw{padding:0 16px}.pw .cbox.pie{margin:10px 0 6px}.pw .pleg{padding:6px 4px 10px}
 .sum{padding:6px 0}.sm{padding:14px 20px}.sm-t{display:flex;justify-content:space-between;align-items:baseline;font-size:15px}.sm-t b,.sm-t>span{font-weight:600}.sm-b{display:flex;align-items:center;gap:10px;margin-top:8px}.sm-bar{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}.sm-bar span{display:block;height:100%;border-radius:4px}.sm-b em{font-style:normal;font-size:13px;font-weight:700;min-width:44px;text-align:right}
 .swr{display:flex;align-items:center;gap:4px;flex:none}.swr .sw{padding:0}.swl{font-size:12px;font-weight:600;color:var(--t3);margin-right:4px}.inf{position:relative;display:grid;place-items:center;width:13px;height:13px;border:1.3px solid var(--t3);border-radius:50%;color:var(--t3);font-size:9px;font-weight:800;line-height:1;padding:0}.inf::before{content:"";position:absolute;inset:-9px}
 #modal{position:fixed;inset:0;z-index:15;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:24px}#modal[hidden]{display:none}.mb{background:var(--card);border-radius:20px;padding:24px 20px 16px;width:100%;max-width:320px}.mb h3{margin:0 0 14px;font-size:17px}.mb .amt{font-size:22px;font-weight:800;margin-bottom:8px}.mb p.lead{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:18px}.mb .sub2{border-top:1px solid var(--seg);padding-top:16px;font-size:13px;color:var(--t3);margin-bottom:4px}.mb p{word-break:keep-all;margin:0 0 18px;font-size:14px;line-height:1.55;color:var(--t2)}.mb .ok{width:100%;padding:13px 0;border-radius:12px;background:var(--blue);color:#fff;font-weight:700;font-size:15px}
@@ -52,7 +61,7 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .pli-r{display:flex;align-items:center;gap:8px;flex:none}
 .pli-v{color:var(--t3);font-size:12px}
 .pli-p{font-weight:700;min-width:44px;text-align:right}
-.total{font-size:32px;font-weight:800;margin:10px 0 4px;line-height:1.2}
+.total{font-size:32px;font-weight:800;margin:6px 0 2px;line-height:1.2}
 .pl{font-size:15px;font-weight:600}
 .up{color:var(--up)}.dn{color:var(--down)}.fl{color:var(--t3)}
 .alloc{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:14px 20px 0;gap:2px}
@@ -72,20 +81,20 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .nm small{font-size:12px;color:var(--t3)}
 .vl{text-align:right;flex:none}
 .vl b{display:block;font-size:15px;font-weight:600}
-.vl small{font-size:12px;font-weight:500}
+.vl small{font-size:13px;font-weight:600}
 .dt{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin:0 16px 8px;padding:14px 16px;background:var(--line);border-radius:14px;font-size:13px}
 .dt div span{display:block;color:var(--t3);font-size:12px;margin-bottom:2px}
 .dt div b{font-weight:600}
 .dt[hidden]{display:none}
-.note{white-space:pre-line;text-align:center;color:var(--t3);font-size:12px;padding:20px}
+.note{white-space:pre-line;text-align:center;color:var(--t3);font-size:12px;line-height:1.6;padding:20px}
 #toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 28px);transform:translate(-50%,20px);background:rgba(25,31,40,.92);color:#fff;font-size:14px;padding:12px 18px;border-radius:14px;opacity:0;pointer-events:none;transition:.25s;white-space:nowrap}
 #toast.show{opacity:1;transform:translate(-50%,0)}
-#intro{position:fixed;inset:0;z-index:20;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s}
+#intro{position:fixed;inset:0;z-index:20;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s}
 #intro.out{opacity:0;visibility:hidden}
 .logo{width:88px;height:88px;border-radius:28px;background:var(--blue);display:grid;place-items:center;animation:pop .7s cubic-bezier(.2,1.4,.4,1) both}
 .logo svg{width:46px;height:46px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-#intro h2{margin:26px 0 6px;font-size:26px;font-weight:800;color:#191f28;animation:fu .6s .35s both}
-#intro p{margin:0;font-size:15px;color:#6b7684;animation:fu .6s .5s both}
+#intro h2{margin:26px 0 6px;font-size:26px;font-weight:800;color:var(--t1);animation:fu .6s .35s both}
+#intro p{margin:0;font-size:15px;color:var(--t3);animation:fu .6s .5s both}
 #dots b{font-weight:400;animation:bl 1.2s infinite both}
 #dots b:nth-child(2){animation-delay:.2s}
 #dots b:nth-child(3){animation-delay:.4s}
@@ -93,6 +102,11 @@ header h1{font-size:20px;margin:0;font-weight:700}
 @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes fu{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.fh-wrap{padding:0 16px}.fh-wrap+.sec{margin-top:6px}
+button.sh{width:100%;text-align:left;cursor:pointer;border-radius:20px 20px 0 0}
+.chev{width:14px;height:14px;margin-left:6px;vertical-align:-2px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transform:rotate(180deg);transition:transform .2s}
+.sec.cl .chev{transform:none}.sec.cl .row{display:none}
+.scard{padding:0 0 6px}.scard .sh{padding:18px 20px 10px}.scard.cl{padding:0}.scard.cl .sh{padding:18px 20px;border-radius:20px}
 </style>
 </head>
 <body>
@@ -106,18 +120,15 @@ header h1{font-size:20px;margin:0;font-weight:700}
   <div class="top">
   <header>
     <div><h1>우리집 주식</h1><div class="sub" id="upd">불러오는 중</div></div>
-    <div class="seg vw" id="view"><i></i>
-      <button data-v="list" class="on" aria-label="리스트"><svg viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></button>
-      <button data-v="chart" aria-label="차트"><svg viewBox="0 0 24 24"><path d="M5 20v-8M12 20V4M19 20v-5"/></svg></button>
-    </div>
   </header>
   <section class="hero">
     <div class="lb"><span>총 평가금액</span><span id="fx" class="fxr"></span></div>
     <div class="tr"><div class="total" id="total">-</div><div class="seg cu b" id="mode"><i></i><button data-m="avg">₩</button><button data-m="usd" class="on">$</button></div></div>
     <div class="plr"><div class="pl" id="pl"></div><div class="swr"><button class="inf" id="infoBtn" aria-label="투자수익 설명">!</button><span class="swl" id="swl">투자수익</span><button class="sw" id="netBtn" aria-pressed="false" aria-label="투자수익 기준 전환"><b></b></button></div></div>
   </section>
+
   </div>
-  <div class="lt" id="lt"><div class="seg lv" id="lview"><i></i><button data-l="card" class="on">상세</button><button data-l="chart">요약</button></div></div>
+  <div class="lt" id="lt"><div class="seg lv" id="lview"><i></i><button data-l="list" aria-label="목록" class="on"><svg viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></button><button data-l="pie" aria-label="도넛"><svg viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></button><button data-l="chart" aria-label="분석"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg></button></div></div>
   <main id="list"></main>
   <main id="charts" hidden></main>
   <div class="note" id="note"></div>
@@ -156,8 +167,9 @@ const SEC_SHADES={
 const col=(s,i)=>SC[s]||COLORS[i%COLORS.length];
 const SN={A:"나스닥100",B:"S&P500",C:"가치주",D:"소액 투자",E:"현금성 자산"};
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
-let view="list",lview=(()=>{try{return localStorage.getItem("lv")==="chart"?"chart":"card"}catch(e){return"card"}})(),mode=LS.get("cu","usd")==="avg"?"avg":"usd",useNet=LS.get("net","0")==="1",NET=0,items=[],cur="KRW",openKey=null,src="저장된 데이터";
+let lview=(()=>{const v=LS.get("tab","list");return["list","pie","chart"].includes(v)?v:"list"})(),listMode=LS.get("lm","stock")==="sector"?"sector":"stock",mode=LS.get("cu","usd")==="avg"?"avg":"usd",useNet=LS.get("net","0")==="1",NET=0,items=[],cur="KRW",openKey=null,src="저장된 데이터";
 let pieSort="sector";
+let collapsed=new Set((()=>{try{return JSON.parse(LS.get("sc","[]"))}catch(e){return[]}})());
 let chartRows=[],chartInst=null,compInst=null,pieInst=null;
 
 function parseCSV(t){const o=[];let r=[],f="",q=false;for(let i=0;i<t.length;i++){const c=t[i];
@@ -453,7 +465,7 @@ function drawPieChart(){
    datasets:[{
     data:list.map(x=>x.v.KRW),
     backgroundColor:list.map(x=>x.pieColor),
-    borderColor:dark?"#1c1c1e":"#ffffff",
+    borderColor:dark?"#101012":"#f2f4f6",
     borderWidth:2,
     hoverOffset:6
    }]
@@ -485,7 +497,7 @@ function drawPieChart(){
  });
 }
 
-function syncL(){$("lview").classList.toggle("b",lview==="chart");[...$("lview").querySelectorAll("button")].forEach(x=>x.classList.toggle("on",x.dataset.l===lview))}
+function syncL(){const l=$("lview");l.classList.toggle("p1",lview==="pie");l.classList.toggle("p2",lview==="chart");[...l.querySelectorAll("button")].forEach(x=>x.classList.toggle("on",x.dataset.l===lview))}
 function syncNet(){$("swl").classList.toggle("on",useNet);$("netBtn").classList.toggle("on",useNet);$("netBtn").setAttribute("aria-pressed",useNet)}
 function setMode(m){mode=m;$("mode").classList.toggle("b",m==="usd");[...$("mode").querySelectorAll("button")].forEach(x=>x.classList.toggle("on",x.dataset.m===m))}
 function render(){
@@ -496,54 +508,69 @@ function render(){
  $("pl").className="pl "+cls(tp);
  $("pl").textContent=sign(tp)+money(Math.abs(tp))+" ("+pct(base?tp/base*100:0)+")";
  const secs=[...new Set(items.map(x=>x.sector))];
- $("list").innerHTML=secs.map((s,i)=>{
-  const g=items.filter(x=>x.sector===s),sv=sum(g,"v");
-  return`<section class="sec"><div class="sh"><b><span style="color:${col(s,i)}">●</span> ${SN[s]||"섹터 "+s}</b><span>${money(sv)} · ${(sv/tv*100).toFixed(1)}%</span></div>`+
-  g.map(it=>{
+ const secSum=s=>sum(items.filter(x=>x.sector===s),"v");
+ const rowHTML=(it,s,i)=>{
+   const sv=secSum(s);
    const useU=mode==="usd"&&it.usd,m=useU?"USD":((cur==="USD"&&!it.usd)?"KRW":cur),f=m==="KRW"?won:dol;
    const p=it.v[m]-it.c[m],r=it.c[m]?p/it.c[m]*100:0,k=it.ticker,o=openKey===k;
    const ab=/^[A-Za-z]/.test(it.ticker)?it.ticker.slice(0,2):it.name.slice(0,1);
    const pu=(it.price-it.cost)*it.qty,ru=it.cost?(it.price/it.cost-1)*100:0;
    const ex=(it.usd&&useU)?`<div><span>평균매입환율</span><b>${it.avg.toLocaleString("ko-KR",{maximumFractionDigits:2})}원</b></div>`:it.usd?`<div><span>환율 미적용 손익</span><b class="${cls(pu)}">${sign(pu)}${dol(Math.abs(pu))}</b></div><div><span>환율 미적용 수익률</span><b class="${cls(ru)}">${pct(ru)}</b></div><div><span>평균매입환율</span><b>${it.avg.toLocaleString("ko-KR",{maximumFractionDigits:2})}원</b></div>`:"";
-   return`<div class="row"><button class="rw" data-k="${k}"><div class="av" style="background:${col(s,i)}">${ab}${/^(https?:\/\/|data:image)/i.test(it.logo)?`<img src="${it.logo.replace(/"/g,"&quot;")}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`:""}</div>
+   return`<div class="row"><button class="rw" data-k="${k}" aria-expanded="${o}"><div class="av" style="background:${col(s,i)}">${ab}${/^(https?:\/\/|data:image)/i.test(it.logo)?`<img src="${it.logo.replace(/"/g,"&quot;")}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`:""}</div>
    <div class="nm"><b>${it.name}</b><small>${it.ticker} · ${it.qty.toLocaleString("ko-KR")}주</small></div>
    <div class="vl"><b>${f(it.v[m])}</b><small class="${cls(p)}">${pct(r)}</small></div></button>
    <div class="dt" ${o?"":"hidden"}>
     <div><span>현재가</span><b>${native(it,it.price)}</b></div><div><span>매수단가</span><b>${native(it,it.cost)}</b></div>
     <div><span>평가손익</span><b class="${cls(p)}">${sign(p)}${f(Math.abs(p))}</b></div><div><span>섹터 내 비중</span><b>${(it.v[cur]/sv*100).toFixed(1)}%</b></div>${ex}
-   </div></div>`}).join("")+`</section>`}).join("");
-
- if(lview==="chart")$("list").innerHTML=`<section class="sec sum">`+secs.map((s,i)=>{const sv=sum(items.filter(x=>x.sector===s),"v"),w=sv/tv*100;return`<div class="sm"><div class="sm-t"><b><span style="color:${col(s,i)}">●</span> ${SN[s]||"섹터 "+s}</b><span>${money(sv)}</span></div><div class="sm-b"><div class="sm-bar"><span style="width:${w}%;background:${col(s,i)}"></span></div><em>${w.toFixed(1)}%</em></div></div>`}).join("")+`</section>`;
- $("lt").hidden=view!=="list";
+   </div></div>`;
+ };
+ let listHTML="";
+const modeSel=`<select id="listMode" class="sel" aria-label="보기 방식"><option value="stock" ${listMode==="stock"?"selected":""}>리스트</option><option value="sector" ${listMode==="sector"?"selected":""}>섹터별</option></select>`;
+ if(lview==="list"){
+  if(listMode==="sector"){
+   listHTML=`<div class="fh-wrap"><div class="fh"><span>전체 ${items.length}개</span>${modeSel}</div></div>`+
+   secs.map((s,i)=>{const sv=secSum(s);
+    const cl=collapsed.has(s);
+    return`<section class="sec scard${cl?" cl":""}"><button class="sh" data-sec="${s}" aria-expanded="${!cl}"><b><span style="color:${col(s,i)}">●</span> ${SN[s]||"섹터 "+s}</b><span>${money(sv)} · ${(sv/tv*100).toFixed(1)}%<svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></button>`+
+    items.filter(x=>x.sector===s).map(it=>rowHTML(it,s,i)).join("")+`</section>`}).join("");
+  }else{
+   const arr=items.slice();
+   /* 정렬 기능 제거: 시트 순서(섹터순) 그대로 */
+   listHTML=`<div class="flat"><div class="fh"><span>전체 ${arr.length}개</span>${modeSel}</div>`+
+    arr.map(it=>rowHTML(it,it.sector,secs.indexOf(it.sector))).join("")+`</div>`;
+  }
+ }else if(lview==="pie"){
+  const pieList=getPieItems();
+  const pieTotal=pieList.reduce((s,x)=>s+x.v.KRW,0);
+  const pieLegendHTML=pieList.map(it=>{
+   const ratio=pieTotal?(it.v.KRW/pieTotal*100).toFixed(1):"0.0";
+   return`<div class="pli"><div class="pli-l"><span class="pli-dot" style="background:${it.pieColor}"></span><span class="pli-nm">${it.name}</span></div><div class="pli-r"><span class="pli-v">${won(it.v.KRW)}</span><span class="pli-p">${ratio}%</span></div></div>`;
+  }).join("");
+  listHTML=`<div class="pw"><div class="fh"><b>종목별 자산 비중</b><select id="pieSort" class="sel" aria-label="정렬 기준"><option value="sector" ${pieSort==="sector"?"selected":""}>섹터순</option><option value="high" ${pieSort==="high"?"selected":""}>비중순</option></select></div>`+
+   (pieList.length?`<div class="cbox pie"><canvas id="pieChart"></canvas></div><div class="pleg">${pieLegendHTML}</div>`:`<div class="ph">종목 데이터를 불러오는 중이에요</div>`)+`</div>`;
+ }
+ $("list").innerHTML=listHTML;
  const hasTotal=chartRows.some(d=>d.y!==null);
  const hasComp=chartRows.some(d=>d.f!==null||d.g!==null||d.i!==null||d.k!==null||d.m!==null);
- const pieList=getPieItems();
- const pieTotal=pieList.reduce((s,x)=>s+x.v.KRW,0);
- const pieLegendHTML=pieList.map(it=>{
-  const ratio=pieTotal?(it.v.KRW/pieTotal*100).toFixed(1):"0.0";
-  return`<div class="pli"><div class="pli-l"><span class="pli-dot" style="background:${it.pieColor}"></span><span class="pli-nm">${it.name}</span></div><div class="pli-r"><span class="pli-v">${won(it.v.KRW)}</span><span class="pli-p">${ratio}%</span></div></div>`;
- }).join("");
-
  $("charts").innerHTML=
   `<section class="sec"><div class="sh"><b>총 평가금액 추이</b></div>`+
-  (hasTotal?`<div class="cbox"><canvas id="totalChart"></canvas></div>`:`<div class="ph">추이 데이터를 불러오는 중이에요</div>`)+`</section>`+
-  `<section class="sec"><div class="sh"><b>총 평가금액 vs 미국지수(환노출)</b></div>`+
-  (hasComp?`<div class="cbox tall"><canvas id="compChart"></canvas></div>`:`<div class="ph">추이 데이터를 불러오는 중이에요</div>`)+`</section>`+
-  `<section class="sec"><div class="sh"><b>종목별 자산 비중</b><select id="pieSort" class="sel" aria-label="정렬 기준"><option value="sector" ${pieSort==="sector"?"selected":""}>섹터순</option><option value="high" ${pieSort==="high"?"selected":""}>비중순</option></select></div>`+
-  (pieList.length?`<div class="cbox pie"><canvas id="pieChart"></canvas></div><div class="pleg">${pieLegendHTML}</div>`:`<div class="ph">종목 데이터를 불러오는 중이에요</div>`)+`</section>`;
-
- $("list").hidden=view!=="list";$("charts").hidden=view!=="chart";$("note").hidden=view==="chart";
+  (hasTotal?`<div class="cbox"><canvas id="totalChart"></canvas></div>`:`<div class="ph">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`)+`</section>`+
+  `<section class="sec"><div class="sh"><b>총 평가금액 vs 미국지수 (환노출)</b></div>`+
+  (hasComp?`<div class="cbox tall"><canvas id="compChart"></canvas></div>`:`<div class="ph">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`)+`</section>`;
+ $("list").hidden=lview==="chart";$("charts").hidden=lview!=="chart";$("note").hidden=lview!=="list";
  $("note").textContent=mode==="usd"?"달러 종목은 환율을 적용하지 않은 달러 금액이에요.\n수익률에는 환차익이 포함되지 않아요":"달러 종목은 시트의 기준환율로 원화 환산했어요.\n수익률에는 환차익이 포함돼요"+(useNet?"\n투자수익은 순입금액 "+won(NET)+" 대비 값이에요":"");
  $("upd").textContent=src;
  if(items[0])$("fx").textContent="$1 = "+items[0].fx.toLocaleString("ko-KR",{maximumFractionDigits:2})+"원";
- if(view==="chart"){drawTotalChart();drawCompChart();drawPieChart();}
+ if(lview==="chart"){drawTotalChart();drawCompChart()}
+ if(lview==="pie")drawPieChart();
+ else if(pieInst){pieInst.destroy();pieInst=null}
 }
 
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.id);toast.id=setTimeout(()=>t.classList.remove("show"),2200)}
 const clock=()=>new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});
 
-async function fetchText(url,sig){
- const res=await fetch(url+"&_="+Date.now(),{signal:sig});
+async function fetchText(url){
+ const res=await fetch(url+"&_="+Date.now());
  if(!res.ok)throw new Error("HTTP "+res.status);
  const text=await res.text();
  if(text.trim().startsWith("<"))throw new Error("CSV가 아닌 응답");
@@ -552,12 +579,10 @@ async function fetchText(url,sig){
 
 async function load(manual){
  let why="",ok=false;
- const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),12000);
+ let tm;
+ const timeout=new Promise((_,rej)=>{tm=setTimeout(()=>{const er=new Error("timeout");er.name="AbortError";rej(er)},12000)});
  try{
-  const [mainRes,chartRes]=await Promise.allSettled([
-   fetchText(CSV_URL,ctl.signal),
-   fetchText(CHART_CSV_URL,ctl.signal)
-  ]);
+  const [mainRes,chartRes]=await Promise.race([Promise.allSettled([fetchText(CSV_URL),fetchText(CHART_CSV_URL)]),timeout]);
   if(chartRes.status==="fulfilled"){
    const parsedChart=buildChart(chartRes.value);
    if(parsedChart.length)chartRows=parsedChart;
@@ -566,31 +591,37 @@ async function load(manual){
   if(!mainRes.value.includes("종목명")){why="CSV가 아닌 응답";throw 0}
   const next=build(mainRes.value);
   if(!next.length){why="데이터 없음";throw 0}
-  items=next;src="구글시트 · "+clock()+" 업데이트";render();ok=true;
+  items=next;src="구글시트 · "+clock()+" 기준";render();ok=true;
   if(manual)toast("최신 데이터로 바꿨어요");
  }catch(e){
-  if(!why)why=e&&e.name==="AbortError"?"시간 초과":"네트워크 또는 보안 차단";
-  src=src.replace(/ \(갱신 실패.*$/,"")+" (갱신 실패: "+why+")";
+  if(!why)why=e&&e.name==="AbortError"?"시간 초과":"네트워크";
+  if(/fetch|network|load failed|cloned/i.test(why))why="네트워크";
+  if(why==="CSV가 아닌 응답")why="응답 오류";
+  src=src.replace(/ · 갱신 실패.*$/,"")+" · 갱신 실패("+why+")";
   $("upd").textContent=src;
   if(chartRows.length)render();
   if(manual)toast("불러오지 못했어요 · "+why);
- }finally{clearTimeout(tm);if(ok)$("introMsg").parentNode.style.visibility="hidden";else{$("introMsg").textContent="저장된 데이터로 시작해요";$("dots").style.display="none"}loaded=true;tryClose()}
+ }finally{clearTimeout(tm);if(ok)$("introMsg").parentNode.style.visibility="hidden";else{$("introMsg").textContent="저장된 데이터로 시작해요";$("dots").style.display="none"}loaded=true;tryClose();if(lview==="chart")render()}
 }
 
 $("mode").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.m===mode)return;
  setMode(b.dataset.m);LS.set("cu",mode);render()};
-$("lview").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.l===lview)return;lview=b.dataset.l;try{localStorage.setItem("lv",lview)}catch(err){}syncL();render()};
+$("lview").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.l===lview)return;lview=b.dataset.l;LS.set("tab",lview);syncL();render();scrollTo(0,0)};
 $("infoBtn").onclick=()=>{$("modalAmt").textContent=NET?won(NET):"-";$("modal").hidden=false};
 $("modalOk").onclick=()=>{$("modal").hidden=true};
 $("modal").onclick=e=>{if(e.target===$("modal"))$("modal").hidden=true};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("modal").hidden=true});
 $("netBtn").onclick=()=>{if(!useNet&&!NET){toast("시트에서 순입금액(O열 첫 행) 값을 찾지 못했어요");return}useNet=!useNet;LS.set("net",useNet?"1":"0");syncNet();render()};
-$("view").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.v===view)return;
- view=b.dataset.v;$("view").classList.toggle("b",view==="chart");
- [...$("view").querySelectorAll("button")].forEach(x=>x.classList.toggle("on",x===b));render();scrollTo(0,0)};
-$("list").onclick=e=>{const b=e.target.closest(".rw");if(!b)return;
+$("list").onclick=e=>{
+ const sh=e.target.closest("button.sh[data-sec]");
+ if(sh){const k=sh.dataset.sec,card=sh.parentElement;
+  if(collapsed.has(k))collapsed.delete(k);else collapsed.add(k);
+  card.classList.toggle("cl",collapsed.has(k));sh.setAttribute("aria-expanded",!collapsed.has(k));
+  LS.set("sc",JSON.stringify([...collapsed]));return}
+ const b=e.target.closest(".rw");if(!b)return;
  const k=b.dataset.k;openKey=openKey===k?null:k;render()};
-$("charts").onchange=e=>{if(e.target&&e.target.id==="pieSort"){pieSort=e.target.value;render()}};
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{if(view==="chart"){drawTotalChart();drawCompChart();drawPieChart();}});
+$("list").onchange=e=>{const id=e.target&&e.target.id;if(id==="pieSort"){pieSort=e.target.value;render()}else if(id==="listMode"){listMode=e.target.value==="sector"?"sector":"stock";LS.set("lm",listMode);render()}};
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>render());
 
 let introMin=false,loaded=false;
 function closeIntro(){$("intro").classList.add("out")}
