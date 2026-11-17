@@ -34,7 +34,13 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .seg.b i{transform:translateX(100%)}
 .seg button{position:relative;z-index:1;padding:5px 10px;font-size:12px;font-weight:600;color:var(--t3);min-width:58px}
 .seg button.on{color:var(--t1)}
-.tr{display:flex;align-items:center;justify-content:space-between;gap:10px}.fhr{display:flex;align-items:center;gap:8px;min-width:0}.fhr .fxr{white-space:nowrap}.fhr .cu{height:28px}.cu button{min-width:32px;padding:0;height:24px;line-height:24px}.sel{height:28px;padding-top:0;padding-bottom:0}
+.tr{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pwin{width:100%;font-size:24px;letter-spacing:.5em;text-align:center;padding:12px 0 12px .5em;border:1.5px solid var(--seg);border-radius:12px;background:var(--bg);color:var(--t1);outline:none}
+.pwin:focus{border-color:var(--blue)}
+.pwerr{min-height:18px;margin:8px 0 14px;font-size:13px;color:var(--up);text-align:center}
+.pwb{display:flex;gap:8px}.pwb button{flex:1;padding:13px 0;border-radius:12px;font-weight:700;font-size:15px}.pwb .no{background:var(--seg);color:var(--t2)}.pwb .go{background:var(--blue);color:#fff}
+.shake{animation:shk .3s}@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.fhr{display:flex;align-items:center;gap:8px;min-width:0}.fhr .fxr{white-space:nowrap}.fhr .cu{height:28px}.cu button{min-width:32px;padding:0;height:24px;line-height:24px}.sel{height:28px;padding-top:0;padding-bottom:0}
 .lt{padding:4px 16px 0}
 .lv{display:inline-flex}.lv i{width:calc((100% - 4px)/3)}.lv.p1 i{transform:translateX(100%)}.lv.p2 i{transform:translateX(200%)}
 .lv button{min-width:44px;padding:7px 0;display:grid;place-items:center}
@@ -44,7 +50,7 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .pw{padding:0 16px}.pw .cbox.pie{margin:10px 0 6px}.pw .pleg{padding:6px 4px 10px}
 .sum{padding:6px 0}.sm{padding:14px 20px}.sm-t{display:flex;justify-content:space-between;align-items:baseline;font-size:15px}.sm-t b,.sm-t>span{font-weight:600}.sm-b{display:flex;align-items:center;gap:10px;margin-top:8px}.sm-bar{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}.sm-bar span{display:block;height:100%;border-radius:4px}.sm-b em{font-style:normal;font-size:13px;font-weight:700;min-width:44px;text-align:right}
 .swr{display:flex;align-items:center;gap:4px;flex:none}.swr .sw{padding:0}.swl{font-size:12px;font-weight:600;color:var(--t3);margin-right:4px}.inf{position:relative;display:grid;place-items:center;width:13px;height:13px;border:1.3px solid var(--t3);border-radius:50%;color:var(--t3);font-size:9px;font-weight:800;line-height:1;padding:0}.inf::before{content:"";position:absolute;inset:-9px}
-#modal{position:fixed;inset:0;z-index:15;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:24px}#modal[hidden]{display:none}.mb{background:var(--card);border-radius:20px;padding:24px 20px 16px;width:100%;max-width:320px}.mb h3{margin:0 0 14px;font-size:17px}.mb .amt{font-size:22px;font-weight:800;margin-bottom:8px}.mb p.lead{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:18px}.mb .sub2{border-top:1px solid var(--seg);padding-top:16px;font-size:13px;color:var(--t3);margin-bottom:4px}.mb p{word-break:keep-all;margin:0 0 18px;font-size:14px;line-height:1.55;color:var(--t2)}.mb .ok{width:100%;padding:13px 0;border-radius:12px;background:var(--blue);color:#fff;font-weight:700;font-size:15px}
+#modal,#pwModal{position:fixed;inset:0;z-index:15;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:24px}#modal[hidden],#pwModal[hidden]{display:none}.mb{background:var(--card);border-radius:20px;padding:24px 20px 16px;width:100%;max-width:320px}.mb h3{margin:0 0 14px;font-size:17px}.mb .amt{font-size:22px;font-weight:800;margin-bottom:8px}.mb p.lead{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:18px}.mb .sub2{border-top:1px solid var(--seg);padding-top:16px;font-size:13px;color:var(--t3);margin-bottom:4px}.mb p{word-break:keep-all;margin:0 0 18px;font-size:14px;line-height:1.55;color:var(--t2)}.mb .ok{width:100%;padding:13px 0;border-radius:12px;background:var(--blue);color:#fff;font-weight:700;font-size:15px}
 .sw{display:inline-flex;align-items:center;gap:8px;flex:none;font-size:12px;font-weight:600;color:var(--t3)}.sw b{position:relative;width:34px;height:20px;border-radius:10px;background:var(--seg);transition:background .2s;flex:none}.sw b::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}.sw.on{color:var(--t1)}.sw.on b{background:var(--blue)}.sw.on b::after{transform:translateX(14px)}
 .vw button{display:grid;place-items:center;min-width:44px;padding:7px 0}
 .vw svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
@@ -123,7 +129,7 @@ button.sh{width:100%;text-align:left;cursor:pointer;border-radius:20px 20px 0 0}
   </header>
   <section class="hero">
     <div class="lb"><span>총 평가금액</span></div>
-    <div class="total" id="total">-</div>
+    <div class="tr"><div class="total" id="total">-</div><div class="swr"><span class="swl" id="hideLbl">금액숨김</span><button class="sw" id="eyeBtn" aria-pressed="false" aria-label="금액 숨김 전환"><b></b></button></div></div>
     <div class="plr"><div class="pl" id="pl"></div><div class="swr"><button class="inf" id="infoBtn" aria-label="투자수익 설명">!</button><span class="swl" id="swl">투자수익</span><button class="sw" id="netBtn" aria-pressed="false" aria-label="투자수익 기준 전환"><b></b></button></div></div>
   </section>
 
@@ -135,6 +141,7 @@ button.sh{width:100%;text-align:left;cursor:pointer;border-radius:20px 20px 0 0}
 </div>
 <div id="toast"></div>
 <div id="modal" hidden><div class="mb" role="dialog" aria-modal="true"><h3>투자수익</h3><p class="lead">투자수익은 순입금액을 기준으로 상승한 금액을 의미해요. 종목을 사고팔아도 오차 없이 보이는 내 전체 성과예요.</p><div class="sub2">순입금액</div><div class="amt" id="modalAmt">-</div><p>이 금액은 삼성증권(해외, ISA), 신한증권(국내, ISA, 연금), KB증권(국내, 연금, 금현물) 계좌의 순입금액을 모두 합한 금액이에요.</p><button class="ok" id="modalOk">확인</button></div></div>
+<div id="pwModal" hidden><div class="mb" role="dialog" aria-modal="true" aria-labelledby="pwTitle"><h3 id="pwTitle">비밀번호 확인</h3><p>금액 숨김을 해제하려면 비밀번호를 입력해 주세요.</p><input class="pwin" id="pwIn" type="password" inputmode="numeric" autocomplete="off" maxlength="4" aria-label="비밀번호 4자리"><div class="pwerr" id="pwErr" role="alert"></div><div class="pwb"><button class="no" id="pwNo">취소</button><button class="go" id="pwGo">확인</button></div></div></div>
 
 <script>
 const CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTq_lLeMyEq0Lp57xFHAkZakHbHERiBrmgtgNiw70DS7wA2481vOB3P4Okfoxx-YJiVkebt1bQ5XzD8/pub?gid=1608565878&single=true&output=csv";
@@ -168,8 +175,8 @@ const SEC_SHADES={
 const col=(s,i)=>SC[s]||COLORS[i%COLORS.length];
 const SN={A:"나스닥100",B:"S&P500",C:"가치주",D:"소액 투자",E:"현금성 자산"};
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
-let lview=(()=>{const v=LS.get("tab","list");return["list","pie","chart"].includes(v)?v:"list"})(),listMode=LS.get("lm","stock")==="sector"?"sector":"stock",mode=LS.get("cu","usd")==="avg"?"avg":"usd",useNet=LS.get("net","0")==="1",NET=295615604,items=[],cur="KRW",openKey=null,src="저장된 데이터";
-let pieSort="sector";
+let lview=(()=>{const v=LS.get("tab","list");return["list","pie","chart"].includes(v)?v:"list"})(),listMode=LS.get("lm","stock")==="sector"?"sector":"stock",mode=LS.get("cu","usd")==="avg"?"avg":"usd",useNet=LS.get("net","0")==="1",showAmt=LS.get("amt","1")!=="0",NET=295615604,items=[],cur="KRW",openKey=null,src="저장된 데이터";
+let pieSort="sector",PW="";
 let collapsed=new Set((()=>{try{return JSON.parse(LS.get("sc","[]"))}catch(e){return[]}})());
 let chartRows=[],chartInst=null,compInst=null,pieInst=null;
 
@@ -215,9 +222,22 @@ function parseOtherNet(text){
  return 0;
 }
 
+function parseOtherPw(text){
+ const t=parseCSV(text,true);
+ let col=-1;
+ for(let r=0;r<3&&col<0;r++){const i=(t[r]||[]).findIndex(c=>String(c).includes("비밀번호"));if(i>=0)col=i}
+ if(col<0)col=4;
+ return String((t[3]||[])[col]||"").trim();
+}
+
 const won=v=>Math.round(v).toLocaleString("ko-KR")+"원";
 const dol=v=>"$"+v.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
-const money=v=>cur==="KRW"?won(v):dol(v);
+// 금액 숨김: 통화 표기(원, $)는 유지. 평가금액은 원화 기준 규모로 개수 결정(천만원 미만 2개, 천만원대 3개, 1억 이상 4개), 평가손익은 항상 2개
+const mkV=k=>"🤫".repeat(Math.abs(k)>=1e8?4:Math.abs(k)>=1e7?3:2);
+const mkP="🤫🤫";
+const swV=v=>showAmt?won(v):mkV(v)+"원";
+const money=v=>showAmt?(cur==="KRW"?won(v):dol(v)):(cur==="KRW"?mkV(v)+"원":"$"+mkV(v));
+const moneyP=v=>showAmt?money(v):(cur==="KRW"?mkP+"원":"$"+mkP);
 const sign=v=>v>0?"+":v<0?"-":"";
 const cls=v=>v>0?"up":v<0?"dn":"fl";
 const pct=v=>sign(v)+Math.abs(v).toFixed(2)+"%";
@@ -314,7 +334,7 @@ function drawTotalChart(){
      displayColors:false,
      callbacks:{
       title:items=>items[0]?items[0].label:"",
-      label:c=>won(c.parsed.y)
+      label:c=>swV(c.parsed.y)
      }
     }
    },
@@ -335,7 +355,7 @@ function drawTotalChart(){
      position:"right",
      border:{display:false},
      grid:{color:gridCol},
-     ticks:{color:tickCol,font:{size:11},maxTicksLimit:5,callback:v=>fmtAxis(v)}
+     ticks:{color:tickCol,font:{size:11},maxTicksLimit:5,callback:v=>showAmt?fmtAxis(v):""}
     }
    }
   }
@@ -498,7 +518,7 @@ function drawPieChart(){
       label:c=>{
        const val=c.parsed;
        const ratio=total?(val/total*100).toFixed(1):"0.0";
-       return" "+won(val)+" ("+ratio+"%)";
+       return" "+swV(val)+" ("+ratio+"%)";
       }
      }
     }
@@ -508,6 +528,7 @@ function drawPieChart(){
 }
 
 function syncL(){const l=$("lview");l.classList.toggle("p1",lview==="pie");l.classList.toggle("p2",lview==="chart");[...l.querySelectorAll("button")].forEach(x=>x.classList.toggle("on",x.dataset.l===lview))}
+function syncEye(){const e=$("eyeBtn");e.classList.toggle("on",!showAmt);e.setAttribute("aria-pressed",!showAmt);$("hideLbl").classList.toggle("on",!showAmt)}
 function syncNet(){$("swl").classList.toggle("on",useNet);$("netBtn").classList.toggle("on",useNet);$("netBtn").setAttribute("aria-pressed",useNet)}
 function setMode(m){mode=m}
 function render(){
@@ -516,22 +537,24 @@ function render(){
  const tv=sum(items,"v"),tc=sum(items,"c"),base=useNet?NET:tc,tp=tv-base;
  $("total").textContent=money(tv);
  $("pl").className="pl "+cls(tp);
- $("pl").textContent=sign(tp)+money(Math.abs(tp))+" ("+pct(base?tp/base*100:0)+")";
+ $("pl").textContent=sign(tp)+moneyP(Math.abs(tp))+" ("+pct(base?tp/base*100:0)+")";
  const secs=[...new Set(items.map(x=>x.sector))];
  const secSum=s=>sum(items.filter(x=>x.sector===s),"v");
  const rowHTML=(it,s,i)=>{
    const sv=secSum(s);
    const useU=mode==="usd"&&it.usd,m=useU?"USD":((cur==="USD"&&!it.usd)?"KRW":cur),f=m==="KRW"?won:dol;
    const p=it.v[m]-it.c[m],r=it.c[m]?p/it.c[m]*100:0,k=it.ticker,o=openKey===k;
+   const vTxt=showAmt?f(it.v[m]):(m==="KRW"?mkV(it.v.KRW)+"원":"$"+mkV(it.v.KRW));
+   const pTxt=showAmt?f(Math.abs(p)):(m==="KRW"?mkP+"원":"$"+mkP);
    const ab=/^[A-Za-z]/.test(it.ticker)?it.ticker.slice(0,2):it.name.slice(0,1);
    const pu=(it.price-it.cost)*it.qty,ru=it.cost?(it.price/it.cost-1)*100:0;
-   const ex=(it.usd&&useU)?`<div><span>평균매입환율</span><b>${it.avg.toLocaleString("ko-KR",{maximumFractionDigits:2})}원</b></div>`:it.usd?`<div><span>환율 미적용 손익</span><b class="${cls(pu)}">${sign(pu)}${dol(Math.abs(pu))}</b></div><div><span>환율 미적용 수익률</span><b class="${cls(ru)}">${pct(ru)}</b></div><div><span>평균매입환율</span><b>${it.avg.toLocaleString("ko-KR",{maximumFractionDigits:2})}원</b></div>`:"";
+   const ex=(it.usd&&useU)?`<div><span>평균매입환율</span><b>${it.avg.toLocaleString("ko-KR",{maximumFractionDigits:2})}원</b></div>`:it.usd?`<div><span>환율 미적용 손익</span><b class="${cls(pu)}">${sign(pu)}${showAmt?dol(Math.abs(pu)):"$"+mkP}</b></div><div><span>환율 미적용 수익률</span><b class="${cls(ru)}">${pct(ru)}</b></div><div><span>평균매입환율</span><b>${it.avg.toLocaleString("ko-KR",{maximumFractionDigits:2})}원</b></div>`:"";
    return`<div class="row"><button class="rw" data-k="${k}" aria-expanded="${o}"><div class="av" style="background:${col(s,i)}">${ab}${/^(https?:\/\/|data:image)/i.test(it.logo)?`<img src="${it.logo.replace(/"/g,"&quot;")}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`:""}</div>
    <div class="nm"><b>${it.name}</b><small>${it.ticker} · ${it.qty.toLocaleString("ko-KR")}주</small></div>
-   <div class="vl"><b>${f(it.v[m])}</b><small class="${cls(p)}">${pct(r)}</small></div></button>
+   <div class="vl"><b>${vTxt}</b><small class="${cls(p)}">${pct(r)}</small></div></button>
    <div class="dt" ${o?"":"hidden"}>
     <div><span>현재가</span><b>${native(it,it.price)}</b></div><div><span>매수단가</span><b>${native(it,it.cost)}</b></div>
-    <div><span>평가손익</span><b class="${cls(p)}">${sign(p)}${f(Math.abs(p))}</b></div><div><span>섹터 내 비중</span><b>${(it.v[cur]/sv*100).toFixed(1)}%</b></div>${ex}
+    <div><span>평가손익</span><b class="${cls(p)}">${sign(p)}${pTxt}</b></div><div><span>섹터 내 비중</span><b>${(it.v[cur]/sv*100).toFixed(1)}%</b></div>${ex}
    </div></div>`;
  };
  let listHTML="";
@@ -557,7 +580,7 @@ const modeSel=`<select id="listMode" class="sel" aria-label="보기 방식"><opt
   const pieTotal=pieList.reduce((s,x)=>s+x.v.KRW,0);
   const pieLegendHTML=pieList.map(it=>{
    const ratio=pieTotal?(it.v.KRW/pieTotal*100).toFixed(1):"0.0";
-   return`<div class="pli"><div class="pli-l"><span class="pli-dot" style="background:${it.pieColor}"></span><span class="pli-nm">${it.name}</span></div><div class="pli-r"><span class="pli-v">${won(it.v.KRW)}</span><span class="pli-p">${ratio}%</span></div></div>`;
+   return`<div class="pli"><div class="pli-l"><span class="pli-dot" style="background:${it.pieColor}"></span><span class="pli-nm">${it.name}</span></div><div class="pli-r"><span class="pli-v">${swV(it.v.KRW)}</span><span class="pli-p">${ratio}%</span></div></div>`;
   }).join("");
   listHTML=`<div class="pw"><div class="fh"><b>종목 비중</b><select id="pieSort" class="sel" aria-label="정렬 기준"><option value="sector" ${pieSort==="sector"?"selected":""}>섹터순</option><option value="high" ${pieSort==="high"?"selected":""}>비중순</option></select></div>`+
    (pieList.length?`<div class="cbox pie"><canvas id="pieChart"></canvas></div><div class="pleg">${pieLegendHTML}</div>`:`<div class="ph">종목 데이터를 불러오는 중이에요</div>`)+`</div>`;
@@ -571,7 +594,7 @@ const modeSel=`<select id="listMode" class="sel" aria-label="보기 방식"><opt
   `<section class="sec"><div class="sh"><b>총 평가금액 vs 미국지수 (환노출)</b></div>`+
   (hasComp?`<div class="cbox tall"><canvas id="compChart"></canvas></div>`:`<div class="ph">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`)+`</section>`;
  $("list").hidden=lview==="chart";$("charts").hidden=lview!=="chart";$("note").hidden=lview!=="list";
- $("note").textContent=mode==="usd"?"달러 종목은 환율을 적용하지 않은 달러 금액이에요.\n수익률에는 환차익이 포함되지 않아요":"달러 종목은 시트의 기준환율로 원화 환산했어요.\n수익률에는 환차익이 포함돼요"+(useNet?"\n투자수익은 순입금액 "+won(NET)+" 대비 값이에요":"");
+ $("note").textContent=mode==="usd"?"달러 종목은 환율을 적용하지 않은 달러 금액이에요.\n수익률에는 환차익이 포함되지 않아요":"달러 종목은 시트의 기준환율로 원화 환산했어요.\n수익률에는 환차익이 포함돼요"+(useNet?"\n투자수익은 순입금액 "+swV(NET)+" 대비 값이에요":"");
  $("upd").textContent=src;
  if(lview==="chart"){drawTotalChart();drawCompChart()}
  if(lview==="pie")drawPieChart();
@@ -599,7 +622,7 @@ async function load(manual){
    const parsedChart=buildChart(chartRes.value);
    if(parsedChart.length)chartRows=parsedChart;
   }
-  if(otherRes.status==="fulfilled"){const n=parseOtherNet(otherRes.value);if(n)NET=n}
+  if(otherRes.status==="fulfilled"){const n=parseOtherNet(otherRes.value);if(n)NET=n;const pw=parseOtherPw(otherRes.value);if(pw)PW=pw}
   if(mainRes.status!=="fulfilled"){why=mainRes.reason&&mainRes.reason.message||"불러오기 실패";throw 0}
   if(!mainRes.value.includes("종목명")){why="CSV가 아닌 응답";throw 0}
   const next=build(mainRes.value);
@@ -618,10 +641,23 @@ async function load(manual){
 }
 
 $("lview").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.l===lview)return;lview=b.dataset.l;LS.set("tab",lview);syncL();render();scrollTo(0,0)};
-$("infoBtn").onclick=()=>{$("modalAmt").textContent=NET?won(NET):"-";$("modal").hidden=false};
+$("infoBtn").onclick=()=>{$("modalAmt").textContent=NET?swV(NET):"-";$("modal").hidden=false};
 $("modalOk").onclick=()=>{$("modal").hidden=true};
 $("modal").onclick=e=>{if(e.target===$("modal"))$("modal").hidden=true};
-document.addEventListener("keydown",e=>{if(e.key==="Escape")$("modal").hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("modal").hidden=true;closePw()}});
+function openPw(){const i=$("pwIn");i.value="";$("pwErr").textContent=PW?"":"비밀번호를 불러오지 못했어요. 연결을 확인해 주세요";$("pwModal").hidden=false;setTimeout(()=>i.focus(),50)}
+function closePw(){$("pwModal").hidden=true;$("pwIn").blur()}
+function tryPw(){
+ const i=$("pwIn"),v=i.value;
+ if(!PW){$("pwErr").textContent="비밀번호를 불러오지 못했어요. 연결을 확인해 주세요";return}
+ if(v===PW){closePw();showAmt=true;LS.set("amt","1");syncEye();render();return}
+ $("pwErr").textContent="비밀번호가 맞지 않아요";i.value="";i.classList.remove("shake");void i.offsetWidth;i.classList.add("shake");i.focus();
+}
+$("eyeBtn").onclick=()=>{if(showAmt){showAmt=false;LS.set("amt","0");syncEye();render()}else openPw()};
+$("pwIn").oninput=e=>{if(PW)$("pwErr").textContent="";if(PW&&e.target.value.length>=PW.length)tryPw()};
+$("pwIn").onkeydown=e=>{if(e.key==="Enter")tryPw()};
+$("pwGo").onclick=tryPw;$("pwNo").onclick=closePw;
+$("pwModal").onclick=e=>{if(e.target===$("pwModal"))closePw()};
 $("netBtn").onclick=()=>{if(!useNet&&!NET){toast("기타데이터 시트에서 순입금액을 찾지 못했어요");return}useNet=!useNet;LS.set("net",useNet?"1":"0");syncNet();render()};
 $("list").onclick=e=>{
  const mb=e.target.closest("#mode button");
@@ -661,7 +697,7 @@ function hideTips(except){
 document.addEventListener("pointerdown",e=>hideTips(e.target.closest&&e.target.closest("canvas")));
 window.addEventListener("scroll",()=>hideTips(null),{passive:true});
 
-setMode(mode);syncNet();syncL();items=build(SNAPSHOT);render();load(false);
+setMode(mode);syncNet();syncL();syncEye();items=build(SNAPSHOT);render();load(false);
 </script>
 </body>
 </html>
