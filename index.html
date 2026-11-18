@@ -44,6 +44,28 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .sl{animation:sli .22s ease-out}.sr{animation:sri .22s ease-out}
 @keyframes sli{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
 @keyframes sri{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+.rf{width:36px;height:36px;border-radius:50%;background:var(--seg);color:var(--t2);display:grid;place-items:center;flex:none}.rf svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.rf.spin svg{animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+#pager{overflow:hidden;width:100%;touch-action:pan-y}
+#track{display:flex;width:100%;transition:transform .3s cubic-bezier(.2,.8,.2,1);will-change:transform}
+#track.drag{transition:none}
+.pane{flex:0 0 100%;min-width:0;height:0;overflow:hidden}
+.pane.on,.pane.near{height:auto;overflow:visible}
+.cbox.short{height:105px}
+.ov .big{padding:2px 20px 12px;display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px}
+.ov .big .lbl{width:100%;font-size:12px;color:var(--t3)}
+.ov .big b{font-size:26px;font-weight:800;line-height:1.2}
+.pill{display:inline-block;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:700;background:var(--line);color:var(--t3);white-space:nowrap}
+.pill.up{background:rgba(240,68,82,.12);color:var(--up)}.pill.dn{background:rgba(49,130,246,.12);color:var(--down)}
+.ov .rows{border-top:1px solid var(--line);margin:0 20px;padding:4px 0 2px}
+.crow{display:flex;align-items:center;gap:10px;padding:9px 0;font-size:14px}
+.crow .nm2{flex:1;min-width:0;display:flex;align-items:center;gap:8px;font-weight:600}
+.crow .amt{font-size:13px;font-weight:600}
+.dot2{width:10px;height:10px;border-radius:50%;flex:none}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px 16px 10px}
+.tile{background:var(--line);border-radius:14px;padding:12px 14px;min-width:0}
+.tile span{display:block;font-size:12px;color:var(--t3);margin-bottom:4px}
+.tile b{display:block;font-size:17px;font-weight:700;word-break:keep-all}
+.tile em{display:block;font-style:normal;font-size:13px;font-weight:600;margin-top:2px}
 .fhr{display:flex;align-items:center;gap:8px;min-width:0}.fhr .fxr{white-space:nowrap}.fhr .cu{height:28px}.cu button{min-width:32px;padding:0;height:24px;line-height:24px}.sel{height:28px;padding-top:0;padding-bottom:0}
 .lt{padding:4px 16px 0}
 .lv{display:inline-grid;grid-template-columns:repeat(3,1fr)}.lv i{width:calc((100% - 4px)/3)}.lv.p1 i{transform:translateX(100%)}.lv.p2 i{transform:translateX(200%)}
@@ -130,6 +152,7 @@ button.sh{width:100%;text-align:left;cursor:pointer;border-radius:20px 20px 0 0}
   <div class="top">
   <header>
     <div><h1>우리집 주식</h1><div class="sub" id="upd">불러오는 중</div></div>
+    <button class="rf" id="rfBtn" aria-label="새로고침"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg></button>
   </header>
   <section class="hero">
     <div class="lb"><span>총 평가금액</span></div>
@@ -139,8 +162,7 @@ button.sh{width:100%;text-align:left;cursor:pointer;border-radius:20px 20px 0 0}
 
   </div>
   <div class="lt" id="lt"><div class="seg lv" id="lview"><i></i><button data-l="list" aria-label="목록" class="on"><svg viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><span>목록</span></button><button data-l="pie" aria-label="비중"><svg viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg><span>비중</span></button><button data-l="chart" aria-label="분석"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg><span>분석</span></button></div></div>
-  <main id="list"></main>
-  <main id="charts" hidden></main>
+  <div id="pager"><div id="track"><main id="list" class="pane"></main><main id="pie" class="pane"></main><main id="charts" class="pane"></main></div></div>
   <div class="note" id="note"></div>
 </div>
 <div id="toast"></div>
@@ -170,17 +192,19 @@ const $=id=>document.getElementById(id);
 const COLORS=["#3182f6","#6b5cf6","#13b5a3","#f59f00","#f04452","#4e5968"];
 const SC={A:"#f04452",B:"#f8939b",C:"#2f4a9e",D:"#f59f00",E:"#12b886"};
 const SEC_SHADES={
- A:["#9f1239","#dc2626","#f04452","#fb7185"],
- B:["#ec4899","#f472b6","#f9a8d4","#fbcfe8"],
- C:["#1e3a8a","#2563eb","#3b82f6","#60a5fa"],
- D:["#d97706","#f59e0b","#fbbf24","#fcd34d"],
- E:["#059669","#10b981","#34d399","#6ee7b7"]
+ A:["#9f1239","#dc2626","#f04452","#fb7185","#7f1d1d","#fca5a5"],
+ B:["#ec4899","#f472b6","#f9a8d4","#fbcfe8","#be185d","#9d174d"],
+ C:["#1e3a8a","#2563eb","#3b82f6","#60a5fa","#172554","#93c5fd"],
+ D:["#d97706","#f59e0b","#fbbf24","#fcd34d","#b45309","#fde68a"],
+ E:["#059669","#10b981","#34d399","#6ee7b7","#047857","#a7f3d0"]
 };
 const col=(s,i)=>SC[s]||COLORS[i%COLORS.length];
+let SECORD={};
+const secOrd=s=>SECORD[s]!==undefined?SECORD[s]:999;
 const SN={A:"나스닥100",B:"S&P500",C:"가치주",D:"소액 투자",E:"현금성 자산"};
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 let lview=(()=>{const v=LS.get("tab","list");return["list","pie","chart"].includes(v)?v:"list"})(),listMode=LS.get("lm","stock")==="sector"?"sector":"stock",mode=LS.get("cu","usd")==="avg"?"avg":"usd",useNet=LS.get("net","0")==="1",showAmt=LS.get("amt","1")!=="0",NET=295615604,items=[],cur="KRW",openKey=null,src="저장된 데이터";
-let pieSort="sector",PW="";
+let pieSort="sector",PW="",OTHER=null;
 let collapsed=new Set((()=>{try{return JSON.parse(LS.get("sc","[]"))}catch(e){return[]}})());
 let chartRows=[],chartInst=null,compInst=null,pieInst=null;
 
@@ -232,6 +256,38 @@ function parseOtherPw(text){
  for(let r=0;r<3&&col<0;r++){const i=(t[r]||[]).findIndex(c=>String(c).includes("비밀번호"));if(i>=0)col=i}
  if(col<0)col=4;
  return String((t[3]||[])[col]||"").trim();
+}
+
+// 기타데이터 시트 4행부터: A~C 섹터별 변동, F~H 섹터구분코드(코드/이름/정렬), I~J 주요지표(이름/값), K~L 총 평가금액 변동(값/퍼센티지)
+function parseOtherInfo(text){
+ const t=parseCSV(text,true),rows=t.slice(3);
+ const c=(r,i)=>String((r&&r[i])||"").trim();
+ rows.forEach(r=>{const code=c(r,5),nm=c(r,6),od=optNum(c(r,7));if(code&&nm){SN[code]=nm;if(od!==null)SECORD[code]=od}});
+ const sectors=[];let total=null;
+ rows.forEach(r=>{
+  const l=c(r,0);if(!l)return;
+  const v=optNum(c(r,1)),p=optNum(c(r,2));
+  if(/총\s*평가금액/.test(l)){total={v,p};return}
+  if(/환율/.test(l))return;
+  const us=/^A\s*\+\s*B$/i.test(l)||l.includes("미국지수");
+  sectors.push({key:us?"A+B":l,name:us?"미국지수":(SN[l]||l),v,p});
+ });
+ const raw=[];
+ rows.forEach(r=>{const l=c(r,8);if(!l)return;const v=optNum(c(r,9));if(v!==null)raw.push({label:l,v})});
+ const ind=[];
+ raw.forEach(x=>{if(!/변동$/.test(x.label))ind.push({label:x.label,v:x.v,chg:null})});
+ raw.forEach(x=>{
+  if(!/변동$/.test(x.label))return;
+  const base=x.label.replace(/변동$/,"").trim(),m=ind.find(y=>y.label.startsWith(base)||base.startsWith(y.label));
+  if(m&&m.chg===null)m.chg=x.v;else ind.push({label:x.label,v:x.v,chg:null,solo:true});
+ });
+ for(const r of rows){
+  const a=c(r,10),b=c(r,11);if(!a&&!b)continue;
+  let v=null,p=null;
+  for(const x of [a,b]){if(!x)continue;if(x.includes("%")){if(p===null)p=optNum(x)}else if(v===null&&/\d/.test(x))v=optNum(x)}
+  if(v!==null||p!==null){total={v,p};break}
+ }
+ return{sectors,ind,total};
 }
 
 const won=v=>Math.round(v).toLocaleString("ko-KR")+"원";
@@ -296,7 +352,7 @@ function drawTotalChart(){
  const tickCol="#8b95a1";
  const gridCol=dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.05)";
  const ctx=cv.getContext("2d");
- const grad=ctx.createLinearGradient(0,0,0,210);
+ const grad=ctx.createLinearGradient(0,0,0,105);
  grad.addColorStop(0,"rgba(49,130,246,0.22)");
  grad.addColorStop(1,"rgba(49,130,246,0.0)");
  const pts=rows.length;
@@ -359,7 +415,7 @@ function drawTotalChart(){
      position:"right",
      border:{display:false},
      grid:{color:gridCol},
-     ticks:{color:tickCol,font:{size:11},maxTicksLimit:5,callback:v=>showAmt?fmtAxis(v):""}
+     ticks:{color:tickCol,font:{size:11},maxTicksLimit:3,callback:v=>showAmt?fmtAxis(v):""}
     }
    }
   }
@@ -481,6 +537,7 @@ function getPieItems(){
   return{...it,pieColor};
  });
  if(pieSort==="high")list.sort((a,b)=>b.v.KRW-a.v.KRW);
+ else list.sort((a,b)=>secOrd(a.sector)-secOrd(b.sector)||a.idx-b.idx);
  return list;
 }
 
@@ -534,6 +591,28 @@ function drawPieChart(){
 function syncL(){const l=$("lview");l.classList.toggle("p1",lview==="pie");l.classList.toggle("p2",lview==="chart");[...l.querySelectorAll("button")].forEach(x=>x.classList.toggle("on",x.dataset.l===lview))}
 function syncEye(){const e=$("eyeBtn");e.classList.toggle("on",!showAmt);e.setAttribute("aria-pressed",!showAmt);$("hideLbl").classList.toggle("on",!showAmt)}
 function syncNet(){$("swl").classList.toggle("on",useNet);$("netBtn").classList.toggle("on",useNet);$("netBtn").setAttribute("aria-pressed",useNet)}
+function esc(x){return String(x).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
+const chgAmt=v=>sign(v)+(showAmt?won(Math.abs(v)):mkP+"원");
+const fmtN=v=>v.toLocaleString("ko-KR",{maximumFractionDigits:2});
+function overviewHTML(){
+ const o=OTHER;if(!o)return"";
+ let h="";
+ if(o.total||o.sectors.length){
+  h+=`<section class="sec ov"><div class="sh"><b>어제 대비 오늘</b></div>`;
+  if(o.total){const t=o.total;
+   h+=`<div class="big"><span class="lbl">총 평가금액</span>${t.v!==null?`<b class="${cls(t.v)}">${chgAmt(t.v)}</b>`:""}${t.p!==null?`<span class="pill ${cls(t.p)}">${pct(t.p)}</span>`:""}</div>`}
+  if(o.sectors.length)h+=`<div class="rows">`+o.sectors.map(x=>{
+   const dot=x.key==="A+B"?`linear-gradient(135deg,${SC.A} 50%,${SC.B} 50%)`:(SC[x.key]||"var(--t3)");
+   return`<div class="crow"><span class="nm2"><i class="dot2" style="background:${dot}"></i>${esc(x.name)}</span>${x.v!==null?`<span class="amt ${cls(x.v)}">${chgAmt(x.v)}</span>`:""}${x.p!==null?`<span class="pill ${cls(x.p)}">${pct(x.p)}</span>`:""}</div>`}).join("")+`</div>`;
+  h+=`</section>`;
+ }
+ if(o.ind.length)h+=`<section class="sec"><div class="sh"><b>주요 지표</b></div><div class="tiles">`+o.ind.map(x=>{
+  const unit=/환율/.test(x.label)&&!x.solo?"원":"";
+  const val=x.solo?`<b class="${cls(x.v)}">${sign(x.v)}${fmtN(Math.abs(x.v))}</b>`:`<b>${fmtN(x.v)}${unit}</b>`;
+  const sub=x.chg!==null?`<em class="${cls(x.chg)}">전일 대비 ${sign(x.chg)}${fmtN(Math.abs(x.chg))}</em>`:"";
+  return`<div class="tile"><span>${esc(x.label)}</span>${val}${sub}</div>`}).join("")+`</div></section>`;
+ return h;
+}
 function setMode(m){mode=m}
 function render(){
  if(useNet&&!NET){useNet=false;syncNet()}
@@ -542,7 +621,7 @@ function render(){
  $("total").textContent=money(tv);
  $("pl").className="pl "+cls(tp);
  $("pl").textContent=sign(tp)+moneyP(Math.abs(tp))+" ("+pct(base?tp/base*100:0)+")";
- const secs=[...new Set(items.map(x=>x.sector))];
+ const secs=[...new Set(items.map(x=>x.sector))].sort((a,b)=>secOrd(a)-secOrd(b));
  const secSum=s=>sum(items.filter(x=>x.sector===s),"v");
  const rowHTML=(it,s,i)=>{
    const sv=secSum(s);
@@ -566,7 +645,7 @@ const modeSel=`<select id="listMode" class="sel" aria-label="보기 방식"><opt
  const fxHTML=items[0]?`<span class="fxr">$1 = ${items[0].fx.toLocaleString("ko-KR",{maximumFractionDigits:2})}원</span>`:"";
  const curHTML=`<div class="seg cu${mode==="usd"?" b":""}" id="mode"><i></i><button data-m="avg" class="${mode==="avg"?"on":""}" aria-label="원화">₩</button><button data-m="usd" class="${mode==="usd"?"on":""}" aria-label="달러">$</button></div>`;
  const ctlHTML=`<div class="fhr">${fxHTML}${curHTML}${modeSel}</div>`;
- if(lview==="list"){
+ {
   if(listMode==="sector"){
    listHTML=`<div class="fh-wrap"><div class="fh"><span>전체 ${items.length}개</span>${ctlHTML}</div></div>`+
    secs.map((s,i)=>{const sv=secSum(s);
@@ -574,35 +653,34 @@ const modeSel=`<select id="listMode" class="sel" aria-label="보기 방식"><opt
     return`<section class="sec scard${cl?" cl":""}"><button class="sh" data-sec="${s}" aria-expanded="${!cl}"><b><span style="color:${col(s,i)}">●</span> ${SN[s]||"섹터 "+s}</b><span>${money(sv)} · ${(sv/tv*100).toFixed(1)}%<svg class="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></button>`+
     items.filter(x=>x.sector===s).map(it=>rowHTML(it,s,i)).join("")+`</section>`}).join("");
   }else{
-   const arr=items.slice();
-   /* 정렬 기능 제거: 시트 순서(섹터순) 그대로 */
+   const arr=items.slice().sort((a,b)=>secOrd(a.sector)-secOrd(b.sector)||a.idx-b.idx);
    listHTML=`<div class="flat"><div class="fh"><span>전체 ${arr.length}개</span>${ctlHTML}</div>`+
     arr.map(it=>rowHTML(it,it.sector,secs.indexOf(it.sector))).join("")+`</div>`;
   }
- }else if(lview==="pie"){
+ }
+ let pieHTML="";
+ {
   const pieList=getPieItems();
   const pieTotal=pieList.reduce((s,x)=>s+x.v.KRW,0);
   const pieLegendHTML=pieList.map(it=>{
    const ratio=pieTotal?(it.v.KRW/pieTotal*100).toFixed(1):"0.0";
    return`<div class="pli"><div class="pli-l"><span class="pli-dot" style="background:${it.pieColor}"></span><span class="pli-nm">${it.name}</span></div><div class="pli-r"><span class="pli-v">${swV(it.v.KRW)}</span><span class="pli-p">${ratio}%</span></div></div>`;
   }).join("");
-  listHTML=`<div class="pw"><div class="fh"><b>종목 비중</b><select id="pieSort" class="sel" aria-label="정렬 기준"><option value="sector" ${pieSort==="sector"?"selected":""}>섹터순</option><option value="high" ${pieSort==="high"?"selected":""}>비중순</option></select></div>`+
+  pieHTML=`<div class="pw"><div class="fh"><b>종목 비중</b><select id="pieSort" class="sel" aria-label="정렬 기준"><option value="sector" ${pieSort==="sector"?"selected":""}>섹터순</option><option value="high" ${pieSort==="high"?"selected":""}>비중순</option></select></div>`+
    (pieList.length?`<div class="cbox pie"><canvas id="pieChart"></canvas></div><div class="pleg">${pieLegendHTML}</div>`:`<div class="ph">종목 데이터를 불러오는 중이에요</div>`)+`</div>`;
  }
- $("list").innerHTML=listHTML;
+ $("list").innerHTML=listHTML;$("pie").innerHTML=pieHTML;
  const hasTotal=chartRows.some(d=>d.y!==null);
  const hasComp=chartRows.some(d=>d.f!==null||d.g!==null||d.i!==null||d.k!==null||d.m!==null);
- $("charts").innerHTML=
+ $("charts").innerHTML=overviewHTML()+
   `<section class="sec"><div class="sh"><b>총 평가금액 추이</b></div>`+
-  (hasTotal?`<div class="cbox"><canvas id="totalChart"></canvas></div>`:`<div class="ph">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`)+`</section>`+
+  (hasTotal?`<div class="cbox short"><canvas id="totalChart"></canvas></div>`:`<div class="ph">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`)+`</section>`+
   `<section class="sec"><div class="sh"><b>총 평가금액 vs 미국지수 (환노출)</b></div>`+
   (hasComp?`<div class="cbox tall"><canvas id="compChart"></canvas></div>`:`<div class="ph">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`)+`</section>`;
- $("list").hidden=lview==="chart";$("charts").hidden=lview!=="chart";$("note").hidden=lview!=="list";
+ $("note").hidden=lview!=="list";
  $("note").textContent=mode==="usd"?"달러 종목은 환율을 적용하지 않은 달러 금액이에요.\n수익률에는 환차익이 포함되지 않아요":"달러 종목은 시트의 기준환율로 원화 환산했어요.\n수익률에는 환차익이 포함돼요"+(useNet?"\n투자수익은 순입금액 "+swV(NET)+" 대비 값이에요":"");
  $("upd").textContent=src;
- if(lview==="chart"){drawTotalChart();drawCompChart()}
- if(lview==="pie")drawPieChart();
- else if(pieInst){pieInst.destroy();pieInst=null}
+ drawTotalChart();drawCompChart();drawPieChart();
 }
 
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.id);toast.id=setTimeout(()=>t.classList.remove("show"),2200)}
@@ -626,7 +704,7 @@ async function load(manual){
    const parsedChart=buildChart(chartRes.value);
    if(parsedChart.length)chartRows=parsedChart;
   }
-  if(otherRes.status==="fulfilled"){const n=parseOtherNet(otherRes.value);if(n)NET=n;const pw=parseOtherPw(otherRes.value);if(pw)PW=pw}
+  if(otherRes.status==="fulfilled"){const n=parseOtherNet(otherRes.value);if(n)NET=n;const pw=parseOtherPw(otherRes.value);if(pw)PW=pw;OTHER=parseOtherInfo(otherRes.value)}
   if(mainRes.status!=="fulfilled"){why=mainRes.reason&&mainRes.reason.message||"불러오기 실패";throw 0}
   if(!mainRes.value.includes("종목명")){why="CSV가 아닌 응답";throw 0}
   const next=build(mainRes.value);
@@ -645,28 +723,58 @@ async function load(manual){
 }
 
 const TABS=["list","pie","chart"];
+const panes=[$("list"),$("pie"),$("charts")],track=$("track"),pager=$("pager");
+const paneIdx=()=>TABS.indexOf(lview);
+let settleT=0;
+function settle(){panes.forEach((p,i)=>{p.classList.remove("near");p.classList.toggle("on",i===paneIdx())})}
+function applyTab(instant){
+ panes.forEach(p=>p.classList.add("near"));
+ track.classList.toggle("drag",!!instant);
+ track.style.transform=`translateX(${-paneIdx()*100}%)`;
+ $("note").hidden=lview!=="list";
+ clearTimeout(settleT);settleT=setTimeout(settle,instant?0:340);
+}
 function goTab(next){
- if(next===lview||!TABS.includes(next))return;
- const dir=TABS.indexOf(next)-TABS.indexOf(lview);
- lview=next;LS.set("tab",lview);syncL();render();scrollTo(0,0);
- const el=lview==="chart"?$("charts"):$("list");
- el.classList.remove("sl","sr");void el.offsetWidth;el.classList.add(dir>0?"sl":"sr");
+ if(!TABS.includes(next))return;
+ if(next!==lview){lview=next;LS.set("tab",lview);syncL();scrollTo(0,0)}
+ applyTab(false);
 }
 $("lview").onclick=e=>{const b=e.target.closest("button");if(b)goTab(b.dataset.l)};
-// 좌우 스와이프로 탭 전환 (왼쪽으로 밀면 다음 탭, 오른쪽으로 밀면 이전 탭)
-let sx=0,sy=0,st=0,sOk=false;
-document.addEventListener("touchstart",e=>{
- const t=e.touches[0];sOk=e.touches.length===1&&!(e.target.closest&&e.target.closest("select,input,#modal,#pwModal"));
- sx=t.clientX;sy=t.clientY;st=Date.now();
+// 좌우 드래그: 손가락을 따라 화면이 움직이고, 손을 떼면 가까운 탭으로 자리 잡음
+let tx0=0,ty0=0,tt0=0,tdrag=0,ttrack=false;
+pager.addEventListener("touchstart",e=>{
+ ttrack=e.touches.length===1&&!(e.target.closest&&e.target.closest("select,input"));
+ if(!ttrack)return;
+ const t=e.touches[0];tx0=t.clientX;ty0=t.clientY;tt0=Date.now();tdrag=0;
 },{passive:true});
-document.addEventListener("touchend",e=>{
- if(!sOk)return;sOk=false;
- if(!$("modal").hidden||!$("pwModal").hidden)return;
- const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
- if(Math.abs(dx)<60||Math.abs(dy)>Math.abs(dx)*0.6||Date.now()-st>700)return;
- const i=TABS.indexOf(lview),n=dx<0?i+1:i-1;
- if(n>=0&&n<TABS.length)goTab(TABS[n]);
-},{passive:true});
+pager.addEventListener("touchmove",e=>{
+ if(!ttrack)return;
+ if(e.touches.length>1){ttrack=false;if(tdrag===1){tdrag=0;applyTab(false)}return}
+ const t=e.touches[0],dx=t.clientX-tx0,dy=t.clientY-ty0;
+ if(tdrag===0){
+  if(Math.abs(dx)<8&&Math.abs(dy)<8)return;
+  if(Math.abs(dx)>Math.abs(dy)*1.2){tdrag=1;clearTimeout(settleT);panes.forEach(p=>p.classList.add("near"));track.classList.add("drag");hideTips(null)}
+  else{tdrag=2;ttrack=false;return}
+ }
+ if(tdrag===1){
+  if(e.cancelable)e.preventDefault();
+  const i=paneIdx();let off=dx;
+  if((i===0&&dx>0)||(i===TABS.length-1&&dx<0))off=dx*0.3;
+  track.style.transform=`translateX(calc(${-i*100}% + ${off}px))`;
+ }
+},{passive:false});
+function endDrag(e){
+ const was=ttrack&&tdrag===1;ttrack=false;
+ if(!was)return;
+ tdrag=0;
+ const t=e.changedTouches[0],dx=t.clientX-tx0,w=pager.clientWidth,v=Math.abs(dx)/Math.max(1,Date.now()-tt0);
+ let n=paneIdx();
+ if(Math.abs(dx)>w*0.25||(v>0.4&&Math.abs(dx)>30))n+=dx<0?1:-1;
+ n=Math.max(0,Math.min(TABS.length-1,n));
+ goTab(TABS[n]);
+}
+pager.addEventListener("touchend",endDrag,{passive:true});
+pager.addEventListener("touchcancel",endDrag,{passive:true});
 $("infoBtn").onclick=()=>{$("modalAmt").textContent=NET?swV(NET):"-";$("modal").hidden=false};
 $("modalOk").onclick=()=>{$("modal").hidden=true};
 $("modal").onclick=e=>{if(e.target===$("modal"))$("modal").hidden=true};
@@ -680,6 +788,7 @@ function tryPw(){
  if(v===PW){closePw();showAmt=true;LS.set("amt","1");syncEye();render();return}
  $("pwErr").textContent="비밀번호가 맞지 않아요";i.value="";i.classList.remove("shake");void i.offsetWidth;i.classList.add("shake");i.focus();
 }
+$("rfBtn").onclick=()=>{$("rfBtn").classList.add("spin");setTimeout(()=>location.reload(),150)};
 $("eyeBtn").onclick=()=>{if(showAmt){showAmt=false;LS.set("amt","0");syncEye();render()}else openPw()};
 $("pwIn").oninput=e=>{if(PW)$("pwErr").textContent="";if(PW&&e.target.value.length>=PW.length)tryPw()};
 $("pwIn").onkeydown=e=>{if(e.key==="Enter")tryPw()};
@@ -698,7 +807,7 @@ $("list").onclick=e=>{
   LS.set("sc",JSON.stringify([...collapsed]));return}
  const b=e.target.closest(".rw");if(!b)return;
  const k=b.dataset.k;openKey=openKey===k?null:k;render()};
-$("list").onchange=e=>{const id=e.target&&e.target.id;if(id==="pieSort"){pieSort=e.target.value;render()}else if(id==="listMode"){listMode=e.target.value==="sector"?"sector":"stock";LS.set("lm",listMode);render()}};
+$("pager").onchange=e=>{const id=e.target&&e.target.id;if(id==="pieSort"){pieSort=e.target.value;render()}else if(id==="listMode"){listMode=e.target.value==="sector"?"sector":"stock";LS.set("lm",listMode);render()}};
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>render());
 
 let introMin=false,loaded=false;
@@ -726,7 +835,7 @@ function hideTips(except){
 document.addEventListener("pointerdown",e=>hideTips(e.target.closest&&e.target.closest("canvas")));
 window.addEventListener("scroll",()=>hideTips(null),{passive:true});
 
-setMode(mode);syncNet();syncL();syncEye();items=build(SNAPSHOT);render();load(false);
+setMode(mode);syncNet();syncL();syncEye();items=build(SNAPSHOT);render();applyTab(true);load(false);
 </script>
 </body>
 </html>
