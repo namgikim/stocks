@@ -596,9 +596,15 @@ function esc(x){return String(x).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;","
 const chgAmt=v=>sign(v)+(showAmt?won(Math.abs(v)):mkP+"원");
 const fmtN=v=>v.toLocaleString("ko-KR",{maximumFractionDigits:2});
 function overviewHTML(){
- const o=OTHER;
- if(!o||(!o.total&&!o.sectors.length&&!o.ind.length))return`<section class="sec ov"><div class="sh"><b>어제 대비 오늘</b></div><div style="padding:6px 16px 16px;font-size:13px;color:var(--t3)">기타데이터를 불러오지 못했어요${OTHERERR?" ("+esc(OTHERERR)+")":""}.<br>시트 웹게시 링크(CSV)와 열 구성을 확인해 주세요.</div></section>`;
+ const o=OTHER||{total:null,sectors:[],ind:[]};
+ const fail=t=>`<section class="sec ov"><div class="sh"><b>${t}</b></div><div style="padding:6px 16px 16px;font-size:13px;color:var(--t3)">표시할 데이터가 없어요</div></section>`;
  let h="";
+ if(o.ind.length)h+=`<section class="sec ov"><div class="sh"><b>주요 지표</b></div><div class="tiles">`+o.ind.map(x=>{
+  const unit=/환율/.test(x.label)&&!x.solo?"원":"";
+  const val=x.solo?`<b class="${cls(x.v)}">${sign(x.v)}${fmtN(Math.abs(x.v))}%</b>`:`<b>${fmtN(x.v)}${unit}</b>`;
+  const sub=x.chg!==null?`<em class="${cls(x.chg)}">전일 대비 ${sign(x.chg)}${fmtN(Math.abs(x.chg))}%</em>`:"";
+  return`<div class="tile"><span>${esc(x.label)}</span>${val}${sub}</div>`}).join("")+`</div></section>`;
+ else h+=fail("주요 지표");
  if(o.total||o.sectors.length){
   h+=`<section class="sec ov"><div class="sh"><b>어제 대비 오늘</b></div>`;
   if(o.total){const t=o.total;
@@ -607,12 +613,7 @@ function overviewHTML(){
    const dot=x.key==="A+B"?`linear-gradient(135deg,${SC.A} 50%,${SC.B} 50%)`:(SC[x.key]||"var(--t3)");
    return`<div class="crow"><span class="nm2"><i class="dot2" style="background:${dot}"></i>${esc(x.name)}</span>${x.v!==null?`<span class="amt ${cls(x.v)}">${chgAmt(x.v)}</span>`:""}${x.p!==null?`<span class="pill ${cls(x.p)}">${pct(x.p)}</span>`:""}</div>`}).join("")+`</div>`;
   h+=`</section>`;
- }
- if(o.ind.length)h+=`<section class="sec"><div class="sh"><b>주요 지표</b></div><div class="tiles">`+o.ind.map(x=>{
-  const unit=/환율/.test(x.label)&&!x.solo?"원":"";
-  const val=x.solo?`<b class="${cls(x.v)}">${sign(x.v)}${fmtN(Math.abs(x.v))}</b>`:`<b>${fmtN(x.v)}${unit}</b>`;
-  const sub=x.chg!==null?`<em class="${cls(x.chg)}">전일 대비 ${sign(x.chg)}${fmtN(Math.abs(x.chg))}</em>`:"";
-  return`<div class="tile"><span>${esc(x.label)}</span>${val}${sub}</div>`}).join("")+`</div></section>`;
+ }else h+=fail("어제 대비 오늘");
  return h;
 }
 function setMode(m){mode=m}
