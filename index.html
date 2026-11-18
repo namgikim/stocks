@@ -282,13 +282,13 @@ function parseOtherInfo(text){
   sectors.push({key:us?"A+B":l,name:us?"미국지수":(SN[l]||l),v,p});
  });
  const raw=[];
- rows.forEach(r=>{const l=c(r,8);if(!l)return;const v=optNum(c(r,9));if(v!==null)raw.push({label:l,v})});
+ rows.forEach(r=>{const l=c(r,8);if(!l)return;if(l==="이름"||l==="주요 지표")return;const t=c(r,9);if(t==="값")return;raw.push({label:l,v:optNum(t),t})});
  const ind=[];let last=null;
  raw.forEach(x=>{
-  if(!CHGRE.test(x.label)){last={label:x.label,v:x.v,chg:null};ind.push(last);return}
+  if(!CHGRE.test(x.label)){last={label:x.label,v:x.v,t:x.t,chg:null,ct:""};ind.push(last);return}
   const base=x.label.replace(CHGRE,"").trim();
   const m=ind.find(y=>base&&(y.label.startsWith(base)||base.startsWith(y.label)))||last;
-  if(m&&m.chg===null)m.chg=x.v;else ind.push({label:x.label,v:x.v,chg:null,solo:true});
+  if(m&&m.chg===null&&!m.ct){m.chg=x.v;m.ct=x.v===null?(x.t||"–"):""}else ind.push({label:x.label,v:x.v,t:x.t,chg:null,ct:"",solo:true});
  });
  for(const r of rows){
   const a=c(r,10),b=c(r,11);if(!a&&!b)continue;
@@ -609,8 +609,8 @@ function overviewHTML(chartHTML){
  let h="";
  if(o.ind.length)h+=`<section class="sec ov"><div class="sh"><b>주요 지표</b></div><div class="tiles">`+o.ind.map(x=>{
   const unit=/환율/.test(x.label)&&!x.solo?"원":"";
-  const val=x.solo?`<b class="${cls(x.v)}">${sign(x.v)}${fmtN(Math.abs(x.v))}%</b>`:`<b>${fmtN(x.v)}${unit}</b>`;
-  const sub=x.chg!==null?`<em class="${cls(x.chg)}">${sign(x.chg)}${fmtN(Math.abs(x.chg))}%</em>`:"";
+  const val=x.v===null?`<b>${esc(x.t||"–")}</b>`:x.solo?`<b class="${cls(x.v)}">${sign(x.v)}${fmtN(Math.abs(x.v))}%</b>`:`<b>${fmtN(x.v)}${unit}</b>`;
+  const sub=x.ct?`<em>${esc(x.ct)}</em>`:x.chg!==null?`<em class="${cls(x.chg)}">${sign(x.chg)}${fmtN(Math.abs(x.chg))}%</em>`:"";
   return`<div class="tile"><span>${esc(x.label)}</span>${val}${sub}</div>`}).join("")+`</div></section>`;
  else h+=fail("주요 지표");
  const t0=h;h="";
@@ -701,7 +701,7 @@ function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");cle
 const clock=()=>new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit"});
 
 async function fetchText(url){
- const res=await fetch(url+"&_="+Date.now());
+ const res=await fetch(url+"&_="+Date.now(),{cache:"no-store"});
  if(!res.ok)throw new Error("HTTP "+res.status);
  const text=await res.text();
  if(text.trim().startsWith("<"))throw new Error("CSV가 아닌 응답");
