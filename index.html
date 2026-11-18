@@ -63,7 +63,7 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .dot2{width:10px;height:10px;border-radius:50%;flex:none}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px 16px 10px}
 .tile{background:var(--line);border-radius:14px;padding:12px 14px;min-width:0}
-.tile span{display:block;font-size:12px;color:var(--t3);margin-bottom:4px}
+.tile span{display:block;font-size:12px;color:var(--t3);margin-bottom:4px;line-height:1.3;min-height:16px}
 .tile b{display:block;font-size:17px;font-weight:700;word-break:keep-all}
 .tile em{display:block;font-style:normal;font-size:13px;font-weight:600;margin-top:2px}
 .fhr{display:flex;align-items:center;gap:8px;min-width:0}.fhr .fxr{white-space:nowrap}.fhr .cu{height:28px}.cu button{min-width:32px;padding:0;height:24px;line-height:24px}.sel{height:28px;padding-top:0;padding-bottom:0}
@@ -259,6 +259,7 @@ function parseOtherPw(text){
 }
 
 // 기타데이터 시트 4행부터: A~C 섹터별 변동, F~H 섹터구분코드(코드/이름/정렬), I~J 주요지표(이름/값), K~L 총 평가금액 변동(값/퍼센티지)
+const CHGRE=/[\s\-–·:]*변동\s*(퍼센티지|퍼센트|률|율)?\s*$/;
 function parseOtherInfo(text){
  const t=parseCSV(text,true),rows=t;
  const c=(r,i)=>String((r&&r[i])||"").trim();
@@ -275,11 +276,11 @@ function parseOtherInfo(text){
  });
  const raw=[];
  rows.forEach(r=>{const l=c(r,8);if(!l)return;const v=optNum(c(r,9));if(v!==null)raw.push({label:l,v})});
- const ind=[];
- raw.forEach(x=>{if(!/변동$/.test(x.label))ind.push({label:x.label,v:x.v,chg:null})});
+ const ind=[];let last=null;
  raw.forEach(x=>{
-  if(!/변동$/.test(x.label))return;
-  const base=x.label.replace(/변동$/,"").trim(),m=ind.find(y=>y.label.startsWith(base)||base.startsWith(y.label));
+  if(!CHGRE.test(x.label)){last={label:x.label,v:x.v,chg:null};ind.push(last);return}
+  const base=x.label.replace(CHGRE,"").trim();
+  const m=ind.find(y=>base&&(y.label.startsWith(base)||base.startsWith(y.label)))||last;
   if(m&&m.chg===null)m.chg=x.v;else ind.push({label:x.label,v:x.v,chg:null,solo:true});
  });
  for(const r of rows){
