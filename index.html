@@ -51,6 +51,12 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .pane{flex:0 0 100%;min-width:0;height:0;overflow:hidden}
 .pane.on,.pane.near{height:auto;overflow:visible}
 .cbox.short{height:105px}
+.fxbar{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:2px 20px 10px;background:var(--line)}
+.fxbar i{display:block;height:100%}
+.spr{display:flex;align-items:center;justify-content:space-between;padding:4px 20px;font-size:14px}
+.spr span:first-child{display:flex;align-items:center;color:var(--t2,inherit)}
+.spr i{width:8px;height:8px;border-radius:50%;margin-right:8px;display:inline-block}
+.spr~.tiles{padding-top:10px}
 .ov .cbox.short{margin:0 16px 10px}
 .ov .big{padding:0 20px 10px;display:flex;align-items:center;gap:8px}
 .ov .big .lbl{font-size:13px;color:var(--t3);margin-right:auto}
@@ -618,7 +624,7 @@ function overviewHTML(chartHTML){
  const o=OTHER||{total:null,sectors:[],ind:[]};
  const fail=t=>`<section class="sec ov"><div class="sh"><b>${t}</b></div><div style="padding:6px 16px 16px;font-size:13px;color:var(--t3)">표시할 데이터가 없어요</div></section>`;
  let h="";
- if(o.ind.length)h+=`<section class="sec ov"><div class="sh"><b>주요 지표</b><span style="font-size:11px">Yahoo Finance</span></div><div class="tiles">`+o.ind.map(x=>{
+ if(o.ind.length)h+=`<section class="sec ov"><div class="sh"><b>주요 지표</b><span style="font-size:11px">Yahoo Finance · 지연시세</span></div><div class="tiles">`+o.ind.map(x=>{
   const unit=/환율/.test(x.label)&&!x.solo?"원":"";
   const val=x.v===null?`<b>${esc(x.t||"–")}</b>`:x.solo?`<b class="${cls(x.v)}">${sign(x.v)}${fmtN(Math.abs(x.v))}%</b>`:`<b>${fmtN(x.v)}${unit}</b>`;
   const sub=x.ct?`<em>${esc(x.ct)}</em>`:x.chg!==null?`<em class="${cls(x.chg)}">${sign(x.chg)}${fmtN(Math.abs(x.chg))}%</em>`:"";
@@ -639,6 +645,28 @@ function overviewHTML(chartHTML){
  }
  return[t0,h];
 }
+function splitHTML(){
+ if(!items||!items.length)return"";
+ let V=0,C=0,price=0,fxe=0,uV=0,uC=0,uCusd=0,uVusd=0;
+ items.forEach(x=>{const v=x.v.KRW,c=x.c.KRW;V+=v;C+=c;
+  if(x.usd){const pe=(x.v.USD-x.c.USD)*x.avg;price+=pe;fxe+=(v-c)-pe;uV+=v;uC+=c;uCusd+=x.c.USD;uVusd+=x.v.USD}
+  else price+=v-c});
+ const tot=price+fxe;if(!C)return"";
+ const amt=v=>showAmt?won(Math.abs(v)):mkP+"원",sg=v=>sign(v);
+ const ab=Math.abs(price)+Math.abs(fxe)||1,pw=Math.round(Math.abs(price)/ab*100);
+ const hasU=uCusd>0;
+ let h=`<section class="sec ov"><div class="sh"><b>수익 분해</b><span style="font-size:11px">주가 vs 환율</span></div>`;
+ h+=`<div class="big"><span class="lbl">총 손익</span><b class="${cls(tot)}">${sg(tot)}${amt(tot)}</b><span class="pill ${cls(tot)}">${pct(tot/C*100)}</span></div>`;
+ if(hasU)h+=`<div class="fxbar"><i style="width:${pw}%;background:#5b8def"></i><i style="width:${100-pw}%;background:#f2b441"></i></div>`;
+ h+=`<div class="spr"><span><i style="background:#5b8def"></i>주가 변동</span><span class="${cls(price)}">${sg(price)}${amt(price)}</span></div>`;
+ if(hasU)h+=`<div class="spr"><span><i style="background:#f2b441"></i>환율 변동</span><span class="${cls(fxe)}">${sg(fxe)}${amt(fxe)}</span></div>`;
+ if(hasU){
+  const avgFx=uC/uCusd,curFx=uV/uVusd,d=(curFx/avgFx-1)*100;
+  const man=v=>showAmt?Math.round(v/10000).toLocaleString("ko-KR")+"만원":mkP+"원";
+  h+=`<div class="tiles"><div class="tile"><span>달러 자산 비중</span><b>${(uV/V*100).toFixed(1)}%</b><em>${man(uV)}</em></div>`
+   +`<div class="tile"><span>환율 ±1% 시</span><b>±${man(uV*0.01)}</b><em>총자산 ±${(uV/V).toFixed(2)}%</em></div>`
+   +`<div class="tile"><span>환율 vs 평단</span><b class="${cls(d)}">${pct(d)}</b><em>${fmtN(Math.round(curFx))} / ${fmtN(Math.round(avgFx))}</em></div></div>`}
+ return h+`</section>`}
 function setMode(m){mode=m}
 function render(){
  if(useNet&&!NET){useNet=false;syncNet()}
@@ -701,7 +729,7 @@ const modeSel=`<select id="listMode" class="sel" aria-label="보기 방식"><opt
  const ov=overviewHTML(hasTotal?`<div class="cbox short"><canvas id="totalChart"></canvas></div>`:`<div class="ph" style="padding:0 20px 10px;font-size:13px">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`);
  $("charts").innerHTML=ov[0]+
   `<section class="sec"><div class="sh"><b>총 평가금액 vs 미국지수 (환노출)</b></div>`+
-  (hasComp?`<div class="cbox tall"><canvas id="compChart"></canvas></div>`:`<div class="ph">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`)+`</section>`+ov[1];
+  (hasComp?`<div class="cbox tall"><canvas id="compChart"></canvas></div>`:`<div class="ph">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`)+`</section>`+ov[1]+splitHTML();
  $("note").hidden=lview!=="list";
  $("note").textContent=mode==="usd"?"달러 종목은 환율을 적용하지 않은 달러 금액이에요.\n수익률에는 환차익이 포함되지 않아요":"달러 종목은 시트의 기준환율로 원화 환산했어요.\n수익률에는 환차익이 포함돼요"+(useNet?"\n투자수익은 순입금액 "+swV(NET)+" 대비 값이에요":"");
  $("upd").textContent=src;
