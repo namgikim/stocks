@@ -204,7 +204,7 @@ const secOrd=s=>SECORD[s]!==undefined?SECORD[s]:999;
 const SN={A:"나스닥100",B:"S&P500",C:"가치주",D:"소액 투자",E:"현금성 자산"};
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 let lview=(()=>{const v=LS.get("tab","list");return["list","pie","chart"].includes(v)?v:"list"})(),listMode=LS.get("lm","stock")==="sector"?"sector":"stock",mode=LS.get("cu","usd")==="avg"?"avg":"usd",useNet=LS.get("net","0")==="1",showAmt=LS.get("amt","1")!=="0",NET=295615604,items=[],cur="KRW",openKey=null,src="저장된 데이터";
-let pieSort="sector",PW="",OTHER=null;
+let pieSort="sector",PW="",OTHER=null,OTHERERR="";
 let collapsed=new Set((()=>{try{return JSON.parse(LS.get("sc","[]"))}catch(e){return[]}})());
 let chartRows=[],chartInst=null,compInst=null,pieInst=null;
 
@@ -260,13 +260,14 @@ function parseOtherPw(text){
 
 // 기타데이터 시트 4행부터: A~C 섹터별 변동, F~H 섹터구분코드(코드/이름/정렬), I~J 주요지표(이름/값), K~L 총 평가금액 변동(값/퍼센티지)
 function parseOtherInfo(text){
- const t=parseCSV(text,true),rows=t.slice(3);
+ const t=parseCSV(text,true),rows=t;
  const c=(r,i)=>String((r&&r[i])||"").trim();
  rows.forEach(r=>{const code=c(r,5),nm=c(r,6),od=optNum(c(r,7));if(code&&nm){SN[code]=nm;if(od!==null)SECORD[code]=od}});
  const sectors=[];let total=null;
  rows.forEach(r=>{
   const l=c(r,0);if(!l)return;
   const v=optNum(c(r,1)),p=optNum(c(r,2));
+  if(v===null&&p===null)return;
   if(/총\s*평가금액/.test(l)){total={v,p};return}
   if(/환율/.test(l))return;
   const us=/^A\s*\+\s*B$/i.test(l)||l.includes("미국지수");
@@ -595,7 +596,8 @@ function esc(x){return String(x).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;","
 const chgAmt=v=>sign(v)+(showAmt?won(Math.abs(v)):mkP+"원");
 const fmtN=v=>v.toLocaleString("ko-KR",{maximumFractionDigits:2});
 function overviewHTML(){
- const o=OTHER;if(!o)return"";
+ const o=OTHER;
+ if(!o||(!o.total&&!o.sectors.length&&!o.ind.length))return`<section class="sec ov"><div class="sh"><b>어제 대비 오늘</b></div><div style="padding:6px 16px 16px;font-size:13px;color:var(--t3)">기타데이터를 불러오지 못했어요${OTHERERR?" ("+esc(OTHERERR)+")":""}.<br>시트 웹게시 링크(CSV)와 열 구성을 확인해 주세요.</div></section>`;
  let h="";
  if(o.total||o.sectors.length){
   h+=`<section class="sec ov"><div class="sh"><b>어제 대비 오늘</b></div>`;
@@ -704,7 +706,7 @@ async function load(manual){
    const parsedChart=buildChart(chartRes.value);
    if(parsedChart.length)chartRows=parsedChart;
   }
-  if(otherRes.status==="fulfilled"){const n=parseOtherNet(otherRes.value);if(n)NET=n;const pw=parseOtherPw(otherRes.value);if(pw)PW=pw;OTHER=parseOtherInfo(otherRes.value)}
+  if(otherRes.status==="fulfilled"){try{const n=parseOtherNet(otherRes.value);if(n)NET=n;const pw=parseOtherPw(otherRes.value);if(pw)PW=pw;OTHER=parseOtherInfo(otherRes.value);OTHERERR=""}catch(e){OTHERERR="해석 오류"}}else{OTHERERR=(otherRes.reason&&otherRes.reason.message)||"네트워크"}
   if(mainRes.status!=="fulfilled"){why=mainRes.reason&&mainRes.reason.message||"불러오기 실패";throw 0}
   if(!mainRes.value.includes("종목명")){why="CSV가 아닌 응답";throw 0}
   const next=build(mainRes.value);
