@@ -423,6 +423,7 @@ html,body{height:100%;overflow:hidden}
 .uxl{border-top:0;padding-top:0}.uxl+.uxn{margin-top:0;padding-top:14px;border-top:1px solid var(--line)}
 .uxdt{padding-bottom:12px}.uxl>.uxtg[aria-expanded="true"]{padding-bottom:0}.uxdt .uxgp:first-child{margin-top:4px}
 .uxgp+.uxgp{margin-top:10px}
+.smr .spn{cursor:pointer;-webkit-tap-highlight-color:transparent}.smr.xo .spn{text-decoration:line-through;color:var(--t3)}.smr.xo b{opacity:.35}
 </style>
 </head>
 <body>
@@ -954,7 +955,10 @@ function overviewHTML(chartHTML){
  return[t0,h];
 }
 let IXT=null,VLT=null;
-let ixOpen=false,dlOpen=LS.get("dlo","1")==="1",dlG=new Set(),spEx=new Set();
+let ixOpen=false,dlOpen=LS.get("dlo","1")==="1",dlG=new Set(),spEx=new Set(),smEx=new Set();
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-smx]");if(!t)return;
+ const k=t.dataset.smx;smEx.has(k)?smEx.delete(k):smEx.add(k);
+ document.querySelectorAll("[data-smx]").forEach(n=>{const r=n.closest(".smr");if(r)r.classList.toggle("xo",smEx.has(n.dataset.smx))});scUpd()});
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-spx]");if(!t)return;
  const k=t.dataset.spx;spEx.has(k)?spEx.delete(k):spEx.add(k);
  let tt=0;document.querySelectorAll(".sp3[data-v]").forEach(r=>{const n=r.querySelector("[data-spx]").dataset.spx,x=spEx.has(n);r.classList.toggle("xo",x);if(!x)tt+=+r.dataset.v});
@@ -1008,10 +1012,10 @@ function sumHTML(){
  if(!items||!items.length||(!IXT&&!VLT))return"";
  let V=0;items.forEach(x=>{V+=x.v.KRW});
  const cc=Object.keys(SN).find(k=>/현금/.test(SN[k]))||"E",cf=items.filter(x=>x.sector===cc&&(x.usd||x.exp)).reduce((s,x)=>s+x.v.KRW,0),cv=scVal/100*cf,fx0=items[0].fx;
- const g=o=>o?{l:o.td+scVal/100*(o.fv+o.tdE),h:o.tu+scVal/100*(o.fv+o.tuE)}:{l:0,h:0},a=g(IXT),b=g(VLT),lo=a.l+b.l+cv,hi=a.h+b.h+cv;
- const P=v=>V?pct(v/V*100):"",row=(nm,k,o,r)=>o?`<div class="smr"><span>${nm}</span><b id="sum${k}L" class="${cls(r.l)}">${chgAmt(r.l)}</b><b id="sum${k}H" class="${cls(r.h)}">${chgAmt(r.h)}</b></div>`:"";
+ const g=o=>o?{l:o.td+scVal/100*(o.fv+o.tdE),h:o.tu+scVal/100*(o.fv+o.tuE)}:{l:0,h:0},a=g(IXT),b=g(VLT),lo=(smEx.has("i")?0:a.l)+(smEx.has("v")?0:b.l)+(smEx.has("c")?0:cv),hi=(smEx.has("i")?0:a.h)+(smEx.has("v")?0:b.h)+(smEx.has("c")?0:cv);
+ const P=v=>V?pct(v/V*100):"",row=(nm,k,o,r)=>o?`<div class="smr${smEx.has(k.toLowerCase())?" xo":""}"><span><span class="spn" data-smx="${k.toLowerCase()}">${nm}</span></span><b id="sum${k}L" class="${cls(r.l)}">${chgAmt(r.l)}</b><b id="sum${k}H" class="${cls(r.h)}">${chgAmt(r.h)}</b></div>`:"";
  const at=(k,o)=>o?` data-${k}l="${o.td}" data-${k}h="${o.tu}" data-${k}el="${o.tdE}" data-${k}eh="${o.tuE}" data-${k}f="${o.fv}"`:"";
- return`<section class="sec ov"><div class="sh"><b>변동성 예측</b><span id="sumFxT" style="font-size:11px">① 환율 ${fx0.toLocaleString("ko-KR",{minimumFractionDigits:2,maximumFractionDigits:2})} (${scVal>0.005?"+":""}${scVal.toFixed(2)}%)</span></div><div class="ux" id="sumb" data-v="${V}"${at("i",IXT)}${at("v",VLT)} data-cf="${cf}"><div class="uxn"><div><span>저점 도달 시</span><b id="sumTL" class="${cls(lo)}">${chgAmt(lo)}</b><em id="sumPL" class="${cls(lo)}">${P(lo)}</em></div><div><span>고점 도달 시</span><b id="sumTH" class="${cls(hi)}">${chgAmt(hi)}</b><em id="sumPH" class="${cls(hi)}">${P(hi)}</em></div></div><div class="smt"><div class="smr smh"><span></span><span>저점</span><span>고점</span></div>${row("② 미국 지수","I",IXT,a)}${row("③ 가치주","V",VLT,b)}${cf>0?`<div class="smr smc"><span class="cl">현금성 자산<button class="inf" data-pnl="현금성 자산" aria-label="현금성 자산 설명" style="margin-left:5px">!</button></span><b id="sumC" class="${cls(cv)}">${Math.abs(cv)<0.5?"–":chgAmt(cv)}</b></div>`:""}</div></div></section>`;
+ return`<section class="sec ov"><div class="sh"><b>변동성 예측</b><span id="sumFxT" style="font-size:11px">① 환율 ${fx0.toLocaleString("ko-KR",{minimumFractionDigits:2,maximumFractionDigits:2})} (${scVal>0.005?"+":""}${scVal.toFixed(2)}%)</span></div><div class="ux" id="sumb" data-v="${V}"${at("i",IXT)}${at("v",VLT)} data-cf="${cf}"><div class="uxn"><div><span>저점 도달 시</span><b id="sumTL" class="${cls(lo)}">${chgAmt(lo)}</b><em id="sumPL" class="${cls(lo)}">${P(lo)}</em></div><div><span>고점 도달 시</span><b id="sumTH" class="${cls(hi)}">${chgAmt(hi)}</b><em id="sumPH" class="${cls(hi)}">${P(hi)}</em></div></div><div class="smt"><div class="smr smh"><span></span><span>저점</span><span>고점</span></div>${row("② 미국 지수","I",IXT,a)}${row("③ 가치주","V",VLT,b)}${cf>0?`<div class="smr smc${smEx.has("c")?" xo":""}"><span class="cl"><span class="spn" data-smx="c">현금성 자산</span><button class="inf" data-pnl="현금성 자산" aria-label="현금성 자산 설명" style="margin-left:5px">!</button></span><b id="sumC" class="${cls(cv)}">${Math.abs(cv)<0.5?"–":chgAmt(cv)}</b></div>`:""}</div></div></section>`;
 }
 function splitHTML(){
  if(!items||!items.length)return"";
@@ -1070,7 +1074,7 @@ function scUpd(){
  $("scFx").innerHTML="환율 "+f2(fx)+" → "+(f2(r)===f2(fx)?f2(r)+"원":"<b>"+f2(r)+"원</b>");
  const p=$("scPct");p.textContent=(x>0.005?"+":"")+x.toFixed(2)+"%";p.className=cls(Math.abs(x)<0.005?0:x);
  $("scTot").textContent=showAmt?won(V+d):mkP+"원";
- {const sb=$("sumb");if(sb){const SV=+sb.dataset.v,xx=x/100,D=sb.dataset,g=k=>D[k+"l"]===undefined?null:{l:+D[k+"l"]+xx*(+D[k+"f"]+ +D[k+"el"]),h:+D[k+"h"]+xx*(+D[k+"f"]+ +D[k+"eh"])},ri=g("i"),rv=g("v"),cvv=xx*(+D.cf||0),lo=(ri?ri.l:0)+(rv?rv.l:0)+cvv,hi=(ri?ri.h:0)+(rv?rv.h:0)+cvv,Pp=v=>SV?pct(v/SV*100):"",set=(id,t,c)=>{const e=$(id);if(e){e.textContent=t;if(c!==undefined)e.className=c}};
+ {const sb=$("sumb");if(sb){const SV=+sb.dataset.v,xx=x/100,D=sb.dataset,g=k=>D[k+"l"]===undefined?null:{l:+D[k+"l"]+xx*(+D[k+"f"]+ +D[k+"el"]),h:+D[k+"h"]+xx*(+D[k+"f"]+ +D[k+"eh"])},ri=g("i"),rv=g("v"),cvv=xx*(+D.cf||0),lo=(ri&&!smEx.has("i")?ri.l:0)+(rv&&!smEx.has("v")?rv.l:0)+(smEx.has("c")?0:cvv),hi=(ri&&!smEx.has("i")?ri.h:0)+(rv&&!smEx.has("v")?rv.h:0)+(smEx.has("c")?0:cvv),Pp=v=>SV?pct(v/SV*100):"",set=(id,t,c)=>{const e=$(id);if(e){e.textContent=t;if(c!==undefined)e.className=c}};
   if(ri){set("sumIL",chgAmt(ri.l),cls(ri.l));set("sumIH",chgAmt(ri.h),cls(ri.h))}if(rv){set("sumVL",chgAmt(rv.l),cls(rv.l));set("sumVH",chgAmt(rv.h),cls(rv.h))}
   {const t=Math.abs(cvv)<0.5?"–":chgAmt(cvv);set("sumC",t,cls(cvv))}set("sumFxT","① 환율 "+f2(r)+" ("+(x>0.005?"+":"")+x.toFixed(2)+"%)");
   set("sumTL",chgAmt(lo),cls(lo));set("sumTH",chgAmt(hi),cls(hi));set("sumPL",Pp(lo),cls(lo));set("sumPH",Pp(hi),cls(hi))}}
