@@ -390,6 +390,39 @@ html,body{height:100%;overflow:hidden}
 .dlc{margin-bottom:0}.dlc .uxtg{padding:0}.dlb{margin-top:6px}.dlb .dls:last-child{padding-bottom:0}.dl:has(.dlc){padding-bottom:8px}@media(max-width:360px){.dl:has(.dlc){padding-bottom:8px}}
 .dl:has(.dlc){padding-bottom:14px}@media(max-width:360px){.dl:has(.dlc){padding-bottom:14px}}
 .smr{column-gap:16px}@media(max-width:360px){.smr{column-gap:10px}}
+.dlrb{width:100%;text-align:left;background:none;border:0;color:inherit;font:inherit;font-size:12px;cursor:pointer}
+.dlrb>span{min-width:0}
+.dlch{width:14px;height:14px;margin-left:5px;flex:none;fill:none;stroke:var(--t3);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.dlrb[aria-expanded="true"] .dlch{transform:rotate(180deg)}
+.dlg{background:var(--bg);border-radius:12px;padding:4px 12px;margin:0 0 6px}
+.dlg[hidden]{display:none}
+.dlr.dli{padding:6px 0;font-size:12px}
+.dlr.dli>span{color:var(--t2);overflow:hidden;text-overflow:ellipsis;display:block}
+.dlr.dli b{font-size:11px;font-weight:500;color:var(--t2)}
+@media(max-width:360px){.dlch{width:12px;height:12px;margin-left:2px}.dlrb>span em{margin-left:4px}}
+.spn{cursor:pointer;-webkit-tap-highlight-color:transparent}.sp3.xo .spn{text-decoration:line-through;color:var(--t3)}.sp3.xo .dv,.sp3.xo .am{opacity:.35}
+.dlt{justify-content:space-between;padding:4px 0 8px}
+.dlw{width:88px;height:88px}.dlw svg{width:88px;height:88px}.dlw .dc{font-size:14px}
+.dlx{align-items:flex-end;text-align:right;gap:3px}
+.dlx>b{font-size:24px}.dlx>span{font-size:12px}.dlx small{font-size:13px}
+@media(max-width:360px){.dlw,.dlw svg{width:76px;height:76px}.dlx>b{font-size:21px}}
+.dtp{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;padding:6px 0 0}
+.dtl{display:flex;flex-direction:column;gap:3px;min-width:0}
+.dtl>span{font-size:12px;color:var(--t3)}
+.dtl>b{font-size:26px;letter-spacing:-.02em;white-space:nowrap;line-height:1.15}
+.dtl>small{font-size:13px;color:var(--t3)}
+.dtr{font-size:12px;color:var(--t3);white-space:nowrap;padding-bottom:3px}
+.dtr b{font-size:14px;color:var(--t1);margin-left:2px}
+.dsb{display:flex;gap:2px;height:10px;margin:14px 0 6px;border-radius:5px;overflow:hidden}
+.dsb i{display:block;height:100%}
+@media(max-width:360px){.dtl>b{font-size:22px}}
+.dtl>b{font-size:20px}.dtr b{font-size:20px;font-weight:700;margin-left:3px;letter-spacing:-.02em}.dtr{padding-bottom:1px}
+@media(max-width:360px){.dtl>b{font-size:18px}.dtr b{font-size:18px}}
+.dlg{background:var(--line)}
+.uxtg svg{margin-right:-4px}
+.uxl{border-top:0;padding-top:0}.uxl+.uxn{margin-top:0;padding-top:14px;border-top:1px solid var(--line)}
+.uxdt{padding-bottom:12px}.uxl>.uxtg[aria-expanded="true"]{padding-bottom:0}.uxdt .uxgp:first-child{margin-top:4px}
+.uxgp+.uxgp{margin-top:10px}
 </style>
 </head>
 <body>
@@ -921,12 +954,18 @@ function overviewHTML(chartHTML){
  return[t0,h];
 }
 let IXT=null,VLT=null;
-let ixOpen=LS.get("ixo","0")==="1",dlOpen=LS.get("dlo","1")==="1";
+let ixOpen=false,dlOpen=LS.get("dlo","1")==="1",dlG=new Set(),spEx=new Set();
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-spx]");if(!t)return;
+ const k=t.dataset.spx;spEx.has(k)?spEx.delete(k):spEx.add(k);
+ let tt=0;document.querySelectorAll(".sp3[data-v]").forEach(r=>{const n=r.querySelector("[data-spx]").dataset.spx,x=spEx.has(n);r.classList.toggle("xo",x);if(!x)tt+=+r.dataset.v});
+ const b=$("spTot");if(b){b.className=cls(tt);b.textContent=sign(tt)+(showAmt?won(Math.abs(tt)):mkP+"원")}});
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-dlg]");if(!t)return;
+ const k=t.dataset.dlg,o=!dlG.has(k);o?dlG.add(k):dlG.delete(k);t.setAttribute("aria-expanded",o);const d=t.nextElementSibling;if(d)d.hidden=!o});
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-dlt]");if(!t)return;
  dlOpen=!dlOpen;LS.set("dlo",dlOpen?"1":"0");
  document.querySelectorAll("[data-dlt]").forEach(b=>{b.setAttribute("aria-expanded",dlOpen);const d=b.nextElementSibling;if(d)d.hidden=!dlOpen})});
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-ixt]");if(!t)return;
- ixOpen=!ixOpen;LS.set("ixo",ixOpen?"1":"0");
+ ixOpen=!ixOpen;
  document.querySelectorAll("[data-ixt]").forEach(b=>{b.setAttribute("aria-expanded",ixOpen);const d=b.nextElementSibling;if(d)d.hidden=!ixOpen})});
 function idxHTML(){
  IXT=null;
@@ -941,7 +980,7 @@ function idxHTML(){
   const dd=d.p/d.hi-1,$2=v=>"$"+v.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
   const u=d.hi/d.p-1,dn=d.lo/d.p-1,ps=Math.min(1,Math.max(0,(d.p-d.lo)/(d.hi-d.lo))),p1=v=>sign(v)+Math.abs(v*100).toFixed(1)+"%";
   const mny=v=>showAmt?won(v):mkP+"원",its=items.filter(x=>x.sector===sec);cnt+=its.length;
-  gr.push(`<div class="uxgp"><div class="uxrh"><span>${nm} <em>${tk}</em></span><span class="${cls(dn)}">저점 ${p1(dn)}</span><span class="${cls(u)}">고점 ${p1(u)}</span></div>`+its.map(x=>{const e=x.v.KRW*(x.lev||1),lv=x.lev&&x.lev!==1;return`<div class="uxr"><div class="nmc"><span>${esc(x.name.replace(/\s*\(.*\)/,""))}${lv?`<i class="lvb">×${x.lev}</i>`:""}</span><small>평가 ${mny(x.v.KRW)}</small></div><b class="${cls(dn)}">${chgAmt(e*dn)}</b><b class="${cls(u)}">${chgAmt(e*u)}</b></div>`}).join("")+`</div>`);
+  gr.push(`<div class="uxgp"><div class="uxrh"><span>${tk} <em>${nm}</em></span><span class="${cls(dn)}">저점 ${p1(dn)}</span><span class="${cls(u)}">고점 ${p1(u)}</span></div>`+its.map(x=>{const e=x.v.KRW*(x.lev||1),lv=x.lev&&x.lev!==1;return`<div class="uxr"><div class="nmc"><span>${esc(x.name.replace(/\s*\(.*\)/,""))}${lv?`<i class="lvb">×${x.lev}</i>`:""}</span><small>평가 ${mny(x.v.KRW)}</small></div><b class="${cls(dn)}">${chgAmt(e*dn)}</b><b class="${cls(u)}">${chgAmt(e*u)}</b></div>`}).join("")+`</div>`);
   ft.push(`<div class="uxt"><span class="nm"><em>${tk}</em>${nm}</span><b><small class="lb">현재가</small>${$2(d.p)}</b><span class="dd"><small class="lb">고점 대비</small><i class="${cls(dd)}">${pct(dd*100)}</i></span><div class="hl2"><div class="ixg"><i style="bottom:${(ps*100).toFixed(1)}%"></i></div><div class="hr"><div><span>고점</span><p><b>${$2(d.hi)}</b><em class="${cls(u)}">${p1(u)}</em></p></div><div><span>저점</span><p><b>${$2(d.lo)}</b><em class="${cls(dn)}">${p1(dn)}</em></p></div></div></div></div>`);
  });
  if(!n)return"";
@@ -981,14 +1020,14 @@ function splitHTML(){
   if(x.usd){const pe=(x.v.USD-x.c.USD)*x.avg;price+=pe;fxe+=(v-c)-pe;uV+=v;uC+=c;uCusd+=x.c.USD;uVusd+=x.v.USD}
   else if(x.exp){exp+=v-c;eV+=v}
   else price+=v-c});
- const tot=price+fxe+exp;if(!C)return"";
+ const tot0=price+fxe+exp;if(!C)return"";const tot=(spEx.has("주가손익")?0:price)+(spEx.has("환차손익")?0:fxe)+(spEx.has("환노출 ETF")?0:exp);
  const amt=v=>showAmt?won(Math.abs(v)):mkP+"원",sg=v=>sign(v);
  const hasU=uCusd>0,hasE=eV>0;
  const ab=Math.abs(price)+Math.abs(fxe)+Math.abs(exp)||1,w=v=>Math.round(Math.abs(v)/ab*100);
  const wp=w(price),we=hasE?w(exp):0,wf=Math.max(0,100-wp-we);
  const mx=Math.max(Math.abs(price),Math.abs(fxe),Math.abs(exp),1);
- const row=(col,nm,v)=>`<div class="sp3"><span class="nm"><i style="background:${col}"></i>${nm}${nm==="주가손익"||nm==="환차손익"||nm==="환노출 ETF"?`<button class="inf" data-pnl="${nm}" aria-label="${nm} 설명" style="margin-left:5px">!</button>`:""}</span><span class="dv"><i class="${v>=0?"g":"l"}" style="width:${Math.min(50,Math.abs(v)/mx*50).toFixed(1)}%"></i></span><span class="am ${cls(v)}">${sg(v)}${amt(v)}</span></div>`;
- let h=`<section class="sec ov"><div class="sh"><b class="tt2">손익 구성<small>(주가 vs 환율)</small></b><span class="rct"><span class="tl">총 손익</span><b class="${cls(tot)}">${sg(tot)}${amt(tot)}</b></span></div>`;
+ const row=(col,nm,v)=>`<div class="sp3${spEx.has(nm)?" xo":""}" data-v="${v}"><span class="nm"><i style="background:${col}"></i><span class="spn" data-spx="${nm}">${nm}</span>${nm==="주가손익"||nm==="환차손익"||nm==="환노출 ETF"?`<button class="inf" data-pnl="${nm}" aria-label="${nm} 설명" style="margin-left:5px">!</button>`:""}</span><span class="dv"><i class="${v>=0?"g":"l"}" style="width:${Math.min(50,Math.abs(v)/mx*50).toFixed(1)}%"></i></span><span class="am ${cls(v)}">${sg(v)}${amt(v)}</span></div>`;
+ let h=`<section class="sec ov"><div class="sh"><b class="tt2">손익 구성<small>(주가 vs 환율)</small></b><span class="rct"><span class="tl">총 손익</span><b id="spTot" class="${cls(tot)}">${sg(tot)}${amt(tot)}</b></span></div>`;
  h+=row("#5b8def","주가손익",price)+(hasU?row("#f2b441","환차손익",fxe):"")+(hasE?row("#8b6cf0","환노출 ETF",exp):"");
  if(hasU||hasE){
   const aV=uV+eV,pd=uV/V*100,pe=eV/V*100,po=Math.max(0,100-pd-pe),R=22,Cc=2*Math.PI*R;
@@ -1004,17 +1043,17 @@ function splitHTML(){
 const f2n=n=>n.toLocaleString("ko-KR",{minimumFractionDigits:2,maximumFractionDigits:2});
 function dollarHTML(){
  if(!items||!items.length)return"";
- const isD=x=>x.usd||x.exp;let V=0,VU=0,DK=0,DU=0;const g={u:[0,0],e:[0,0],o:[0,0]},sec={};
- items.forEach(x=>{V+=x.v.KRW;VU+=x.v.USD;const k=x.usd?"u":x.exp?"e":"o";g[k][0]+=x.v.USD;g[k][1]+=x.v.KRW;
+ const isD=x=>x.usd||x.exp;let V=0,VU=0,DK=0,DU=0;const g={u:[0,0],e:[0,0],o:[0,0]},L={u:[],e:[],o:[]},sec={};
+ items.forEach(x=>{V+=x.v.KRW;VU+=x.v.USD;const k=x.usd?"u":x.exp?"e":"o";g[k][0]+=x.v.USD;g[k][1]+=x.v.KRW;L[k].push(x);
   if(isD(x)){DK+=x.v.KRW;DU+=x.v.USD;sec[x.sector]=(sec[x.sector]||0)+x.v.USD}});
  if(!V||!DK)return"";
  const fx=items[0].fx,usd=v=>"$"+(showAmt?Math.round(v).toLocaleString("en-US"):mkP),krw=v=>showAmt?won(v):mkP+"원";
  const pd=DK/V*100,R=22,Cc=2*Math.PI*R,l1=Cc*pd/100;
  const dn=`<div class="dlw"><svg viewBox="0 0 56 56" width="64" height="64"><circle cx="28" cy="28" r="${R}" fill="none" stroke="#c9ced6" stroke-width="9"/>${(()=>{let o=0;return[["u","#f2b441"],["e","#8b6cf0"]].map(([k,c])=>{const l=Cc*g[k][1]/V;const e=l>0?`<circle cx="28" cy="28" r="${R}" fill="none" stroke="${c}" stroke-width="9" stroke-dasharray="${l.toFixed(2)} ${(Cc-l).toFixed(2)}" stroke-dashoffset="${(-o).toFixed(2)}" transform="rotate(-90 28 28)"/>`:"";o+=l;return e}).join("")})()}</svg><div class="dc">${pd.toFixed(0)}%</div></div>`;
- const rows=[["u","#f2b441","해외상장"],["e","#8b6cf0","환노출 ETF"],["o","#c9ced6","원화자산"]].filter(r=>g[r[0]][1]>0).map(([k,c,n])=>`<div class="dlr"><span><i style="background:${c}"></i>${n}<em>${(g[k][1]/V*100).toFixed(1)}%</em></span><b>${usd(g[k][0])}</b><b>${krw(g[k][1])}</b></div>`).join("");
+ const rows=[["u","#f2b441","해외상장"],["e","#8b6cf0","환노출 ETF"],["o","#c9ced6","원화자산"]].filter(r=>g[r[0]][1]>0).map(([k,c,n])=>{const op=dlG.has(k),ls=L[k].slice().sort((a,b)=>b.v.KRW-a.v.KRW).map(x=>`<div class="dlr dli"><span>${esc(x.name.replace(/\s*[\(（].*$/,""))}</span><b>${usd(x.v.USD)}</b><b>${krw(x.v.KRW)}</b></div>`).join("");return`<button class="dlr dlrb" data-dlg="${k}" aria-expanded="${op}"><span><i style="background:${c}"></i>${n}<em>${(g[k][1]/V*100).toFixed(1)}%</em><svg class="dlch" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span><b>${usd(g[k][0])}</b><b>${krw(g[k][1])}</b></button><div class="dlg"${op?"":" hidden"}>${ls}</div>`}).join("");
  [...Object.keys(SECORD),...items.map(x=>x.sector)].forEach(k=>{if(k&&sec[k]===undefined)sec[k]=0});const ss=Object.keys(sec).sort((a,b)=>secOrd(a)-secOrd(b)),mx=Math.max(...ss.map(s=>sec[s]),1);
  const sl=ss.map(s=>`<div class="dls"><span><i style="background:${SC[s]||"var(--t3)"}"></i>${esc(SN[s]||"섹터 "+s)}</span><span class="bar"><u style="width:${(sec[s]/mx*100).toFixed(1)}%;background:${SC[s]||"var(--t3)"}"></u></span><b>${usd(sec[s])}</b><em>${(sec[s]/DU*100).toFixed(0)}%</em></div>`).join("");
- return`<section class="sec ov"><div class="sh"><b>달러자산 비중</b><span style="font-size:11px">기준환율 ${f2n(fx)}</span></div><div class="dl"><div class="dlt">${dn}<div class="dlx"><span>총 달러자산</span><b>${usd(DU)}</b><small>${showAmt?krw(DK):mkP+"원"}</small></div></div><div class="dlr dlh"><span>구성</span><span>달러</span><span>원화</span></div>${rows}<div class="dlc"><button class="uxtg" data-dlt aria-expanded="${dlOpen}"><span>섹터별 달러자산</span><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button><div class="dlb"${dlOpen?"":" hidden"}>${sl}</div></div></div></section>`}
+ return`<section class="sec ov"><div class="sh"><b>달러자산 비중</b><span style="font-size:11px">기준환율 ${f2n(fx)}</span></div><div class="dl"><div class="dtp"><div class="dtl"><span>총 달러자산</span><b>${usd(DU)}</b><small>${showAmt?krw(DK):mkP+"원"}</small></div><div class="dtr">전체 자산의 <b>${pd.toFixed(0)}%</b></div></div><div class="dsb">${[["u","#f2b441"],["e","#8b6cf0"],["o","#c9ced6"]].map(([k,c])=>g[k][1]>0?`<i style="width:${(g[k][1]/V*100).toFixed(2)}%;background:${c}"></i>`:"").join("")}</div><div class="dlr dlh"><span>구성</span><span>달러</span><span>원화</span></div>${rows}<div class="dlc"><button class="uxtg" data-dlt aria-expanded="${dlOpen}"><span>섹터별 달러자산</span><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button><div class="dlb"${dlOpen?"":" hidden"}>${sl}</div></div></div></section>`}
 let scVal=(()=>{const v=parseFloat(LS.get("scv","0"));return isFinite(v)?Math.max(-10,Math.min(10,v)):0})();
 function scenarioHTML(){
  if(!items||!items.length)return"";
