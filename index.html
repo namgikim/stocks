@@ -484,18 +484,21 @@ html,body{height:100%;overflow:hidden}
 #src [data-srtog]{cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}#src.col .ux{display:none}#src .ux{padding-bottom:8px!important}#src.col .sh{padding-bottom:14px}
 #src #srT{display:none}#src.col #srT{display:inline}#src.col .srlb{display:none}
 .ddx{margin:6px 20px 0;padding:14px 0 6px;border-top:1px solid var(--line)}.ddt{font-size:13px;font-weight:500;color:var(--t2);margin-bottom:6px}.ddg{font-size:11px;color:var(--t3);margin:10px 0 2px}
-.ddr{display:grid;grid-template-columns:64px minmax(0,1fr) 64px;align-items:center;gap:10px;padding:5px 0}.ddr .am{display:flex;align-items:center;justify-content:flex-end;gap:6px}.ddn{font-size:13px;white-space:nowrap}.ddr .am{font-size:13px;font-weight:600;white-space:nowrap;text-align:right}
+.ddr{display:grid;grid-template-columns:64px minmax(0,1fr) 82px;align-items:center;gap:10px;padding:5px 0}.ddr .am{display:flex;align-items:center;justify-content:flex-end;gap:6px}.ddb{display:inline-block;width:24px;text-align:center;font-style:normal;padding:0;border-radius:4px;font-size:9.5px;font-weight:700;line-height:15px}.ddb:not(:empty){background:rgba(240,68,82,.12);color:var(--up)}.ddr .am{display:flex;align-items:center;justify-content:flex-end;gap:6px}.ddn{font-size:13px;white-space:nowrap}.ddr .am{font-size:13px;font-weight:600;white-space:nowrap;text-align:right}
 .ddr .dv{display:block;position:relative;height:8px;border-radius:4px;background:var(--line);overflow:hidden}.ddr .dv i{position:absolute;left:0;top:0;bottom:0;width:auto;border-radius:4px}.ddr .dv i.ddi{background:#b0b8c1}.ddr .dv::after{display:none}.ddr .dv i.vl{background:var(--down)}
 .ddf{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:13px;color:var(--t2)}.ddf b{font-weight:600;white-space:nowrap}
-@media(max-width:360px){.ddx{margin-left:16px;margin-right:16px}.ddr{grid-template-columns:56px minmax(0,1fr) 58px;gap:6px}.ddf{font-size:12px}}
+@media(max-width:360px){.ddx{margin-left:16px;margin-right:16px}.ddr{grid-template-columns:56px minmax(0,1fr) 80px;gap:6px}.ddf{font-size:12px}}
 .ddt{display:flex;justify-content:space-between;align-items:center}.ddk{font-size:11px;font-weight:400;color:var(--t3);display:inline-flex;align-items:center;gap:3px}.ddk u,.ddn u{display:inline-block;width:8px;height:8px;border-radius:50%;text-decoration:none}.ddk u+u{margin-left:6px}.ddn u{margin-right:6px}.ddk .ddi,.ddn .ddi{background:#b0b8c1}.ddk .vl,.ddn .vl{background:var(--down)}
-.ddr .dv{overflow:visible;height:10px;border-radius:5px}.ddr .dv i{border-radius:5px}.ddr .dv::after{display:block;left:var(--a);top:-9px;bottom:-9px;width:0;background:none;border-left:1.5px dashed var(--t2);opacity:.7}
+.ddr .dv{overflow:visible;height:10px;border-radius:5px}.ddr .dv i{border-radius:5px}.ddr .dv::after{content:"";display:block;position:absolute;left:var(--a);margin-left:-1px;top:-5px;bottom:-5px;width:2px;border:0;background:repeating-linear-gradient(to bottom,var(--t2) 0,var(--t2) 3px,transparent 3px,transparent 6px);opacity:.7}
 .ddm{padding:0;margin-top:2px;margin-bottom:8px}.ddm .dv{background:none;height:14px}.ddm .dv::after{display:none}.ddm em{position:absolute;left:var(--a);transform:translateX(-50%);font-style:normal;font-size:11px;color:var(--t2);white-space:nowrap}
 .ddn{display:inline-flex;align-items:center}
 .ddk u+u{margin-left:2px}.ddk u:nth-of-type(3){margin-left:8px}
 .ddk u+u{margin-left:8px}
 .ddc{padding:4px 20px 14px}.ddc .ddf{margin-top:12px}
 @media(max-width:360px){.ddc{padding-left:16px;padding-right:16px}}
+.ddr>.dv{margin-right:-6px}
+@media(max-width:360px){.ddr>.dv{margin-right:-4px}}
+.ddm+.ddr .dv::after{top:-12px}.ddr:has(+.ddf) .dv::after{bottom:-10px}
 </style>
 </head>
 <body>
@@ -518,7 +521,7 @@ html,body{height:100%;overflow:hidden}
   </section>
 
   </div>
-  <div class="lt" id="lt"><div class="seg lv" id="lview"><i></i><button data-l="list" aria-label="목록" class="on"><svg viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><span>목록</span></button><button data-l="chart" aria-label="추이"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg><span>추이</span></button><button data-l="pnl" aria-label="분석"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.9-4.9"/><path d="M8 12.5v-1.5M10.5 12.5V8.5M13 12.5V10"/></svg><span>분석</span></button><button data-l="fc" aria-label="예측"><svg viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg><span>예측</span></button></div></div>
+  <div class="lt" id="lt"><div class="seg lv" id="lview"><i></i><button data-l="list" aria-label="목록" class="on"><svg viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><span>목록</span></button><button data-l="chart" aria-label="추이"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg><span>추이</span></button><button data-l="pnl" aria-label="분석"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.9-4.9"/><path d="M8 12.5v-1.5M10.5 12.5V8.5M13 12.5V10"/></svg><span>분석</span></button><button data-l="fc" aria-label="목표"><svg viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg><span>목표</span></button></div></div>
   <div id="sc"><div id="pager"><div id="track"><main id="list" class="pane"></main><main id="charts" class="pane"></main><main id="pnlp" class="pane"></main><main id="fcp" class="pane"></main></div></div>
   <div class="note" id="note"></div>
   </div>
@@ -1171,8 +1174,8 @@ function splitHTML(){
   if(ix.length&&vl.length){const mx=Math.max(...ix.concat(vl).map(x=>Math.abs(x.v)),1),av=l=>l.reduce((a,x)=>a+x.v,0)/l.length,ai=av(ix),avl=av(vl),gap=avl-ai,
    ap=Math.min(100,Math.abs(ai)/mx*100).toFixed(1),
    all=ix.map(x=>({...x,c:SC.B})).concat(vl.map(x=>({...x,c:SC.C}))).sort((a,b)=>a.v-b.v),
-   rw=all.map(x=>`<div class="ddr"><span class="ddn"><u style="background:${x.c}"></u>${x.nm}</span><span class="dv" style="--a:${ap}%"><i style="background:var(--down);width:${Math.min(100,Math.abs(x.v)/mx*100).toFixed(1)}%"></i></span><span class="am ${cls(x.v)}">${pct(x.v)}</span></div>`).join("");
-   ddCard=`<section class="sec ov"><div class="sh"><b>가치주 하락 방어력</b><span class="ddk"><u style="background:${SC.B}"></u>미국지수 <u style="background:${SC.C}"></u>가치주</span></div><div class="ddc"><div class="ddr ddm"><span></span><span class="dv ddl" style="--a:${ap}%"><em>미국지수 평균 ${pct(ai)}</em></span><span></span></div>${rw}<div class="ddf"><span>가치주 평균이 미국지수 평균보다</span><b class="${cls(gap)}">${gap>=0?"+":"-"}${Math.abs(gap).toFixed(1)}%p ${gap>=0?"덜 빠졌어요":"더 빠졌어요"}</b></div></div></section>`}}}
+   rw=all.map(x=>`<div class="ddr"><span class="ddn"><u style="background:${x.c}"></u>${x.nm}</span><span class="dv" style="--a:${ap}%"><i style="background:var(--down);width:${Math.min(100,Math.abs(x.v)/mx*100).toFixed(1)}%"></i></span><span class="am ${cls(x.v)}"><em class="ddb">${x.v>=-4?"고점":""}</em>${pct(x.v)}</span></div>`).join("");
+   ddCard=`<section class="sec ov"><div class="sh"><b>가치주 하락 방어력<button class="inf" data-pnl="고점 뱃지" aria-label="고점 뱃지 설명" style="margin-left:5px">!</button></b><span class="ddk"><u style="background:${SC.B}"></u>미국지수 <u style="background:${SC.C}"></u>가치주</span></div><div class="ddc"><div class="ddr ddm"><span></span><span class="dv ddl" style="--a:${ap}%"><em>미국지수 평균 ${pct(ai)}</em></span><span></span></div>${rw}<div class="ddf"><span>가치주 평균이 미국지수 평균보다</span><b class="${cls(gap)}">${gap>=0?"+":"-"}${Math.abs(gap).toFixed(1)}%p ${gap>=0?"덜 빠졌어요":"더 빠졌어요"}</b></div></div></section>`}}}
  return h+`</section>`+ddCard}
 function xtHTML(){
  if(!items||!items.length)return"";
@@ -1398,7 +1401,7 @@ function endDrag(e){
 pager.addEventListener("touchend",endDrag,{passive:true});
 pager.addEventListener("touchcancel",endDrag,{passive:true});
 $("infoBtn").onclick=()=>{$("modalAmt").textContent=NET?swV(NET):"-";$("modal").hidden=false};
-const pm=()=>$("pnlModal");$("pnlOk").onclick=()=>{pm().hidden=true};pm().onclick=e=>{if(e.target===pm())pm().hidden=true};const PT={"주가손익":"매입 당시의 환율을 기준으로 계산한 주가 이익 금액이에요. 환노출 ETF를 제외한 모든 종목이 포함돼요.","환차손익":"매입할 때와 지금의 환율 차이로 생긴 손익 금액이에요. 해외상장종목만 포함돼요.","환노출 ETF":"국내상장 해외 ETF의 손익 금액이에요. 주가와 환율이 모두 영향을 줘요.","고점, 저점 기준":"52주 최고가를 고점, 최저가를 저점으로 해요. 종목마다 고(고점), 중(고점과 저점의 중간값), 저(저점) 중 하나를 고르면, 고른 종목들의 예상 손익이 합산돼요. 선택한 버튼을 다시 누르면 해제돼요.","영향 종목 기준":"나스닥100(A), S&P500(B) 섹터로 지정된 종목을 가져와요. 레버리지 종목은 평가금액에 레버리지 배수를 곱해서 지수 종목에 합산해요.","기대 총 손익":"현재 총 손익에 예상 주가 변동액(고/중/저 선택분)과 예상 환율 변동액을 더한 값이에요. 예상 환율 변동액에는 선택한 주가 변동분에 환율이 적용되는 몫도 포함돼 있어요.\n투자수익 토글을 켜면 현재 총 손익과 퍼센트가 순입금액 기준으로 바뀌어요.","예상 환율":"해외상장종목과 환노출 ETF의 평가금액에만 환율 변동을 반영해 계산한 값이에요. 원화 자산은 포함되지 않아요. 예상 주가에서 고른 변동분도 환율 계산에 반영돼요.","현금성 자산":"변동성이 적어서 주가 변동으로는 금액이 변하지 않는다고 가정해요. 환율 효과만 반영돼요."};document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-pnl]");if(b){const k=b.dataset.pnl;$("pnlT").textContent=k;$("pnlP").textContent=PT[k]||(window.PTX&&PTX[k])||"";pm().hidden=false}});
+const pm=()=>$("pnlModal");$("pnlOk").onclick=()=>{pm().hidden=true};pm().onclick=e=>{if(e.target===pm())pm().hidden=true};const PT={"고점 뱃지":"52주 고점 대비 낙폭이 4% 이내인 종목에 '고점' 뱃지가 붙어요. 고점 가까이 회복했다는 뜻이에요.","주가손익":"매입 당시의 환율을 기준으로 계산한 주가 이익 금액이에요. 환노출 ETF를 제외한 모든 종목이 포함돼요.","환차손익":"매입할 때와 지금의 환율 차이로 생긴 손익 금액이에요. 해외상장종목만 포함돼요.","환노출 ETF":"국내상장 해외 ETF의 손익 금액이에요. 주가와 환율이 모두 영향을 줘요.","고점, 저점 기준":"52주 최고가를 고점, 최저가를 저점으로 해요. 종목마다 고(고점), 중(고점과 저점의 중간값), 저(저점) 중 하나를 고르면, 고른 종목들의 예상 손익이 합산돼요. 선택한 버튼을 다시 누르면 해제돼요.","영향 종목 기준":"나스닥100(A), S&P500(B) 섹터로 지정된 종목을 가져와요. 레버리지 종목은 평가금액에 레버리지 배수를 곱해서 지수 종목에 합산해요.","기대 총 손익":"현재 총 손익에 예상 주가 변동액(고/중/저 선택분)과 예상 환율 변동액을 더한 값이에요. 예상 환율 변동액에는 선택한 주가 변동분에 환율이 적용되는 몫도 포함돼 있어요.\n투자수익 토글을 켜면 현재 총 손익과 퍼센트가 순입금액 기준으로 바뀌어요.","예상 환율":"해외상장종목과 환노출 ETF의 평가금액에만 환율 변동을 반영해 계산한 값이에요. 원화 자산은 포함되지 않아요. 예상 주가에서 고른 변동분도 환율 계산에 반영돼요.","현금성 자산":"변동성이 적어서 주가 변동으로는 금액이 변하지 않는다고 가정해요. 환율 효과만 반영돼요."};document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-pnl]");if(b){const k=b.dataset.pnl;$("pnlT").textContent=k;$("pnlP").textContent=PT[k]||(window.PTX&&PTX[k])||"";pm().hidden=false}});
 $("modalOk").onclick=()=>{$("modal").hidden=true};
 $("modal").onclick=e=>{if(e.target===$("modal"))$("modal").hidden=true};
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("modal").hidden=true;pm().hidden=true;closePw()}});
