@@ -483,6 +483,19 @@ html,body{height:100%;overflow:hidden}
 .srtt{display:inline-flex;align-items:center;gap:4px}.chv{width:18px;height:18px;stroke:var(--t3);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}.col .chv{transform:rotate(180deg)}
 #src [data-srtog]{cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}#src.col .ux{display:none}#src .ux{padding-bottom:8px!important}#src.col .sh{padding-bottom:14px}
 #src #srT{display:none}#src.col #srT{display:inline}#src.col .srlb{display:none}
+.ddx{margin:6px 20px 0;padding:14px 0 6px;border-top:1px solid var(--line)}.ddt{font-size:13px;font-weight:500;color:var(--t2);margin-bottom:6px}.ddg{font-size:11px;color:var(--t3);margin:10px 0 2px}
+.ddr{display:grid;grid-template-columns:64px minmax(0,1fr) 64px;align-items:center;gap:10px;padding:5px 0}.ddr .am{display:flex;align-items:center;justify-content:flex-end;gap:6px}.ddn{font-size:13px;white-space:nowrap}.ddr .am{font-size:13px;font-weight:600;white-space:nowrap;text-align:right}
+.ddr .dv{display:block;position:relative;height:8px;border-radius:4px;background:var(--line);overflow:hidden}.ddr .dv i{position:absolute;left:0;top:0;bottom:0;width:auto;border-radius:4px}.ddr .dv i.ddi{background:#b0b8c1}.ddr .dv::after{display:none}.ddr .dv i.vl{background:var(--down)}
+.ddf{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:13px;color:var(--t2)}.ddf b{font-weight:600;white-space:nowrap}
+@media(max-width:360px){.ddx{margin-left:16px;margin-right:16px}.ddr{grid-template-columns:56px minmax(0,1fr) 58px;gap:6px}.ddf{font-size:12px}}
+.ddt{display:flex;justify-content:space-between;align-items:center}.ddk{font-size:11px;font-weight:400;color:var(--t3);display:inline-flex;align-items:center;gap:3px}.ddk u,.ddn u{display:inline-block;width:8px;height:8px;border-radius:50%;text-decoration:none}.ddk u+u{margin-left:6px}.ddn u{margin-right:6px}.ddk .ddi,.ddn .ddi{background:#b0b8c1}.ddk .vl,.ddn .vl{background:var(--down)}
+.ddr .dv{overflow:visible;height:10px;border-radius:5px}.ddr .dv i{border-radius:5px}.ddr .dv::after{display:block;left:var(--a);top:-9px;bottom:-9px;width:0;background:none;border-left:1.5px dashed var(--t2);opacity:.7}
+.ddm{padding:0;margin-top:2px;margin-bottom:8px}.ddm .dv{background:none;height:14px}.ddm .dv::after{display:none}.ddm em{position:absolute;left:var(--a);transform:translateX(-50%);font-style:normal;font-size:11px;color:var(--t2);white-space:nowrap}
+.ddn{display:inline-flex;align-items:center}
+.ddk u+u{margin-left:2px}.ddk u:nth-of-type(3){margin-left:8px}
+.ddk u+u{margin-left:8px}
+.ddc{padding:4px 20px 14px}.ddc .ddf{margin-top:12px}
+@media(max-width:360px){.ddc{padding-left:16px;padding-right:16px}}
 </style>
 </head>
 <body>
@@ -534,26 +547,31 @@ D,  금 (1g),411060,원화,"152,831.2500","$213,471.0000",15,"2,292,468.7500","2
 E,  VGIT (미국중기채권),VGIT,USD,57.6700,$58.6600,206,"11,880.0200","15,949,402.0508",1342.54,1342.59,-1.69%,-1.69%,Vangu,,
 E,  SGOV (미국단기채권),SGOV,USD,100.6400,$100.5969,62,"6,239.6800","8,377,019.9872",1342.54,1403.53,0.04%,-4.30%,iShar,,`;
 /* 저장된 데이터(임시 조회용): 시트에서 받은 CSV 원문. 불러오기 전/실패 시 이 값으로 화면을 그려요 */
-const SNAPSHOT_CHART=`,필터 일시,필터 날짜별 금액,전고점,일(day),기준점,총 평가액,TIGER S&P500,S&P500,KODEX 나스닥100,나스닥100,TIGER 나스닥100 2배,나스닥100 2배
-,2026.10.29,"₩313,583,870.2","₩313,837,179.8",29,0,0,25575,0,26060,0,37120,0
-,2026.10.30,"₩310,067,593.9",,30,0,-1.12,25310,-1.04,25465,-2.28,35395,-4.65
-,2026.10.31,"₩307,956,370.8",,31,0,-1.79,,,,,,
-,2026.11.02,"₩309,048,186.6",,02,0,-1.45,25355,-0.86,25420,-2.46,35325,-4.84
-,2026.11.03,"₩307,938,880.6",,03,0,-1.8,25010,-2.21,24770,-4.95,33545,-9.63
-,2026.11.04,"₩307,518,529.5",,04,0,-1.93,25075,-1.96,24875,-4.55,33750,-9.08
-,2026.11.05,"₩313,837,179.8",,05,0,0.08,25530,-0.18,24925,-4.36,33890,-8.7
-,2026.11.06,"₩303,743,472.8",,06,0,-3.14,24755,-3.21,24050,-7.71,31535,-15.05
-,2026.11.07,"₩305,534,768.3",,07,0,-2.57,,,,,,
-,2026.11.09,"₩302,590,476.8",,09,0,-3.51,24750,-3.23,24040,-7.75,31440,-15.3
-,2026.11.10,"₩308,259,146.8",,10,0,-1.7,25085,-1.92,24640,-5.45,32940,-11.26
-,2026.11.11,"₩308,121,045.9",,11,0,-1.74,25020,-2.17,24820,-4.76,33340,-10.18
-,2026.11.12,"₩310,543,920.8",,12,0,-0.97,25000,-2.25,24695,-5.24,33045,-10.98
-,2026.11.13,"₩311,736,675.6",,13,0,-0.59,25120,-1.78,24915,-4.39,33580,-9.54
-,2026.11.14,"₩310,881,558.8",,14,0,-0.86,,,,,,
-,2026.11.16,"₩308,665,217.6",,16,0,-1.57,24885,-2.7,24350,-6.56,32150,-13.39
-,2026.11.17,"₩302,693,721.5",,17,0,-3.47,24555,-3.99,24040,-7.75,31255,-15.8
-,2026.11.18,"₩299,549,226.3",,18,0,-4.48,24305,-4.97,23895,-8.31,30940,-16.65
-,2026.11.19,"₩298,904,191.3",,19,0,-4.68,24305,-4.97,23895,-8.31,30940,-16.65`;
+const SNAPSHOT_CHART=`,필터 일시,필터 날짜별 금액,전고점,일(day),기준점,총 평가금액,TIGER S&P500,VOO,KODEX 나스닥100,QQQ,TIGER 나스닥100 2배,QLD,TIGER 미배당,SCHD
+,2026.10.29,"₩313,583,870.2","₩313,837,179.8",29,0,0,25575,0,26060,0,37120,0,14955,0
+,2026.10.30,"₩310,067,593.9",,30,0,-1.12,25310,-1.04,25465,-2.28,35395,-4.65,15175,1.47
+,2026.10.31,"₩307,956,370.8",,31,0,-1.79,,,,,,,,
+,2026.11.02,"₩309,048,186.6",,02,0,-1.45,25355,-0.86,25420,-2.46,35325,-4.84,15190,1.57
+,2026.11.03,"₩307,938,880.6",,03,0,-1.8,25010,-2.21,24770,-4.95,33545,-9.63,15220,1.77
+,2026.11.04,"₩307,518,529.5",,04,0,-1.93,25075,-1.96,24875,-4.55,33750,-9.08,15065,0.74
+,2026.11.05,"₩313,837,179.8",,05,0,0.08,25530,-0.18,24925,-4.36,33890,-8.7,15420,3.11
+,2026.11.06,"₩303,743,472.8",,06,0,-3.14,24755,-3.21,24050,-7.71,31535,-15.05,15250,1.97
+,2026.11.07,"₩305,534,768.3",,07,0,-2.57,,,,,,,,
+,2026.11.09,"₩302,590,476.8",,09,0,-3.51,24750,-3.23,24040,-7.75,31440,-15.3,15135,1.2
+,2026.11.10,"₩308,259,146.8",,10,0,-1.7,25085,-1.92,24640,-5.45,32940,-11.26,15115,1.07
+,2026.11.11,"₩308,121,045.9",,11,0,-1.74,25020,-2.17,24820,-4.76,33340,-10.18,15065,0.74
+,2026.11.12,"₩310,543,920.8",,12,0,-0.97,25000,-2.25,24695,-5.24,33045,-10.98,15170,1.44
+,2026.11.13,"₩311,736,675.6",,13,0,-0.59,25120,-1.78,24915,-4.39,33580,-9.54,15200,1.64
+,2026.11.14,"₩310,881,558.8",,14,0,-0.86,,,,,,,,
+,2026.11.16,"₩308,665,217.6",,16,0,-1.57,24885,-2.7,24350,-6.56,32150,-13.39,15295,2.27
+,2026.11.17,"₩302,693,721.5",,17,0,-3.47,24555,-3.99,24040,-7.75,31255,-15.8,15125,1.14
+,2026.11.18,"₩299,549,226.3",,18,0,-4.48,24305,-4.97,23895,-8.31,30940,-16.65,14860,-0.64
+,2026.11.19,"₩299,350,366.9",,19,0,-4.54,24400,-4.59,24270,-6.87,31785,-14.37,14625,-2.21
+,2026.11.20,"₩293,248,500.9",,20,0,-6.48,23665,-7.47,23180,-11.05,29040,-21.77,14505,-3.01
+,2026.11.21,"₩288,237,920.5",,21,0,-8.08,,,,,,,,
+,2026.11.23,"₩287,394,136.3",,23,0,-8.35,23585,-7.78,22950,-11.93,28355,-23.61,14540,-2.77
+,2026.11.24,"₩298,101,513.4",,24,0,-4.94,24140,-5.61,23760,-8.83,30245,-18.52,14635,-2.14
+,2026.11.25,"₩295,601,302.9",,25,0,-5.73,24010,-6.12,23255,-10.76,29015,-21.83,14860,-0.64`;
 const SNAPSHOT_OTHER=`오늘의 섹터별 자산변동,,,주식 순입금액,비밀번호,섹터구분코드,,,주요 지표,,오늘의 총 평가금액 변동,,지표가 되는 해외주식종목의 하루 변동 및 고점/저점 ($),,,,,
 ,,,,,,,,,,,,,,,,,
 섹터구분,값,퍼센티지,,,코드,이름,정렬,이름,값,값,퍼센티지,티커,이름,값,퍼센티지,고점,저점
@@ -606,8 +624,11 @@ function build(text,defNet){
   return{idx,lev:lv>0?lv:1,exp:expF&&!usd,logo:(r[13]||"").trim(),sector:g(r,"섹터구분"),name:g(r,"종목명"),ticker:g(r,"티커"),usd,fx,avg,qty,price,cost,
    v:{KRW:vK,USD:usd?vL:vL/fx},c:{KRW:cK,USD:usd?cL:cL/fx}}}).filter(x=>x.name)}
 
+const CHL={};
+const SCOL={k:"#f04452",i:"#f8939b",v:"#f5b82e"};
 function buildChart(text){
  const t=parseCSV(text);
+ [["g",6],["i",8],["k",10],["m",12],["v",14]].forEach(([k,c])=>{const h=String((t[0]||[])[c]||"").trim();if(h)CHL[k]=h});
  return t.slice(1).map(r=>{
   const x=(r[1]||"").trim();
   const y=optNum(r[2]);
@@ -616,8 +637,9 @@ function buildChart(text){
   const i=optNum(r[8]);
   const k=optNum(r[10]);
   const m=optNum(r[12]);
-  return{x,y,f,g,i,k,m};
- }).filter(d=>Boolean(d.x)&&(d.y!==null||d.f!==null||d.g!==null||d.i!==null||d.k!==null||d.m!==null));
+  const v=optNum(r[14]);
+  return{x,y,f,g,i,k,m,v};
+ }).filter(d=>Boolean(d.x)&&(d.y!==null||d.f!==null||d.g!==null||d.i!==null||d.k!==null||d.m!==null||d.v!==null));
 }
 
 // 기타데이터 시트: 3행까지 헤더, 4행부터 값. "주식 순입금액" 열의 4행 값을 사용
@@ -821,7 +843,7 @@ function drawCompChart(){
  const cv=$("compChart");
  if(!cv)return;
  if(compInst){compInst.destroy();compInst=null}
- const rows=chartRows.filter(d=>d.f!==null||d.g!==null||d.i!==null||d.k!==null||d.m!==null);
+ const rows=chartRows.filter(d=>d.f!==null||d.g!==null||d.i!==null||d.k!==null||d.m!==null||d.v!==null);
  if(!rows.length||typeof Chart==="undefined")return;
  const dark=window.matchMedia("(prefers-color-scheme: dark)").matches;
  const tickCol="#8b95a1";
@@ -830,10 +852,11 @@ function drawCompChart(){
  const pts=rows.length;
  const pr=pts<=15?2.5:0;
  const series=[
-  {label:"총 평가금액",key:"g",color:"#3182f6",width:2.8,dash:[],pr,hidden:false},
-  {label:"S&P500",key:"i",color:"#f8939b",width:2,dash:[],pr,hidden:false},
-  {label:"나스닥100",key:"k",color:"#f04452",width:2,dash:[],pr,hidden:false},
-  {label:"나스닥100 2배",key:"m",color:"#6b5cf6",width:2,dash:[],pr,hidden:true}, // 기본값 선택 해제(숨김)
+  {label:CHL.g||"총 평가금액",key:"g",color:"#3182f6",width:2.8,dash:[],pr,hidden:false},
+  {label:CHL.i||"S&P500",key:"i",color:SCOL.i,width:2,dash:[],pr,hidden:false},
+  {label:CHL.k||"나스닥100",key:"k",color:SCOL.k,width:2,dash:[],pr,hidden:false},
+  {label:CHL.m||"나스닥100 2배",key:"m",color:"#6b5cf6",width:2,dash:[],pr,hidden:true}, // 기본값 선택 해제(숨김)
+  {label:CHL.v||"VTV",key:"v",color:SCOL.v,width:2,dash:[],pr,hidden:false},
   {label:"기준선",key:"f",color:"#8b95a1",width:1.6,dash:[4,4],pr:0,hidden:false}
  ];
  compInst=new Chart(cv.getContext("2d"),{
@@ -841,7 +864,7 @@ function drawCompChart(){
   plugins:[SUBGRID],
   data:{
    labels:rows.map(d=>d.x),
-   datasets:series.map(s=>({
+   datasets:series.filter(s=>s.key==="f"||rows.some(d=>d[s.key]!==null&&d[s.key]!==undefined)).map(s=>({
     label:s.label,
     data:rows.map(d=>d[s.key]),
     borderColor:s.color,
@@ -1143,7 +1166,14 @@ function splitHTML(){
    const mp=Math.max(-50,Math.min(50,d*5));
    t2=`<div class="tile pc"><div class="cap cr"><span>평균매입환율 수익률</span><b class="${cls(d)}">${pct(d)}</b></div><div class="bd col"><div class="gl3"><span>매입 <b>${f2n(avgFx)}</b></span><div class="gz"><i class="${d>=0?"g":"l"}" style="width:${Math.abs(mp).toFixed(1)}%"></i><u class="${d>=0?"g":"l"}" style="left:${(50+mp).toFixed(1)}%"></u></div><span>현재 <b class="${cls(d)}">${f2n(curFx)}</b></span></div></div></div>`}
   h+=hasU?`<div class="tiles" style="grid-template-columns:1fr">${t2}</div>`:""}
- return h+`</section>`}
+ let ddCard="";
+ {const o=OTHER&&OTHER.idx;if(o){const dd=tk=>{const d=o[tk];return d&&d.hi>0&&d.p>0?(d.p/d.hi-1)*100:null},gr=(t,l)=>l.map(([tk,nm])=>({nm,v:dd(tk)})).filter(x=>x.v!==null),ix=gr("지수",[["QQQ","QQQ"],["VOO","VOO"]]),vl=gr("가치주",[["BRK.B","BRK.B"],["WMT","WMT"]]);
+  if(ix.length&&vl.length){const mx=Math.max(...ix.concat(vl).map(x=>Math.abs(x.v)),1),av=l=>l.reduce((a,x)=>a+x.v,0)/l.length,ai=av(ix),avl=av(vl),gap=avl-ai,
+   ap=Math.min(100,Math.abs(ai)/mx*100).toFixed(1),
+   all=ix.map(x=>({...x,c:SC.B})).concat(vl.map(x=>({...x,c:SC.C}))).sort((a,b)=>a.v-b.v),
+   rw=all.map(x=>`<div class="ddr"><span class="ddn"><u style="background:${x.c}"></u>${x.nm}</span><span class="dv" style="--a:${ap}%"><i style="background:var(--down);width:${Math.min(100,Math.abs(x.v)/mx*100).toFixed(1)}%"></i></span><span class="am ${cls(x.v)}">${pct(x.v)}</span></div>`).join("");
+   ddCard=`<section class="sec ov"><div class="sh"><b>가치주 하락 방어력</b><span class="ddk"><u style="background:${SC.B}"></u>미국지수 <u style="background:${SC.C}"></u>가치주</span></div><div class="ddc"><div class="ddr ddm"><span></span><span class="dv ddl" style="--a:${ap}%"><em>미국지수 평균 ${pct(ai)}</em></span><span></span></div>${rw}<div class="ddf"><span>가치주 평균이 미국지수 평균보다</span><b class="${cls(gap)}">${gap>=0?"+":"-"}${Math.abs(gap).toFixed(1)}%p ${gap>=0?"덜 빠졌어요":"더 빠졌어요"}</b></div></div></section>`}}}
+ return h+`</section>`+ddCard}
 function xtHTML(){
  if(!items||!items.length)return"";
  const tv=items.reduce((a,x)=>a+x.v.KRW,0),tc=items.reduce((a,x)=>a+x.c.KRW,0);
@@ -1262,8 +1292,8 @@ const modeSel=`<select id="listMode" class="sel" aria-label="보기 방식"><opt
  }
  $("list").innerHTML=listHTML;
  const hasTotal=chartRows.some(d=>d.y!==null);
- const hasComp=chartRows.some(d=>d.f!==null||d.g!==null||d.i!==null||d.k!==null||d.m!==null);
- const cr0=chartRows.find(d=>d.f!==null||d.g!==null||d.i!==null||d.k!==null||d.m!==null);
+ const hasComp=chartRows.some(d=>d.f!==null||d.g!==null||d.i!==null||d.k!==null||d.m!==null||d.v!==null);
+ const cr0=chartRows.find(d=>d.f!==null||d.g!==null||d.i!==null||d.k!==null||d.m!==null||d.v!==null);
  const ov=overviewHTML(hasTotal?`<div class="cbox short"><canvas id="totalChart"></canvas></div>`:`<div class="ph" style="padding:0 20px 10px;font-size:13px">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`);
  $("charts").innerHTML=ov[0]+
   `<section class="sec"><div class="sh"><b>우리집 주식 vs 미국지수</b><span style="font-size:11px">환율 반영${cr0?` · ${cr0.x} 기준`:""}</span></div>`+
