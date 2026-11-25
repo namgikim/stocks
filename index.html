@@ -506,6 +506,8 @@ html,body{height:100%;overflow:hidden}
 .shw{flex:1;min-height:0;width:100%;max-width:480px;overflow-y:auto;-webkit-overflow-scrolling:touch;border-radius:16px}.shw img{display:block;width:100%;height:auto;border-radius:16px;-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
 .shh{margin-top:10px;font-size:12px;color:rgba(255,255,255,.75)}
 .shb{display:flex;gap:10px;width:100%;max-width:480px;padding:10px 0 calc(env(safe-area-inset-bottom,0px) + 14px)}.shb button{flex:1;padding:14px 0;border-radius:14px;font-size:15px;font-weight:700;background:rgba(255,255,255,.18);color:#fff}.shb #shSave{flex:2;background:#3182f6}
+.shc{display:flex;gap:8px;width:100%;max-width:480px;padding:0 0 10px;flex:none}.shc button{flex:1;padding:9px 4px;border-radius:12px;font-size:13px;font-weight:700;background:rgba(255,255,255,.16);color:rgba(255,255,255,.8);white-space:nowrap}.shc button.on{background:#3182f6;color:#fff}
+#toast{z-index:30}
 </style>
 </head>
 <body>
@@ -536,7 +538,7 @@ html,body{height:100%;overflow:hidden}
 <div id="toast"></div>
 <div id="modal" hidden><div class="mb" role="dialog" aria-modal="true"><h3>투자수익</h3><p class="lead">투자수익은 순입금액을 기준으로 상승한 금액을 의미해요. 종목을 사고팔아도 오차 없이 보이는 내 전체 성과예요.</p><div class="sub2">순입금액</div><div class="amt" id="modalAmt">-</div><p>이 금액은 삼성증권(해외, ISA), 신한증권(국내, ISA, 연금), KB증권(국내, 연금, 금현물) 계좌의 순입금액을 모두 합한 금액이에요.</p><button class="ok" id="modalOk">확인</button></div></div>
 <div id="pnlModal" hidden><div class="mb" role="dialog" aria-modal="true"><h3 id="pnlT">주가손익</h3><p class="lead" id="pnlP">매입 당시의 환율을 기준으로 계산한 주가 이익 금액이에요.</p><button class="ok" id="pnlOk">확인</button></div></div>
-<div id="shModal" hidden><div class="shw" id="shw"><img id="shImg" alt="요약 이미지"></div><div class="shh">이미지를 길게 누르면 '사진에 저장'도 할 수 있어요</div><div class="shb"><button id="shClose" type="button">닫기</button><button id="shSave" type="button">저장 / 공유</button></div></div>
+<div id="shModal" hidden><div class="shc" id="shc"><button type="button" data-shk="p">자산 구성</button><button type="button" data-shk="c">주식 vs 미국지수</button><button type="button" data-shk="a">자산 추이</button></div><div class="shw" id="shw"><img id="shImg" alt="요약 이미지"></div><div class="shh">이미지를 길게 누르면 '사진에 저장'도 할 수 있어요</div><div class="shb"><button id="shClose" type="button">닫기</button><button id="shSave" type="button">저장 / 공유</button></div></div>
 <div id="pwModal" hidden><div class="mb" role="dialog" aria-modal="true" aria-labelledby="pwTitle"><h3 id="pwTitle">비밀번호 확인</h3><p>금액 숨김을 해제하려면 비밀번호를 입력해 주세요.</p><input class="pwin" id="pwIn" type="password" inputmode="numeric" autocomplete="off" maxlength="4" aria-label="비밀번호 4자리"><div class="pwerr" id="pwErr" role="alert"></div><div class="pwb"><button class="no" id="pwNo">취소</button></div></div></div>
 
 <script>
@@ -1446,16 +1448,17 @@ window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>
 
 // ===== 요약 이미지 (도넛 + 주식vs미국지수 + 자산추이) =====
 let shFile=null,shUrl=null;
+let shSel=(()=>{try{const a=JSON.parse(LS.get("shsel",'["p","c","a"]'));const o=new Set(a.filter(k=>k==="p"||k==="c"||k==="a"));return o.size?o:new Set(["p","c","a"])}catch(e){return new Set(["p","c","a"])}})();
 function shareImgBuild(){
- const W=480,P=12,CP=16,UP="#f04452",DN="#3182f6",FL="#8b95a1",T1="#191f28",T2="#4e5968";
+ const W=480,P=12,CP=24,E=10,UP="#f04452",DN="#3182f6",FL="#8b95a1",T1="#191f28",T2="#4e5968";
  const FF=(getComputedStyle(document.body).fontFamily||"sans-serif");
  const pieL=getPieItems(),tot=pieL.reduce((s,x)=>s+x.v.KRW,0);
  const rc=chartRows.filter(d=>d.g!==null||d.i!==null||d.k!==null||d.v!==null);
  const ra=chartRows.filter(d=>d.y!==null);
  const O=OTHER||{total:null,sectors:[]};
- const RH=25,R=84,LH=Math.max(pieL.length*RH,2*R);
- const H0=64,h1=50+LH+CP,h2=284,h3=(O.sectors.length?216+78:206)+CP,GAP=12;
- const H=H0+h1+GAP+h2+GAP+h3+P-4;
+ const RH=26,R=88,LR=Math.ceil(pieL.length/2);
+ const H0=64,h1=74+2*R+LR*RH+6,h2=284,h3=(O.sectors.length?216+78:206)+16,GAP=12;
+ const sel=shSel,hs=[sel.has("p")&&h1+2*E,sel.has("c")&&h2+2*E,sel.has("a")&&h3+2*E].filter(Boolean),H=H0+hs.reduce((a,b)=>a+b,0)+(hs.length-1)*GAP+P-4;
  const S=1080/W,cv=document.createElement("canvas");cv.width=1080;cv.height=Math.round(H*S);
  const c=cv.getContext("2d");c.scale(S,S);
  const font=(sz,w)=>`${w||500} ${sz}px ${FF}`;
@@ -1468,18 +1471,19 @@ function shareImgBuild(){
  tx("우리집 주식",P+4,26,26,800,T1);
  {const u=$("upd");tx(u?u.textContent:"",P+4,52,13.5,500,FL)}
  // ① 도넛 + 우측 범례
- let y=H0;card(y,h1);
+ let y=H0;if(sel.has("p")){card(y,h1+2*E);c.save();c.translate(0,E);
  tx("자산 구성",P+CP,y+26,19,700,T1);
- {const cx=P+CP+R,cy=y+50+LH/2,r=R*.56;let a=-Math.PI/2;
+ {const cx=W/2,cy=y+50+R+4,r=R*.56;let a=-Math.PI/2;
   pieL.forEach(x=>{const d=tot?x.v.KRW/tot*Math.PI*2:0;c.beginPath();c.arc(cx,cy,R,a,a+d);c.arc(cx,cy,r,a+d,a,true);c.closePath();c.fillStyle=x.pieColor;c.fill();c.lineWidth=2;c.strokeStyle="#fff";c.stroke();a+=d});
-  const lx=P+CP+2*R+22,rx=W-P-CP,ly=y+50+(LH-pieL.length*RH)/2;
-  pieL.forEach((x,i)=>{const yy=ly+i*RH+RH/2;
-   c.beginPath();c.arc(lx+5.5,yy,5.5,0,7);c.fillStyle=x.pieColor;c.fill();
-   const pc=(tot?x.v.KRW/tot*100:0).toFixed(1)+"%";c.font=font(14.5,700);const pw=c.measureText(pc).width;
-   let nm=x.name.replace(/\s*\(.*\)/,"");c.font=font(14.5,500);while(c.measureText(nm).width>rx-lx-20-pw-8&&nm.length>2)nm=nm.slice(0,-1);
-   tx(nm,lx+17,yy,14.5,500,T1);tx(pc,rx,yy,14.5,700,T1,"right")})}
+  const ly=cy+R+22,cw=(W-2*P-2*CP)/2;
+  pieL.forEach((x,i)=>{const col=i<LR?0:1,row=i%LR,lx=P+CP+(col?236:0),yy=ly+row*RH+RH/2,gx=col?12:0;
+   c.beginPath();c.arc(lx+gx+5.5,yy,5.5,0,7);c.fillStyle=x.pieColor;c.fill();
+   const pc=(tot?x.v.KRW/tot*100:0).toFixed(1)+"%";c.font=font(14,700);const pw=c.measureText(pc).width;
+   const rx=col?W-P-CP:P+CP+236-16;let nm=x.name.replace(/\s*\(.*\)/,"");c.font=font(14,500);while(c.measureText(nm).width>rx-(lx+gx)-17-pw-6&&nm.length>2)nm=nm.slice(0,-1);
+   tx(nm,lx+gx+17,yy,14,500,T1);tx(pc,rx,yy,14,700,T1,"right")})}
+ c.restore();y+=h1+2*E+GAP}
  // ② 우리집 주식 vs 미국지수
- y+=h1+GAP;card(y,h2);
+ if(sel.has("c")){card(y,h2+2*E);c.save();c.translate(0,E);
  tx("우리집 주식 vs 미국지수",P+CP,y+26,19,700,T1);
  {const ser=[["g",CHL.g||"총 평가금액","#3182f6",3.2],["i",CHL.i||"S&P500",SCOL.i,2.4],["k",CHL.k||"나스닥100",SCOL.k,2.4],["v",CHL.v||"VTV",SCOL.v,2.4]].filter(s=>rc.some(d=>d[s[0]]!==null&&d[s[0]]!==undefined));
   let lx=P+CP;const ly=y+54;
@@ -1495,8 +1499,9 @@ function shareImgBuild(){
   c.lineJoin="round";c.lineCap="round";
   ser.slice().reverse().forEach(s=>{const p=[];rc.forEach((d,i)=>{const v=d[s[0]];if(v!==null&&v!==undefined)p.push([xx(i),yy(v)])});c.strokeStyle=s[2];c.lineWidth=s[3];smooth(p);c.stroke()});
   [0,.33,.66,1].forEach((f,k)=>{const i=Math.round(f*(n-1));if(rc[i])tx(fmtDay(rc[i].x),k===0?X0:k===3?X1:xx(i),Y1+17,12.5,500,FL,k===0?"left":k===3?"right":"center")})}
+ c.restore();y+=h2+2*E+GAP}
  // ③ 자산 추이
- y+=h2+GAP;card(y,h3);
+ if(sel.has("a")){card(y,h3+2*E);c.save();c.translate(0,E);
  tx("자산 추이",P+CP,y+26,19,700,T1);
  {const t=O.total;if(t){let rx=W-P-CP;
    if(t.p!==null){const s=pct(t.p);c.font=font(13.5,700);const w=c.measureText(s).width+18;c.fillStyle=t.p>0?"rgba(240,68,82,.1)":t.p<0?"rgba(49,130,246,.1)":"#f2f4f6";rr(rx-w,y+14,w,25,12.5);c.fill();tx(s,rx-w/2,y+26.5,13.5,700,cc(t.p),"center");rx-=w+8}
@@ -1516,18 +1521,21 @@ function shareImgBuild(){
    O.sectors.forEach((x,i)=>{const tx0=P+CP+i*(tw+gp);c.fillStyle="#f2f4f6";rr(tx0,ty,tw,78,14);c.fill();
     const dx=tx0+11,dy=ty+16;if(x.key==="A+B"){const gr=c.createLinearGradient(dx-5,dy-5,dx+5,dy+5);gr.addColorStop(0,SC.A);gr.addColorStop(.5,SC.A);gr.addColorStop(.5,SC.B);gr.addColorStop(1,SC.B);c.fillStyle=gr}else c.fillStyle=SC[x.key]||FL;
     c.beginPath();c.arc(dx,dy,4.5,0,7);c.fill();
-    c.font=font(12.5,600);let nm=x.name;while(c.measureText(nm).width>tw-34&&nm.length>2)nm=nm.slice(0,-1);
-    tx(nm,dx+10,dy,12.5,600,FL);
+    c.font=font(12,600);let nm=x.name;while(c.measureText(nm).width>tw-28&&nm.length>2)nm=nm.slice(0,-1);
+    tx(nm,dx+9,dy,12,600,FL);
     const v=x.p!==null?x.p:x.v;if(x.p!==null)tx(pct(x.p),tx0+tw/2,ty+41,18,800,cc(v),"center");
     if(showAmt&&x.v!==null)tx(chgAmt(x.v),tx0+tw/2,ty+62,11.5,600,cc(v),"center")})}}
+ c.restore();}
  return cv;
 }
-function shareImgOpen(){
+function shareImgRender(show){
  let cv;try{cv=shareImgBuild()}catch(e){toast("이미지를 만들지 못했어요");return}
+ [...document.querySelectorAll("#shc [data-shk]")].forEach(b=>{const on=shSel.has(b.dataset.shk);b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
  cv.toBlob(b=>{if(!b){toast("이미지를 만들지 못했어요");return}
   if(shUrl)URL.revokeObjectURL(shUrl);shFile=new File([b],"우리집주식.png",{type:"image/png"});shUrl=URL.createObjectURL(b);
-  $("shImg").src=shUrl;$("shModal").hidden=false;$("shw").scrollTop=0},"image/png");
+  $("shImg").src=shUrl;if(show)$("shModal").hidden=false;$("shw").scrollTop=0},"image/png");
 }
+function shareImgOpen(){shareImgRender(true)}
 function shareImgSave(){
  if(!shFile)return;
  try{if(navigator.canShare&&navigator.canShare({files:[shFile]})){navigator.share({files:[shFile]}).catch(()=>{});return}}catch(e){}
@@ -1535,6 +1543,7 @@ function shareImgSave(){
 }
 document.addEventListener("click",e=>{
  if(e.target.closest&&e.target.closest("[data-shimg]")){shareImgOpen();return}
+ const ck=e.target.closest&&e.target.closest("[data-shk]");if(ck){const k=ck.dataset.shk;if(shSel.has(k)){if(shSel.size<2){toast("카드를 1개 이상 선택해 주세요");return}shSel.delete(k)}else shSel.add(k);LS.set("shsel",JSON.stringify([...shSel]));shareImgRender(false);return}
  if(e.target.id==="shSave"){shareImgSave();return}
  if(e.target.id==="shClose"||e.target.id==="shModal"){$("shModal").hidden=true}
 });
