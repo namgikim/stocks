@@ -160,7 +160,7 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .note{white-space:pre-line;text-align:center;color:var(--t3);font-size:12px;line-height:1.6;padding:20px}
 #toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 28px);transform:translate(-50%,20px);background:rgba(25,31,40,.92);color:#fff;font-size:14px;padding:12px 18px;border-radius:14px;opacity:0;pointer-events:none;transition:.25s;white-space:nowrap}
 #toast.show{opacity:1;transform:translate(-50%,0)}
-#intro{position:fixed;inset:0;z-index:20;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s}
+#intro{position:fixed;inset:0;z-index:20;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .2s,visibility .2s}
 #intro.out{opacity:0;visibility:hidden}
 .logo{width:88px;height:88px;border-radius:28px;background:var(--blue);display:grid;place-items:center;animation:pop .7s cubic-bezier(.2,1.4,.4,1) both}
 .logo svg{width:46px;height:46px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
@@ -1071,7 +1071,7 @@ function idxHTML(c){
   const dd=d.p/d.hi-1,$2=v=>"$"+v.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
   const u=d.hi/d.p-1,dn=d.lo/d.p-1,ps=Math.min(1,Math.max(0,(d.p-d.lo)/(d.hi-d.lo))),p1=v=>sign(v)+Math.abs(v*100).toFixed(1)+"%";
   const mny=v=>showAmt?won(v):mkP+"원",its=items.filter(x=>x.sector===sec);if(!vtEx.has(tk))cnt+=its.length;
-  its.forEach(x=>{const e=x.v.KRW*(x.lev||1),lv=x.lev&&x.lev!==1;gr.push(`<div class="uxr${off?" off":""}" data-tk="${tk}"><div class="nmc"><span>${esc(x.name.replace(/\s*\(.*\)/,""))}${lv?`<i class="lvb">×${x.lev}</i>`:""}</span><small>${tk} · 평가 ${mny(x.v.KRW)}</small></div><b class="${cls(dn)}">${chgAmt(e*dn)}</b><b class="${cls(u)}">${chgAmt(e*u)}</b></div>`)});
+  its.forEach(x=>{const e=x.v.KRW*(x.lev||1),lv=x.lev&&x.lev!==1;gr.push(`<div class="uxr${off?" off":""}" data-tk="${tk}"><div class="nmc"><span>${esc(x.name.replace(/\s*\(.*\)/,""))}</span><small>${tk} · 평가 ${mny(x.v.KRW)}</small></div><b class="${cls(dn)}">${chgAmt(e*dn)}</b><b class="${cls(u)}">${chgAmt(e*u)}</b></div>`)});
   ft.push(`<div class="uxt${off?" off":""}" data-vu="${E*(d.hi/d.p-1)}" data-vd="${E*(d.lo/d.p-1)}"><span class="nm nmx"><span><em>${tk}</em>${nm}</span><button class="vsw" data-vtx="${tk}" role="switch" aria-checked="${!off}" aria-label="${tk} 계산에 포함"></button></span><b><small class="lb">현재가</small>${$2(d.p)}</b><div class="hl2"><div class="ixg"><i style="bottom:${(ps*100).toFixed(1)}%"></i></div><div class="hr"><div><span>고점</span><p><b>${$2(d.hi)}</b><em class="${cls(u)}">${p1(u)}</em></p></div><div><span>저점</span><p><b>${$2(d.lo)}</b><em class="${cls(dn)}">${p1(dn)}</em></p></div></div></div></div>`);
  });
  if(!n)return"";
@@ -1106,7 +1106,7 @@ function srHTML(){
   const g=sec?items.filter(x=>x.sector===sec):items.filter(i=>String(i.ticker).toUpperCase()===tk);
   if(!sec){if(!g.length)return;nm=g[0].name.replace(/\s*\(.*\)/,"")}
   n++;
-  if(sec){(window.PTX=window.PTX||{})[tk+" 영향 종목"]=nm+"("+sec+") 섹터로 지정된 종목을 가져와요.\n\n[포함 종목]\n"+g.map(x=>"· "+x.name.replace(/\s*\(.*\)/,"")+(x.lev&&x.lev!==1?" "+x.lev+"x":"")).join("\n")+"\n\n[레버리지]\n레버리지 종목은 평가금액에 레버리지 배수를 곱해서 합산해요."}
+  if(sec){(window.PTX=window.PTX||{})[tk+" 영향 종목"]=nm+"("+sec+") 섹터로 지정된 종목을 가져와요.\n\n[포함 종목]\n"+g.map(x=>"· "+x.name.replace(/\s*\(.*\)/,"")).join("\n")+"\n\n[레버리지]\n레버리지 종목은 평가금액에 레버리지 배수를 곱해서 합산해요."}
   const E=g.reduce((s,x)=>s+x.v.KRW*(x.lev||1),0),u=d.hi/d.p-1,dn=d.lo/d.p-1,ps=Math.min(1,Math.max(0,(d.p-d.lo)/(d.hi-d.lo))),sel=srSel[tk]||"";
   const mm=(d.hi+d.lo)/2/d.p-1;if(sel==="h")tot+=E*u;else if(sel==="l")tot+=E*dn;else if(sel==="m")tot+=E*mm;
   rows+=`<div class="sr" data-tk="${tk}" data-vu="${E*u}" data-vd="${E*dn}" data-vm="${E*mm}"><span class="srg"><i style="bottom:${(ps*100).toFixed(1)}%"></i></span><span class="srn"><b class="srnm"><span class="stk">${tk}</span>${sec?`<button class="inf" data-pnl="${tk} 영향 종목" aria-label="${tk} 영향 종목 설명">!</button>`:""}</b><span class="srtk">${esc(nm)}</span><small><span>현재가</span><span>${$2(d.p)}</span></small></span><span class="srr"><span class="sre"><span><small class="lb">고점</small><em class="${cls(u)}">${p1(u)}</em><small>${$2(d.hi)}</small></span><span><small class="lb">중간</small><em class="${cls(Math.abs(mm*100)<0.05?0:mm)}">${Math.abs(mm*100)<0.05?"0.0%":p1(mm)}</em><small>${$2((d.hi+d.lo)/2)}</small></span><span><small class="lb">저점</small><em class="${cls(dn)}">${p1(dn)}</em><small>${$2(d.lo)}</small></span></span></span><span class="srb">${[["h","고"],["m","중"],["l","저"]].map(([v,t])=>{const on=sel===v;return`<button data-srb="${v}" class="${on?"on":""}" aria-pressed="${on}">${t}</button>`}).join("")}</span></div>`;
@@ -1128,7 +1128,7 @@ function stkHTML(){
   const nm=sec?nmOf[tk]:esc(grp[0].name.replace(/\s*\(.*\)/,""));
   let tg="";
   if(sec){const op=stOpen.has(tk);
-   tg=`<button class="uxtg vtg" data-stt="${tk}" aria-expanded="${op}"><span>영향 종목 · ${grp.length}개</span><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button><div class="uxdt"${op?"":" hidden"}><div class="uxgp"><div class="uxrh"><span>종목</span><span class="${cls(dn)}">저점 ${p1(dn)}</span><span class="${cls(u)}">고점 ${p1(u)}</span></div>`+grp.map(x=>{const e=x.v.KRW*(x.lev||1),lv=x.lev&&x.lev!==1;return`<div class="uxr"><div class="nmc"><span>${esc(x.name.replace(/\s*\(.*\)/,""))}${lv?`<i class="lvb">×${x.lev}</i>`:""}</span><small>평가 ${mny(x.v.KRW)}</small></div><b class="${cls(dn)}">${chgAmt(e*dn)}</b><b class="${cls(u)}">${chgAmt(e*u)}</b></div>`}).join("")+`</div></div>`}
+   tg=`<button class="uxtg vtg" data-stt="${tk}" aria-expanded="${op}"><span>영향 종목 · ${grp.length}개</span><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button><div class="uxdt"${op?"":" hidden"}><div class="uxgp"><div class="uxrh"><span>종목</span><span class="${cls(dn)}">저점 ${p1(dn)}</span><span class="${cls(u)}">고점 ${p1(u)}</span></div>`+grp.map(x=>{const e=x.v.KRW*(x.lev||1),lv=x.lev&&x.lev!==1;return`<div class="uxr"><div class="nmc"><span>${esc(x.name.replace(/\s*\(.*\)/,""))}</span><small>평가 ${mny(x.v.KRW)}</small></div><b class="${cls(dn)}">${chgAmt(e*dn)}</b><b class="${cls(u)}">${chgAmt(e*u)}</b></div>`}).join("")+`</div></div>`}
   body+=`<div class="vs"><div class="vh"><span class="vn"><em>${tk}</em>${nm}</span><span class="vp"><small>현재가</small>${$2(d.p)}<small class="g2">고점 대비</small><i class="${cls(dd)}">${pct(dd*100)}</i></span></div><div class="vb"><div class="ixg"><i style="bottom:${(ps*100).toFixed(1)}%"></i></div><div class="vk"><div class="vw"><span>고점 ${$2(d.hi)} · ${p1(u)}</span><b class="${cls(u)}">${chgAmt(E*u)}</b></div><div class="vw"><span>저점 ${$2(d.lo)} · ${p1(dn)}</span><b class="${cls(dn)}">${chgAmt(E*dn)}</b></div></div></div>${tg}</div>`;
  });
  if(!body)return"";
@@ -1257,7 +1257,7 @@ function render(){
    const pu=(it.price-it.cost)*it.qty,ru=it.cost?(it.price/it.cost-1)*100:0;
    const ex=(it.usd&&useU)?`<div><span>평균매입환율</span><b>${it.avg.toLocaleString("ko-KR",{maximumFractionDigits:2})}원</b></div>`:it.usd?`<div><span>환율 미적용 손익</span><b class="${cls(pu)}">${sign(pu)}${showAmt?dol(Math.abs(pu)):"$"+mkP}</b></div><div><span>환율 미적용 수익률</span><b class="${cls(ru)}">${pct(ru)}</b></div><div><span>평균매입환율</span><b>${it.avg.toLocaleString("ko-KR",{maximumFractionDigits:2})}원</b></div>`:"";
    return`<div class="row"><button class="rw" data-k="${k}" aria-expanded="${o}"><div class="av" style="background:${col(s,i)}${lgT?`;font-size:${lgF}px;letter-spacing:-.02em`:""}">${ab}${/^(https?:\/\/|data:image)/i.test(it.logo)?`<img src="${it.logo.replace(/"/g,"&quot;")}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`:""}</div>
-   <div class="nm"><b>${it.name}</b><small>${it.ticker} · ${it.qty.toLocaleString("ko-KR")}주${it.lev&&it.lev!==1?`<i class="lvb">${it.lev}x</i>`:""}</small></div>
+   <div class="nm"><b>${it.name}</b><small>${it.ticker} · ${it.qty.toLocaleString("ko-KR")}주</small></div>
    <div class="vl"><b>${vTxt}</b><small class="${cls(p)}">${pct(r)}</small></div></button>
    <div class="dt" ${o?"":"hidden"}>
     <div><span>현재가</span><b>${native(it,it.price)}</b></div><div><span>매수단가</span><b>${native(it,it.cost)}</b></div>
@@ -1438,7 +1438,7 @@ $("pager").onchange=e=>{const id=e.target&&e.target.id;if(id==="listMode"){listM
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>render());
 
 let introMin=false,loaded=false;
-function closeIntro(){$("intro").classList.add("out")}
+function closeIntro(){const e=$("intro");e.classList.add("out");setTimeout(()=>{e.style.display="none"},320)}
 function tryClose(){if(introMin&&loaded)closeIntro()}
 setTimeout(()=>{introMin=true;tryClose()},2200);
 setTimeout(closeIntro,6000);
