@@ -484,10 +484,10 @@ html,body{height:100%;overflow:hidden}
 #src [data-srtog]{cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}#src.col .ux{display:none}#src .ux{padding-bottom:8px!important}#src.col .sh{padding-bottom:14px}
 #src #srT{display:none}#src.col #srT{display:inline}#src.col .srlb{display:none}
 .ddx{margin:6px 20px 0;padding:14px 0 6px;border-top:1px solid var(--line)}.ddt{font-size:13px;font-weight:500;color:var(--t2);margin-bottom:6px}.ddg{font-size:11px;color:var(--t3);margin:10px 0 2px}
-.ddr{display:grid;grid-template-columns:64px minmax(0,1fr) 82px;align-items:center;gap:10px;padding:5px 0}.ddr .am{display:flex;align-items:center;justify-content:flex-end;gap:6px}.ddb{display:inline-block;width:24px;text-align:center;font-style:normal;padding:0;border-radius:4px;font-size:9.5px;font-weight:700;line-height:15px}.ddb:not(:empty){background:rgba(240,68,82,.12);color:var(--up)}.ddr .am{display:flex;align-items:center;justify-content:flex-end;gap:6px}.ddn{font-size:13px;white-space:nowrap}.ddr .am{font-size:13px;font-weight:600;white-space:nowrap;text-align:right}
+.ddr{display:grid;grid-template-columns:64px minmax(0,1fr) 78px;align-items:center;gap:10px;padding:5px 0}.ddr .am{display:flex;align-items:center;justify-content:flex-end;gap:6px}.ddb{display:inline-block;width:24px;text-align:center;font-style:normal;padding:0;border-radius:4px;font-size:9.5px;font-weight:700;line-height:15px}.ddb:not(:empty){background:rgba(240,68,82,.12);color:var(--up)}.ddr .am{display:flex;align-items:center;justify-content:flex-end;gap:6px}.ddn{font-size:13px;white-space:nowrap}.ddr .am{font-size:13px;font-weight:600;white-space:nowrap;text-align:right}
 .ddr .dv{display:block;position:relative;height:8px;border-radius:4px;background:var(--line);overflow:hidden}.ddr .dv i{position:absolute;left:0;top:0;bottom:0;width:auto;border-radius:4px}.ddr .dv i.ddi{background:#b0b8c1}.ddr .dv::after{display:none}.ddr .dv i.vl{background:var(--down)}
 .ddf{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:13px;color:var(--t2)}.ddf b{font-weight:600;white-space:nowrap}
-@media(max-width:360px){.ddx{margin-left:16px;margin-right:16px}.ddr{grid-template-columns:56px minmax(0,1fr) 80px;gap:6px}.ddf{font-size:12px}}
+@media(max-width:360px){.ddx{margin-left:16px;margin-right:16px}.ddr{grid-template-columns:56px minmax(0,1fr) 78px;gap:6px}.ddf{font-size:12px}}
 .ddt{display:flex;justify-content:space-between;align-items:center}.ddk{font-size:11px;font-weight:400;color:var(--t3);display:inline-flex;align-items:center;gap:3px}.ddk u,.ddn u{display:inline-block;width:8px;height:8px;border-radius:50%;text-decoration:none}.ddk u+u{margin-left:6px}.ddn u{margin-right:6px}.ddk .ddi,.ddn .ddi{background:#b0b8c1}.ddk .vl,.ddn .vl{background:var(--down)}
 .ddr .dv{overflow:visible;height:10px;border-radius:5px}.ddr .dv i{border-radius:5px}.ddr .dv::after{content:"";display:block;position:absolute;left:var(--a);margin-left:-1px;top:-5px;bottom:-5px;width:2px;border:0;background:repeating-linear-gradient(to bottom,var(--t2) 0,var(--t2) 3px,transparent 3px,transparent 6px);opacity:.7}
 .ddm{padding:0;margin-top:2px;margin-bottom:8px}.ddm .dv{background:none;height:14px}.ddm .dv::after{display:none}.ddm em{position:absolute;left:var(--a);transform:translateX(-50%);font-style:normal;font-size:11px;color:var(--t2);white-space:nowrap}
@@ -496,9 +496,10 @@ html,body{height:100%;overflow:hidden}
 .ddk u+u{margin-left:8px}
 .ddc{padding:4px 20px 14px}.ddc .ddf{margin-top:12px}
 @media(max-width:360px){.ddc{padding-left:16px;padding-right:16px}}
-.ddr>.dv{margin-right:-6px}
-@media(max-width:360px){.ddr>.dv{margin-right:-4px}}
+.ddr>.dv{margin-right:-7px}
+@media(max-width:360px){.ddr>.dv{margin-right:-5px}}
 .ddm+.ddr .dv::after{top:-12px}.ddr:has(+.ddf) .dv::after{bottom:-10px}
+.ddy{font-size:11px;color:var(--t3);white-space:nowrap;text-align:right}.ddk u:nth-of-type(2){margin-left:2px}
 </style>
 </head>
 <body>
@@ -1175,7 +1176,7 @@ function splitHTML(){
    ap=Math.min(100,Math.abs(ai)/mx*100).toFixed(1),
    all=ix.map(x=>({...x,c:SC.B})).concat(vl.map(x=>({...x,c:SC.C}))).sort((a,b)=>a.v-b.v),
    rw=all.map(x=>`<div class="ddr"><span class="ddn"><u style="background:${x.c}"></u>${x.nm}</span><span class="dv" style="--a:${ap}%"><i style="background:var(--down);width:${Math.min(100,Math.abs(x.v)/mx*100).toFixed(1)}%"></i></span><span class="am ${cls(x.v)}"><em class="ddb">${x.v>=-4?"고점":""}</em>${pct(x.v)}</span></div>`).join("");
-   ddCard=`<section class="sec ov"><div class="sh"><b>가치주 하락 방어력<button class="inf" data-pnl="고점 뱃지" aria-label="고점 뱃지 설명" style="margin-left:5px">!</button></b><span class="ddk"><u style="background:${SC.B}"></u>미국지수 <u style="background:${SC.C}"></u>가치주</span></div><div class="ddc"><div class="ddr ddm"><span></span><span class="dv ddl" style="--a:${ap}%"><em>미국지수 평균 ${pct(ai)}</em></span><span></span></div>${rw}<div class="ddf"><span>가치주 평균이 미국지수 평균보다</span><b class="${cls(gap)}">${gap>=0?"+":"-"}${Math.abs(gap).toFixed(1)}%p ${gap>=0?"덜 빠졌어요":"더 빠졌어요"}</b></div></div></section>`}}}
+   ddCard=`<section class="sec ov"><div class="sh"><b>가치주 하락 방어력<button class="inf" data-pnl="고점 뱃지" aria-label="고점 뱃지 설명" style="margin-left:5px">!</button></b><span class="ddk"><u style="background:${SC.B}"></u>미국지수<u style="background:${SC.C}"></u>가치주</span></div><div class="ddc"><div class="ddr ddm"><span></span><span class="dv ddl" style="--a:${ap}%"><em>미국지수 평균 ${pct(ai)}</em></span><span class="ddy">52주 기준</span></div>${rw}<div class="ddf"><span>가치주 평균이 미국지수 평균보다</span><b class="${cls(gap)}">${gap>=0?"+":"-"}${Math.abs(gap).toFixed(1)}%p ${gap>=0?"덜 빠졌어요":"더 빠졌어요"}</b></div></div></section>`}}}
  return h+`</section>`+ddCard}
 function xtHTML(){
  if(!items||!items.length)return"";
