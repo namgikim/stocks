@@ -1544,9 +1544,9 @@ function shareImgBuild(){
    [0,.33,.66,1].forEach((f,k)=>{const i=Math.round(f*(n-1));if(ra[i])tx(fmtDay(ra[i].x),k===0?X0:k===3?X1:xx(i),Y1+17,12.5,500,FL,k===0?"left":k===3?"right":"center")})}
   if(O.sectors.length){const m=O.sectors.length,gp=8,tw=(W-2*P-2*CP-(m-1)*gp)/m,ty=y+216;
    O.sectors.forEach((x,i)=>{const tx0=P+CP+i*(tw+gp);c.fillStyle="#f2f4f6";rr(tx0,ty,tw,78,14);c.fill();
-    const dx=tx0+11,dy=ty+16;if(x.key==="A+B"){const gr=c.createLinearGradient(dx-5,dy-5,dx+5,dy+5);gr.addColorStop(0,SC.A);gr.addColorStop(.5,SC.A);gr.addColorStop(.5,SC.B);gr.addColorStop(1,SC.B);c.fillStyle=gr}else c.fillStyle=SC[x.key]||FL;
-    c.beginPath();c.arc(dx,dy,4.5,0,7);c.fill();
     c.font=font(12,600);let nm=x.name;while(c.measureText(nm).width>tw-28&&nm.length>2)nm=nm.slice(0,-1);
+    const gw=13.5+c.measureText(nm).width,dx=tx0+tw/2-gw/2+4.5,dy=ty+16;if(x.key==="A+B"){const gr=c.createLinearGradient(dx-5,dy-5,dx+5,dy+5);gr.addColorStop(0,SC.A);gr.addColorStop(.5,SC.A);gr.addColorStop(.5,SC.B);gr.addColorStop(1,SC.B);c.fillStyle=gr}else c.fillStyle=SC[x.key]||FL;
+    c.beginPath();c.arc(dx,dy,4.5,0,7);c.fill();
     tx(nm,dx+9,dy,12,600,FL);
     const v=x.p!==null?x.p:x.v;if(x.p!==null)tx(pct(x.p),tx0+tw/2,ty+41,18,800,cc(v),"center");
     if(showAmt&&x.v!==null)tx(chgAmt(x.v),tx0+tw/2,ty+62,11.5,600,cc(v),"center")})}}
