@@ -1474,15 +1474,15 @@ let shFile=null,shUrl=null;
 let cmpHid=(()=>{try{const a=JSON.parse(LS.get("cmph",'["m"]'));return new Set(Array.isArray(a)?a:["m"])}catch(e){return new Set(["m"])}})();
 let shSel=(()=>{try{const a=JSON.parse(LS.get("shsel",'["p","c","a"]'));const o=new Set(a.filter(k=>k==="t"||k==="p"||k==="c"||k==="a"));return o.size?o:new Set(["p","c","a"])}catch(e){return new Set(["p","c","a"])}})();
 function shareImgBuild(){
- const W=480,P=12,CP=24,E=10,UP="#f04452",DN="#3182f6",FL="#8b95a1",T1="#191f28",T2="#4e5968";
+ const W=480,P=20,CP=24,E=10,UP="#f04452",DN="#3182f6",FL="#8b95a1",T1="#191f28",T2="#4e5968";
  const FF=(getComputedStyle(document.body).fontFamily||"sans-serif");
  const pieL=getPieItems(),tot=pieL.reduce((s,x)=>s+x.v.KRW,0);
  const rc=chartRows.filter(d=>d.g!==null||d.i!==null||d.k!==null||d.m!==null||d.v!==null);
  const ra=chartRows.filter(d=>d.y!==null);
  const O=OTHER||{total:null,sectors:[]},cr0=chartRows.find(d=>d.f!==null||d.g!==null||d.i!==null||d.k!==null||d.m!==null||d.v!==null);
  const RH=26,R=88,LR=Math.ceil(pieL.length/2);
- const H0=shSel.size>1?64:P,h1=74+2*R+LR*RH+6,h2=284,h3=(O.sectors.length?216+78:206)+16,hT=106,GAP=12;
- const sel=shSel,hs=[sel.has("t")&&hT,sel.has("p")&&h1+2*E,sel.has("c")&&h2+2*E,sel.has("a")&&h3+2*E].filter(Boolean),H=H0+hs.reduce((a,b)=>a+b,0)+(hs.length-1)*GAP+P-4;
+ const H0=shSel.size>1?72:P,h1=74+2*R+LR*RH+6,h2=284,h3=(O.sectors.length?216+78:206)+16,hT=106,GAP=12;
+ const sel=shSel,hs=[sel.has("t")&&hT,sel.has("p")&&h1+2*E,sel.has("c")&&h2+2*E,sel.has("a")&&h3+2*E].filter(Boolean),H=H0+hs.reduce((a,b)=>a+b,0)+(hs.length-1)*GAP+P;
  const S=1080/W,cv=document.createElement("canvas");cv.width=1080;cv.height=Math.round(H*S);
  const c=cv.getContext("2d");c.scale(S,S);
  const font=(sz,w)=>`${w||500} ${sz}px ${FF}`;
@@ -1492,7 +1492,7 @@ function shareImgBuild(){
  const card=(y,h)=>{c.fillStyle="#fff";rr(P,y,W-2*P,h,20);c.fill()};
  const smooth=p=>{if(p.length<2)return;c.beginPath();c.moveTo(p[0][0],p[0][1]);for(let i=1;i<p.length-1;i++){const mx=(p[i][0]+p[i+1][0])/2,my=(p[i][1]+p[i+1][1])/2;c.quadraticCurveTo(p[i][0],p[i][1],mx,my)}c.lineTo(p[p.length-1][0],p[p.length-1][1])};
  c.fillStyle="#f2f4f6";c.fillRect(0,0,W,H);
- if(sel.size>1){tx("우리집 주식",P+4,26,26,800,T1);{const u=$("upd");tx(u?u.textContent:"",P+4,52,13.5,500,FL)}}
+ if(sel.size>1){tx("우리집 주식",P+4,P+14,26,800,T1);{const u=$("upd");tx(u?u.textContent:"",P+4,P+40,13.5,500,FL)}}
  // ① 도넛 + 우측 범례
  let y=H0;
  if(sel.has("t")){const pl=$("pl"),pc=pl?getComputedStyle(pl).color:T2;tx("총 평가금액",P+4,y+22,15,600,FL);tx($("total").textContent,P+4,y+56,34,800,T1);tx(pl?pl.textContent:"",P+4,y+90,18,700,pc);y+=hT+GAP}
