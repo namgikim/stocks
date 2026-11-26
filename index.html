@@ -554,7 +554,7 @@ html,body{height:100%;overflow:hidden}
 <div id="toast"></div>
 <div id="modal" hidden><div class="mb" role="dialog" aria-modal="true"><h3>투자수익</h3><p class="lead">투자수익은 순입금액을 기준으로 상승한 금액을 의미해요. 종목을 사고팔아도 오차 없이 보이는 내 전체 성과예요.</p><div class="sub2">순입금액</div><div class="amt" id="modalAmt">-</div><p>이 금액은 삼성증권(해외, ISA), 신한증권(국내, ISA, 연금), KB증권(국내, 연금, 금현물) 계좌의 순입금액을 모두 합한 금액이에요.</p><button class="ok" id="modalOk">확인</button></div></div>
 <div id="pnlModal" hidden><div class="mb" role="dialog" aria-modal="true"><h3 id="pnlT">주가손익</h3><p class="lead" id="pnlP">매입 당시의 환율을 기준으로 계산한 주가 이익 금액이에요.</p><button class="ok" id="pnlOk">확인</button></div></div>
-<div id="shModal" hidden><div class="shs0" role="dialog" aria-label="미리보기"><div class="shg"></div><div class="sht"><b>미리보기</b><button id="shClose" type="button" aria-label="닫기"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="shv" id="shw"><img id="shImg" alt="미리보기 이미지"></div><div class="shp"><div class="shl">포함할 카드</div><div class="shc" id="shc"><button type="button" data-shk="p"><i></i>도넛</button><button type="button" data-shk="c"><i></i>우리집 주식 vs 미국지수</button><button type="button" data-shk="a"><i></i>자산 추이</button></div><button class="shs" id="shSave" type="button">저장 / 공유</button></div></div></div>
+<div id="shModal" hidden><div class="shs0" role="dialog" aria-label="미리보기"><div class="shg"></div><div class="sht"><b>미리보기</b><button id="shClose" type="button" aria-label="닫기"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="shv" id="shw"><img id="shImg" alt="미리보기 이미지"></div><div class="shp"><div class="shl">포함할 카드</div><div class="shc" id="shc"><button type="button" data-shk="p"><i></i>종목 비중</button><button type="button" data-shk="c"><i></i>우리집 주식 vs 미국지수</button><button type="button" data-shk="a"><i></i>자산 추이</button></div><button class="shs" id="shSave" type="button">저장 / 공유</button></div></div></div>
 <div id="pwModal" hidden><div class="mb" role="dialog" aria-modal="true" aria-labelledby="pwTitle"><h3 id="pwTitle">비밀번호 확인</h3><p>금액 숨김을 해제하려면 비밀번호를 입력해 주세요.</p><input class="pwin" id="pwIn" type="password" inputmode="numeric" autocomplete="off" maxlength="4" aria-label="비밀번호 4자리"><div class="pwerr" id="pwErr" role="alert"></div><div class="pwb"><button class="no" id="pwNo">취소</button></div></div></div>
 
 <script>
@@ -1264,7 +1264,7 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
 function setMode(m){mode=m}
 let keepFc=false;
 function render(){
- if(listMode==="pie"&&mode!=="avg"){mode="avg";LS.set("cu","avg");toast("도넛은 원화로만 볼 수 있어요")}
+ if(listMode==="pie"&&mode!=="avg"){mode="avg";LS.set("cu","avg");toast("종목 비중은 원화로만 볼 수 있어요")}
  if(useNet&&!NET){useNet=false;syncNet()}
  const sum=(a,k)=>a.reduce((s,x)=>s+x[k][cur],0);
  const tv=sum(items,"v"),tc=sum(items,"c"),base=useNet?NET:tc,tp=tv-base;
@@ -1302,7 +1302,7 @@ function render(){
   pieBody=pieList.length?`<div class="cbox pie"><canvas id="pieChart"></canvas></div><div class="pleg">${pieLegendHTML}</div>`:`<div class="ph">종목 데이터를 불러오는 중이에요</div>`;
  }
  let listHTML="";
-const modeSel=`<div class="seg lmv" id="lmv" data-i="${["stock","sector","pie"].indexOf(listMode)}"><i></i><button data-l="stock" class="${listMode==="stock"?"on":""}" aria-label="리스트"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></button><button data-l="sector" class="${listMode==="sector"?"on":""}" aria-label="섹터별"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg></button><button data-l="pie" class="${listMode==="pie"?"on":""}" aria-label="도넛"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15.5 2.8A9 9 0 0 1 21.2 8.5H15.5z"/></svg></button></div>`;
+const modeSel=`<div class="seg lmv" id="lmv" data-i="${["stock","sector","pie"].indexOf(listMode)}"><i></i><button data-l="stock" class="${listMode==="stock"?"on":""}" aria-label="리스트"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></button><button data-l="sector" class="${listMode==="sector"?"on":""}" aria-label="섹터별"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg></button><button data-l="pie" class="${listMode==="pie"?"on":""}" aria-label="종목 비중"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15.5 2.8A9 9 0 0 1 21.2 8.5H15.5z"/></svg></button></div>`;
  const fxHTML=items[0]?`<span class="fxr">$1 = ${items[0].fx.toLocaleString("ko-KR",{maximumFractionDigits:2})}원</span>`:"";
  const curHTML=`<div class="seg cu${mode==="usd"?" b":""}${listMode==="pie"?" dis":""}" id="mode"><i></i><button data-m="avg" class="${mode==="avg"?"on":""}" aria-label="원화"${listMode==="pie"?" disabled":""}>₩</button><button data-m="usd" class="${mode==="usd"?"on":""}" aria-label="달러"${listMode==="pie"?" disabled":""}>$</button></div>`;
  const hi=sortHi&&mode==="avg",sortP=`<button class="sortp" id="sortBtn" aria-label="정렬"${mode==="avg"?"":" disabled"}>${hi?"높은순":"기본순"}</button>`;
@@ -1495,7 +1495,7 @@ function shareImgBuild(){
  if(sel.size>1){tx("우리집 주식",P+4,26,26,800,T1);{const u=$("upd");tx(u?u.textContent:"",P+4,52,13.5,500,FL)}}
  // ① 도넛 + 우측 범례
  let y=H0;if(sel.has("p")){card(y,h1+2*E);c.save();c.translate(0,E);
- tx("도넛",P+CP,y+26,19,700,T1);
+ tx("종목 비중",P+CP,y+26,19,700,T1);
  {const cx=W/2,cy=y+50+R+4,r=R*.56;let a=-Math.PI/2;
   pieL.forEach(x=>{const d=tot?x.v.KRW/tot*Math.PI*2:0;c.beginPath();c.arc(cx,cy,R,a,a+d);c.arc(cx,cy,r,a+d,a,true);c.closePath();c.fillStyle=x.pieColor;c.fill();c.lineWidth=2;c.strokeStyle="#fff";c.stroke();a+=d});
   const ly=cy+R+22,cw=(W-2*P-2*CP)/2;
