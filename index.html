@@ -501,14 +501,23 @@ html,body{height:100%;overflow:hidden}
 @media(max-width:360px){.ddr>.dv{margin-right:-5px}}
 .ddm+.ddr .dv::after{top:-12px}.ddr:has(+.ddf) .dv::after{bottom:-10px}
 .ddy{font-size:11px;color:var(--t3);white-space:nowrap;text-align:right}.ddk u:nth-of-type(2){margin-left:2px}
-.shbtn{display:block;width:calc(100% - 40px);margin:12px 20px 28px;padding:15px 0;border-radius:16px;background:var(--card);color:#3182f6;font-size:15px;font-weight:700;text-align:center}
-#shModal{position:fixed;inset:0;z-index:17;background:rgba(0,0,0,.92);display:flex;flex-direction:column;align-items:center;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 0}#shModal[hidden]{display:none}
-.shw{flex:1;min-height:0;width:100%;max-width:480px;overflow-y:auto;-webkit-overflow-scrolling:touch;border-radius:16px}.shw img{display:block;width:100%;height:auto;border-radius:16px;-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
-.shh{margin-top:10px;font-size:12px;color:rgba(255,255,255,.75)}
-.shb{display:flex;gap:10px;width:100%;max-width:480px;padding:10px 0 calc(env(safe-area-inset-bottom,0px) + 14px)}.shb button{flex:1;padding:14px 0;border-radius:14px;font-size:15px;font-weight:700;background:rgba(255,255,255,.18);color:#fff}.shb #shSave{flex:2;background:#3182f6}
-.shc{display:flex;gap:8px;width:100%;max-width:480px;padding:0 0 10px;flex:none}.shc button{flex:1;padding:9px 4px;border-radius:12px;font-size:13px;font-weight:700;background:rgba(255,255,255,.16);color:rgba(255,255,255,.8);white-space:nowrap}.shc button.on{background:#3182f6;color:#fff}
 #toast{z-index:30}
-.cbox.cmp{height:260px}
+.hb{display:flex;gap:8px;align-items:center}
+#shModal{position:fixed;inset:0;z-index:17;background:#0d0e10;display:flex;flex-direction:column}#shModal[hidden]{display:none}
+.sht{position:relative;flex:none;display:flex;align-items:center;justify-content:center;height:52px;margin-top:env(safe-area-inset-top,0px);color:#fff;font-size:17px;font-weight:700}
+.sht button{position:absolute;right:16px;top:8px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.12);display:grid;place-items:center}.sht svg{width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2.4;stroke-linecap:round}
+.shv{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 16px 16px;text-align:center}
+.shv img{display:block;width:100%;max-width:440px;height:auto;margin:0 auto;border-radius:18px;box-shadow:0 10px 32px rgba(0,0,0,.5);-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
+.shp{flex:none;background:#1b1c1f;border-radius:24px 24px 0 0;padding:16px 16px calc(env(safe-area-inset-bottom,0px) + 14px)}
+.shl{font-size:12px;font-weight:600;color:#8b95a1;margin:0 4px 10px}
+.shc{display:flex;gap:6px}
+.shc button{display:flex;align-items:center;gap:6px;padding:9px 11px 9px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.16);color:#aeb6bf;font-size:13px;flex:none;font-weight:600;white-space:nowrap;transition:background .15s,border-color .15s,color .15s}
+.shc button i{width:17px;height:17px;border-radius:50%;border:1.5px solid rgba(255,255,255,.28);position:relative;flex:none;transition:background .15s,border-color .15s}
+.shc button.on{background:rgba(49,130,246,.18);border-color:#3182f6;color:#fff}
+.shc button.on i{background:#3182f6;border-color:#3182f6}.shc button.on i::after{content:"";position:absolute;left:5px;top:2px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.shh{margin:12px 0 12px;text-align:center;font-size:12px;color:#8b95a1}
+.shs{display:block;width:100%;padding:16px 0;border-radius:16px;background:#3182f6;color:#fff;font-size:16px;font-weight:700}
+@media(max-width:360px){.shc{gap:4px}.shc button{padding:8px 8px 8px 6px;font-size:12px;gap:4px}.shc button i{width:15px;height:15px}.shc button.on i::after{left:4.5px;top:1.5px}}
 </style>
 </head>
 <body>
@@ -522,7 +531,8 @@ html,body{height:100%;overflow:hidden}
   <div class="top">
   <header>
     <div><h1>우리집 주식</h1><div class="sub" id="upd">불러오는 중</div></div>
-    <button class="rf" id="rfBtn" aria-label="새로고침"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg></button>
+    <div class="hb"><button class="rf" data-shimg id="shBtn" aria-label="이미지 공유"><svg viewBox="0 0 24 24"><path d="M12 15V3"/><polyline points="8 7 12 3 16 7"/><path d="M5 12v7a2 2 0 0 0 2 2h14"/><path d="M19 12v9" /></svg></button>
+    <button class="rf" id="rfBtn" aria-label="새로고침"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg></button></div>
   </header>
   <section class="hero">
     <div class="lb"><span>총 평가금액</span></div>
@@ -539,7 +549,7 @@ html,body{height:100%;overflow:hidden}
 <div id="toast"></div>
 <div id="modal" hidden><div class="mb" role="dialog" aria-modal="true"><h3>투자수익</h3><p class="lead">투자수익은 순입금액을 기준으로 상승한 금액을 의미해요. 종목을 사고팔아도 오차 없이 보이는 내 전체 성과예요.</p><div class="sub2">순입금액</div><div class="amt" id="modalAmt">-</div><p>이 금액은 삼성증권(해외, ISA), 신한증권(국내, ISA, 연금), KB증권(국내, 연금, 금현물) 계좌의 순입금액을 모두 합한 금액이에요.</p><button class="ok" id="modalOk">확인</button></div></div>
 <div id="pnlModal" hidden><div class="mb" role="dialog" aria-modal="true"><h3 id="pnlT">주가손익</h3><p class="lead" id="pnlP">매입 당시의 환율을 기준으로 계산한 주가 이익 금액이에요.</p><button class="ok" id="pnlOk">확인</button></div></div>
-<div id="shModal" hidden><div class="shc" id="shc"><button type="button" data-shk="p">자산 구성</button><button type="button" data-shk="c">주식 vs 미국지수</button><button type="button" data-shk="a">자산 추이</button></div><div class="shw" id="shw"><img id="shImg" alt="요약 이미지"></div><div class="shh">이미지를 길게 누르면 '사진에 저장'도 할 수 있어요</div><div class="shb"><button id="shClose" type="button">닫기</button><button id="shSave" type="button">저장 / 공유</button></div></div>
+<div id="shModal" hidden><div class="sht"><b>미리보기</b><button id="shClose" type="button" aria-label="닫기"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="shv" id="shw"><img id="shImg" alt="미리보기 이미지"></div><div class="shp"><div class="shl">포함할 카드</div><div class="shc" id="shc"><button type="button" data-shk="p"><i></i>자산 구성</button><button type="button" data-shk="c"><i></i>주식 vs 미국지수</button><button type="button" data-shk="a"><i></i>자산 추이</button></div><div class="shh">이미지를 길게 누르면 '사진에 저장'도 할 수 있어요</div><button class="shs" id="shSave" type="button">저장 / 공유</button></div></div>
 <div id="pwModal" hidden><div class="mb" role="dialog" aria-modal="true" aria-labelledby="pwTitle"><h3 id="pwTitle">비밀번호 확인</h3><p>금액 숨김을 해제하려면 비밀번호를 입력해 주세요.</p><input class="pwin" id="pwIn" type="password" inputmode="numeric" autocomplete="off" maxlength="4" aria-label="비밀번호 4자리"><div class="pwerr" id="pwErr" role="alert"></div><div class="pwb"><button class="no" id="pwNo">취소</button></div></div></div>
 
 <script>
@@ -616,7 +626,7 @@ const LS={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:v}catch
 let lview=(()=>{const v=LS.get("tab","list");return["list","chart","pnl","fc"].includes(v)?v:"list"})(),listMode=(v=>v==="sector"||v==="pie"?v:"stock")(LS.get("lm","stock")),mode=LS.get("cu","usd")==="avg"?"avg":"usd",useNet=LS.get("net","0")==="1",showAmt=LS.get("amt","1")!=="0",NET=295615604,items=[],cur="KRW",openKey=null,src="저장된 데이터";
 let PW="",OTHER=null,OTHERERR="";
 let collapsed=new Set((()=>{try{return JSON.parse(LS.get("sc","[]"))}catch(e){return[]}})());
-let chartRows=[],chartInst=null,compInst=null,pieInst=null,cmpInst=null;
+let chartRows=[],chartInst=null,compInst=null,pieInst=null;
 
 function parseCSV(t,keep){const o=[];let r=[],f="",q=false;for(let i=0;i<t.length;i++){const c=t[i];
  if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}
@@ -853,55 +863,6 @@ function drawTotalChart(){
  });
 }
 
-function drawAssetCmp(){
- const cv=$("assetCmp");
- if(!cv)return;
- if(cmpInst){cmpInst.destroy();cmpInst=null}
- const rows=chartRows.filter(d=>d.y!==null);
- const b=rows.find(d=>d.i!==null||d.k!==null||d.m!==null||d.v!==null);
- if(!rows.length||!b||typeof Chart==="undefined")return;
- const y0=b.y;
- const dark=window.matchMedia("(prefers-color-scheme: dark)").matches;
- const tickCol="#8b95a1",legendCol=dark?"#c3c7cd":"#4e5968",gridCol=dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.05)";
- const pr=rows.length<=15?2.5:0;
- const ser=[
-  {label:CHL.g||"총 평가금액",color:"#3182f6",width:2.8,hidden:false,val:d=>d.y},
-  {label:CHL.i||"S&P500",color:SCOL.i,width:2,hidden:false,val:d=>d.i===null||d.i===undefined?null:y0*(1+d.i/100)},
-  {label:CHL.k||"나스닥100",color:SCOL.k,width:2,hidden:false,val:d=>d.k===null||d.k===undefined?null:y0*(1+d.k/100)},
-  {label:CHL.m||"나스닥100 2배",color:"#6b5cf6",width:2,hidden:true,val:d=>d.m===null||d.m===undefined?null:y0*(1+d.m/100)},
-  {label:CHL.v||"VTV",color:SCOL.v,width:2,hidden:false,val:d=>d.v===null||d.v===undefined?null:y0*(1+d.v/100)}
- ].filter((s,i)=>i===0||rows.some(d=>s.val(d)!==null));
- cmpInst=new Chart(cv.getContext("2d"),{
-  type:"line",
-  plugins:[SUBGRID],
-  data:{
-   labels:rows.map(d=>d.x),
-   datasets:ser.map(s=>({
-    label:s.label,data:rows.map(d=>s.val(d)),
-    borderColor:s.color,backgroundColor:s.color,borderWidth:s.width,fill:false,tension:0.3,spanGaps:true,hidden:s.hidden,
-    pointRadius:pr,pointHoverRadius:4.5,pointBackgroundColor:s.color,pointBorderColor:dark?"#1c1c1e":"#fff",pointBorderWidth:1.5
-   }))
-  },
-  options:{
-   responsive:true,maintainAspectRatio:false,animation:false,
-   interaction:{mode:"index",intersect:false},
-   events:["mousemove","mouseout","click"],
-   plugins:{
-    legend:{display:true,position:"top",align:"start",labels:{color:legendCol,boxWidth:10,boxHeight:2,padding:10,font:{size:11,weight:"600"}}},
-    tooltip:{
-     enabled:true,backgroundColor:dark?"rgba(44,44,46,0.95)":"rgba(25,31,40,0.92)",titleColor:"#aeb6bf",bodyColor:"#fff",
-     bodyFont:{size:12,weight:"600"},padding:10,cornerRadius:10,usePointStyle:true,boxWidth:8,boxHeight:8,
-     callbacks:{title:it=>it[0]?it[0].label:"",label:c=>{const v=c.parsed.y;return" "+c.dataset.label+": "+(v==null||isNaN(v)?"-":swV(v))}}
-    }
-   },
-   scales:{
-    x:{grid:{display:false},border:{display:false},ticks:{color:tickCol,font:{size:11},maxRotation:0,autoSkip:true,maxTicksLimit:6,callback:function(val){return fmtDay(this.getLabelForValue(val))}}},
-    y:{position:"right",border:{display:false},grid:{color:gridCol},ticks:{color:tickCol,font:{size:11},maxTicksLimit:5,callback:v=>showAmt?fmtAxis(v):""}}
-   }
-  }
- });
-}
-
 function drawCompChart(){
  const cv=$("compChart");
  if(!cv)return;
@@ -937,7 +898,7 @@ function drawCompChart(){
     fill:false,
     tension:0.3,
     spanGaps:true,
-    hidden:s.hidden,
+    hidden:s.key==="f"?false:cmpHid.has(s.key),_k:s.key,
     pointRadius:s.pr,
     pointHoverRadius:4.5,
     pointBackgroundColor:s.color,
@@ -956,6 +917,7 @@ function drawCompChart(){
      display:true,
      position:"top",
      align:"start",
+     onClick:function(e,it,lg){Chart.defaults.plugins.legend.onClick.call(this,e,it,lg);const ds=lg.chart.data.datasets[it.datasetIndex];if(ds&&ds._k){lg.chart.isDatasetVisible(it.datasetIndex)?cmpHid.delete(ds._k):cmpHid.add(ds._k);LS.set("cmph",JSON.stringify([...cmpHid]))}},
      labels:{
       filter:item=>item.text!=="기준선",
       color:legendCol,
@@ -1360,13 +1322,12 @@ const modeSel=`<select id="listMode" class="sel" aria-label="보기 방식"><opt
  const ov=overviewHTML(hasTotal?`<div class="cbox short"><canvas id="totalChart"></canvas></div>`:`<div class="ph" style="padding:0 20px 10px;font-size:13px">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`);
  $("charts").innerHTML=ov[0]+
   `<section class="sec"><div class="sh"><b>우리집 주식 vs 미국지수</b><span style="font-size:11px">환율 반영${cr0?` · ${cr0.x} 기준`:""}</span></div>`+
-  (hasComp?`<div class="cbox tall"><canvas id="compChart"></canvas></div>`:`<div class="ph">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`)+`</section>`+ov[1]+
-  (hasTotal&&chartRows.some(d=>d.y!==null&&(d.i!==null||d.k!==null||d.m!==null||d.v!==null))?`<section class="sec ov"><div class="sh"><b>자산 추이 비교</b><span class="rct"><span class="tl">시작 평가금액 기준</span></span></div><div class="cbox cmp"><canvas id="assetCmp"></canvas></div></section>`:"");
- $("pnlp").innerHTML=splitHTML()+`<button class="shbtn" data-shimg type="button">이미지로 저장</button>`;if(!keepFc||!$("fcp").firstChild){$("fcp").innerHTML=xtHTML()+srHTML()+scenarioHTML("2","② 예상 환율");scUpd();xtUpd()}
+  (hasComp?`<div class="cbox tall"><canvas id="compChart"></canvas></div>`:`<div class="ph">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`)+`</section>`+ov[1];
+ $("pnlp").innerHTML=splitHTML();if(!keepFc||!$("fcp").firstChild){$("fcp").innerHTML=xtHTML()+srHTML()+scenarioHTML("2","② 예상 환율");scUpd();xtUpd()}
  $("note").hidden=lview!=="list";
  $("note").textContent=mode==="usd"?"달러 종목은 환율을 적용하지 않은 달러 금액이에요.\n수익률에는 환차익이 포함되지 않아요":"달러 종목은 시트의 기준환율로 원화 환산했어요.\n수익률에는 환차익이 포함돼요"+(useNet?"\n투자수익은 순입금액 "+swV(NET)+" 대비 값이에요":"");
  $("upd").textContent=src;
- drawTotalChart();drawAssetCmp();drawCompChart();drawPieChart();
+ drawTotalChart();drawCompChart();drawPieChart();
 }
 
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.id);toast.id=setTimeout(()=>t.classList.remove("show"),2200)}
@@ -1499,16 +1460,17 @@ window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>
 
 // ===== 요약 이미지 (도넛 + 주식vs미국지수 + 자산추이) =====
 let shFile=null,shUrl=null;
+let cmpHid=(()=>{try{const a=JSON.parse(LS.get("cmph",'["m"]'));return new Set(Array.isArray(a)?a:["m"])}catch(e){return new Set(["m"])}})();
 let shSel=(()=>{try{const a=JSON.parse(LS.get("shsel",'["p","c","a"]'));const o=new Set(a.filter(k=>k==="p"||k==="c"||k==="a"));return o.size?o:new Set(["p","c","a"])}catch(e){return new Set(["p","c","a"])}})();
 function shareImgBuild(){
  const W=480,P=12,CP=24,E=10,UP="#f04452",DN="#3182f6",FL="#8b95a1",T1="#191f28",T2="#4e5968";
  const FF=(getComputedStyle(document.body).fontFamily||"sans-serif");
  const pieL=getPieItems(),tot=pieL.reduce((s,x)=>s+x.v.KRW,0);
- const rc=chartRows.filter(d=>d.g!==null||d.i!==null||d.k!==null||d.v!==null);
+ const rc=chartRows.filter(d=>d.g!==null||d.i!==null||d.k!==null||d.m!==null||d.v!==null);
  const ra=chartRows.filter(d=>d.y!==null);
- const O=OTHER||{total:null,sectors:[]};
+ const O=OTHER||{total:null,sectors:[]},cr0=chartRows.find(d=>d.f!==null||d.g!==null||d.i!==null||d.k!==null||d.m!==null||d.v!==null);
  const RH=26,R=88,LR=Math.ceil(pieL.length/2);
- const H0=64,h1=74+2*R+LR*RH+6,h2=284,h3=(O.sectors.length?216+78:206)+16,GAP=12;
+ const H0=shSel.size>1?64:P,h1=74+2*R+LR*RH+6,h2=284,h3=(O.sectors.length?216+78:206)+16,GAP=12;
  const sel=shSel,hs=[sel.has("p")&&h1+2*E,sel.has("c")&&h2+2*E,sel.has("a")&&h3+2*E].filter(Boolean),H=H0+hs.reduce((a,b)=>a+b,0)+(hs.length-1)*GAP+P-4;
  const S=1080/W,cv=document.createElement("canvas");cv.width=1080;cv.height=Math.round(H*S);
  const c=cv.getContext("2d");c.scale(S,S);
@@ -1519,8 +1481,7 @@ function shareImgBuild(){
  const card=(y,h)=>{c.fillStyle="#fff";rr(P,y,W-2*P,h,20);c.fill()};
  const smooth=p=>{if(p.length<2)return;c.beginPath();c.moveTo(p[0][0],p[0][1]);for(let i=1;i<p.length-1;i++){const mx=(p[i][0]+p[i+1][0])/2,my=(p[i][1]+p[i+1][1])/2;c.quadraticCurveTo(p[i][0],p[i][1],mx,my)}c.lineTo(p[p.length-1][0],p[p.length-1][1])};
  c.fillStyle="#f2f4f6";c.fillRect(0,0,W,H);
- tx("우리집 주식",P+4,26,26,800,T1);
- {const u=$("upd");tx(u?u.textContent:"",P+4,52,13.5,500,FL)}
+ if(sel.size>1){tx("우리집 주식",P+4,26,26,800,T1);{const u=$("upd");tx(u?u.textContent:"",P+4,52,13.5,500,FL)}}
  // ① 도넛 + 우측 범례
  let y=H0;if(sel.has("p")){card(y,h1+2*E);c.save();c.translate(0,E);
  tx("자산 구성",P+CP,y+26,19,700,T1);
@@ -1535,8 +1496,8 @@ function shareImgBuild(){
  c.restore();y+=h1+2*E+GAP}
  // ② 우리집 주식 vs 미국지수
  if(sel.has("c")){card(y,h2+2*E);c.save();c.translate(0,E);
- tx("우리집 주식 vs 미국지수",P+CP,y+26,19,700,T1);
- {const ser=[["g",CHL.g||"총 평가금액","#3182f6",3.2],["i",CHL.i||"S&P500",SCOL.i,2.4],["k",CHL.k||"나스닥100",SCOL.k,2.4],["v",CHL.v||"VTV",SCOL.v,2.4]].filter(s=>rc.some(d=>d[s[0]]!==null&&d[s[0]]!==undefined));
+ tx("우리집 주식 vs 미국지수",P+CP,y+26,19,700,T1);tx("환율 반영"+(cr0?" · "+cr0.x+" 기준":""),W-P-CP,y+26,12.5,500,FL,"right");
+ {const ser=[["g",CHL.g||"총 평가금액","#3182f6",3.2],["i",CHL.i||"S&P500",SCOL.i,2.4],["k",CHL.k||"나스닥100",SCOL.k,2.4],["m",CHL.m||"나스닥100 2배","#6b5cf6",2.4],["v",CHL.v||"VTV",SCOL.v,2.4]].filter(s=>!cmpHid.has(s[0])&&rc.some(d=>d[s[0]]!==null&&d[s[0]]!==undefined));
   let lx=P+CP;const ly=y+54;
   ser.forEach(s=>{c.fillStyle=s[2];rr(lx,ly-1.5,13,3,1.5);c.fill();tx(s[1],lx+18,ly,13,600,T2);c.font=font(13,600);lx+=18+c.measureText(s[1]).width+14});
   const X0=P+CP,X1=W-P-CP-38,Y0=y+78,Y1=y+252;
@@ -1596,7 +1557,7 @@ document.addEventListener("click",e=>{
  if(e.target.closest&&e.target.closest("[data-shimg]")){shareImgOpen();return}
  const ck=e.target.closest&&e.target.closest("[data-shk]");if(ck){const k=ck.dataset.shk;if(shSel.has(k)){if(shSel.size<2){toast("카드를 1개 이상 선택해 주세요");return}shSel.delete(k)}else shSel.add(k);LS.set("shsel",JSON.stringify([...shSel]));shareImgRender(false);return}
  if(e.target.id==="shSave"){shareImgSave();return}
- if(e.target.id==="shClose"||e.target.id==="shModal"){$("shModal").hidden=true}
+ if(e.target.closest&&e.target.closest("#shClose")){$("shModal").hidden=true}
 });
 
 let introMin=false,loaded=false;
