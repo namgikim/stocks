@@ -1496,6 +1496,7 @@ function shareImgBuild(){
  // ① 도넛 + 우측 범례
  let y=H0;if(sel.has("p")){card(y,h1+2*E);c.save();c.translate(0,E);
  tx("종목 비중",P+CP,y+26,19,700,T1);
+ if(showAmt&&tot){const t=won(tot);c.font=font(15,700);const w=c.measureText(t).width;tx(t,W-P-CP,y+26,15,700,T1,"right");tx("총 평가금액",W-P-CP-w-6,y+26,12.5,500,FL,"right")}
  {const cx=W/2,cy=y+50+R+4,r=R*.56;let a=-Math.PI/2;
   pieL.forEach(x=>{const d=tot?x.v.KRW/tot*Math.PI*2:0;c.beginPath();c.arc(cx,cy,R,a,a+d);c.arc(cx,cy,r,a+d,a,true);c.closePath();c.fillStyle=x.pieColor;c.fill();c.lineWidth=2;c.strokeStyle="#fff";c.stroke();a+=d});
   const ly=cy+R+22,cw=(W-2*P-2*CP)/2;
