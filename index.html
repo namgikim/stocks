@@ -508,6 +508,7 @@ html,body{height:100%;overflow:hidden}
 .shb{display:flex;gap:10px;width:100%;max-width:480px;padding:10px 0 calc(env(safe-area-inset-bottom,0px) + 14px)}.shb button{flex:1;padding:14px 0;border-radius:14px;font-size:15px;font-weight:700;background:rgba(255,255,255,.18);color:#fff}.shb #shSave{flex:2;background:#3182f6}
 .shc{display:flex;gap:8px;width:100%;max-width:480px;padding:0 0 10px;flex:none}.shc button{flex:1;padding:9px 4px;border-radius:12px;font-size:13px;font-weight:700;background:rgba(255,255,255,.16);color:rgba(255,255,255,.8);white-space:nowrap}.shc button.on{background:#3182f6;color:#fff}
 #toast{z-index:30}
+.cbox.cmp{height:260px}
 </style>
 </head>
 <body>
@@ -615,7 +616,7 @@ const LS={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:v}catch
 let lview=(()=>{const v=LS.get("tab","list");return["list","chart","pnl","fc"].includes(v)?v:"list"})(),listMode=(v=>v==="sector"||v==="pie"?v:"stock")(LS.get("lm","stock")),mode=LS.get("cu","usd")==="avg"?"avg":"usd",useNet=LS.get("net","0")==="1",showAmt=LS.get("amt","1")!=="0",NET=295615604,items=[],cur="KRW",openKey=null,src="저장된 데이터";
 let PW="",OTHER=null,OTHERERR="";
 let collapsed=new Set((()=>{try{return JSON.parse(LS.get("sc","[]"))}catch(e){return[]}})());
-let chartRows=[],chartInst=null,compInst=null,pieInst=null;
+let chartRows=[],chartInst=null,compInst=null,pieInst=null,cmpInst=null;
 
 function parseCSV(t,keep){const o=[];let r=[],f="",q=false;for(let i=0;i<t.length;i++){const c=t[i];
  if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}
@@ -847,6 +848,55 @@ function drawTotalChart(){
      grid:{color:gridCol},
      ticks:{color:tickCol,font:{size:11},maxTicksLimit:3,callback:v=>showAmt?fmtAxis(v):""}
     }
+   }
+  }
+ });
+}
+
+function drawAssetCmp(){
+ const cv=$("assetCmp");
+ if(!cv)return;
+ if(cmpInst){cmpInst.destroy();cmpInst=null}
+ const rows=chartRows.filter(d=>d.y!==null);
+ const b=rows.find(d=>d.i!==null||d.k!==null||d.m!==null||d.v!==null);
+ if(!rows.length||!b||typeof Chart==="undefined")return;
+ const y0=b.y;
+ const dark=window.matchMedia("(prefers-color-scheme: dark)").matches;
+ const tickCol="#8b95a1",legendCol=dark?"#c3c7cd":"#4e5968",gridCol=dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.05)";
+ const pr=rows.length<=15?2.5:0;
+ const ser=[
+  {label:CHL.g||"총 평가금액",color:"#3182f6",width:2.8,hidden:false,val:d=>d.y},
+  {label:CHL.i||"S&P500",color:SCOL.i,width:2,hidden:false,val:d=>d.i===null||d.i===undefined?null:y0*(1+d.i/100)},
+  {label:CHL.k||"나스닥100",color:SCOL.k,width:2,hidden:false,val:d=>d.k===null||d.k===undefined?null:y0*(1+d.k/100)},
+  {label:CHL.m||"나스닥100 2배",color:"#6b5cf6",width:2,hidden:true,val:d=>d.m===null||d.m===undefined?null:y0*(1+d.m/100)},
+  {label:CHL.v||"VTV",color:SCOL.v,width:2,hidden:false,val:d=>d.v===null||d.v===undefined?null:y0*(1+d.v/100)}
+ ].filter((s,i)=>i===0||rows.some(d=>s.val(d)!==null));
+ cmpInst=new Chart(cv.getContext("2d"),{
+  type:"line",
+  plugins:[SUBGRID],
+  data:{
+   labels:rows.map(d=>d.x),
+   datasets:ser.map(s=>({
+    label:s.label,data:rows.map(d=>s.val(d)),
+    borderColor:s.color,backgroundColor:s.color,borderWidth:s.width,fill:false,tension:0.3,spanGaps:true,hidden:s.hidden,
+    pointRadius:pr,pointHoverRadius:4.5,pointBackgroundColor:s.color,pointBorderColor:dark?"#1c1c1e":"#fff",pointBorderWidth:1.5
+   }))
+  },
+  options:{
+   responsive:true,maintainAspectRatio:false,animation:false,
+   interaction:{mode:"index",intersect:false},
+   events:["mousemove","mouseout","click"],
+   plugins:{
+    legend:{display:true,position:"top",align:"start",labels:{color:legendCol,boxWidth:10,boxHeight:2,padding:10,font:{size:11,weight:"600"}}},
+    tooltip:{
+     enabled:true,backgroundColor:dark?"rgba(44,44,46,0.95)":"rgba(25,31,40,0.92)",titleColor:"#aeb6bf",bodyColor:"#fff",
+     bodyFont:{size:12,weight:"600"},padding:10,cornerRadius:10,usePointStyle:true,boxWidth:8,boxHeight:8,
+     callbacks:{title:it=>it[0]?it[0].label:"",label:c=>{const v=c.parsed.y;return" "+c.dataset.label+": "+(v==null||isNaN(v)?"-":swV(v))}}
+    }
+   },
+   scales:{
+    x:{grid:{display:false},border:{display:false},ticks:{color:tickCol,font:{size:11},maxRotation:0,autoSkip:true,maxTicksLimit:6,callback:function(val){return fmtDay(this.getLabelForValue(val))}}},
+    y:{position:"right",border:{display:false},grid:{color:gridCol},ticks:{color:tickCol,font:{size:11},maxTicksLimit:5,callback:v=>showAmt?fmtAxis(v):""}}
    }
   }
  });
@@ -1310,12 +1360,13 @@ const modeSel=`<select id="listMode" class="sel" aria-label="보기 방식"><opt
  const ov=overviewHTML(hasTotal?`<div class="cbox short"><canvas id="totalChart"></canvas></div>`:`<div class="ph" style="padding:0 20px 10px;font-size:13px">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`);
  $("charts").innerHTML=ov[0]+
   `<section class="sec"><div class="sh"><b>우리집 주식 vs 미국지수</b><span style="font-size:11px">환율 반영${cr0?` · ${cr0.x} 기준`:""}</span></div>`+
-  (hasComp?`<div class="cbox tall"><canvas id="compChart"></canvas></div>`:`<div class="ph">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`)+`</section>`+ov[1];
+  (hasComp?`<div class="cbox tall"><canvas id="compChart"></canvas></div>`:`<div class="ph">${loaded?"표시할 추이 데이터가 없어요":"불러오는 중이에요"}</div>`)+`</section>`+ov[1]+
+  (hasTotal&&chartRows.some(d=>d.y!==null&&(d.i!==null||d.k!==null||d.m!==null||d.v!==null))?`<section class="sec ov"><div class="sh"><b>자산 추이 비교</b><span class="rct"><span class="tl">시작 평가금액 기준</span></span></div><div class="cbox cmp"><canvas id="assetCmp"></canvas></div></section>`:"");
  $("pnlp").innerHTML=splitHTML()+`<button class="shbtn" data-shimg type="button">이미지로 저장</button>`;if(!keepFc||!$("fcp").firstChild){$("fcp").innerHTML=xtHTML()+srHTML()+scenarioHTML("2","② 예상 환율");scUpd();xtUpd()}
  $("note").hidden=lview!=="list";
  $("note").textContent=mode==="usd"?"달러 종목은 환율을 적용하지 않은 달러 금액이에요.\n수익률에는 환차익이 포함되지 않아요":"달러 종목은 시트의 기준환율로 원화 환산했어요.\n수익률에는 환차익이 포함돼요"+(useNet?"\n투자수익은 순입금액 "+swV(NET)+" 대비 값이에요":"");
  $("upd").textContent=src;
- drawTotalChart();drawCompChart();drawPieChart();
+ drawTotalChart();drawAssetCmp();drawCompChart();drawPieChart();
 }
 
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.id);toast.id=setTimeout(()=>t.classList.remove("show"),2200)}
