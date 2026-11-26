@@ -1481,8 +1481,8 @@ function shareImgBuild(){
  const ra=chartRows.filter(d=>d.y!==null);
  const O=OTHER||{total:null,sectors:[]},cr0=chartRows.find(d=>d.f!==null||d.g!==null||d.i!==null||d.k!==null||d.m!==null||d.v!==null);
  const RH=26,R=88,LR=Math.ceil(pieL.length/2);
- const H0=shSel.size>1?64:P,h1=74+2*R+LR*RH+6,h2=284,h3=(O.sectors.length?216+78:206)+16,hT=84,GAP=12;
- const sel=shSel,hs=[sel.has("t")&&hT+2*E,sel.has("p")&&h1+2*E,sel.has("c")&&h2+2*E,sel.has("a")&&h3+2*E].filter(Boolean),H=H0+hs.reduce((a,b)=>a+b,0)+(hs.length-1)*GAP+P-4;
+ const H0=shSel.size>1?64:P,h1=74+2*R+LR*RH+6,h2=284,h3=(O.sectors.length?216+78:206)+16,hT=106,GAP=12;
+ const sel=shSel,hs=[sel.has("t")&&hT,sel.has("p")&&h1+2*E,sel.has("c")&&h2+2*E,sel.has("a")&&h3+2*E].filter(Boolean),H=H0+hs.reduce((a,b)=>a+b,0)+(hs.length-1)*GAP+P-4;
  const S=1080/W,cv=document.createElement("canvas");cv.width=1080;cv.height=Math.round(H*S);
  const c=cv.getContext("2d");c.scale(S,S);
  const font=(sz,w)=>`${w||500} ${sz}px ${FF}`;
@@ -1495,7 +1495,7 @@ function shareImgBuild(){
  if(sel.size>1){tx("우리집 주식",P+4,26,26,800,T1);{const u=$("upd");tx(u?u.textContent:"",P+4,52,13.5,500,FL)}}
  // ① 도넛 + 우측 범례
  let y=H0;
- if(sel.has("t")){card(y,hT+2*E);c.save();c.translate(0,E);tx("총 평가금액",P+CP,y+26,15,600,FL);tx(swV(tot),P+CP,y+60,32,800,T1);c.restore();y+=hT+2*E+GAP}
+ if(sel.has("t")){const pl=$("pl"),pc=pl?getComputedStyle(pl).color:T2;tx("총 평가금액",P+4,y+22,15,600,FL);tx($("total").textContent,P+4,y+56,34,800,T1);tx(pl?pl.textContent:"",P+4,y+90,18,700,pc);y+=hT+GAP}
  if(sel.has("p")){card(y,h1+2*E);c.save();c.translate(0,E);
  tx("종목 비중",P+CP,y+26,19,700,T1);
  {const cx=W/2,cy=y+50+R+4,r=R*.56;let a=-Math.PI/2;
