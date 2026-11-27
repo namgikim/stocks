@@ -15,6 +15,8 @@
 :root{--bg:#f2f4f6;--card:#fff;--t1:#191f28;--t2:#4e5968;--t3:#6b7684;--line:#f2f4f6;--blue:#3182f6;--up:#f04452;--down:#3182f6;--seg:#e5e8eb}
 @media(prefers-color-scheme:dark){:root{--bg:#101012;--card:#1c1c1e;--t1:#f2f4f6;--t2:#c3c7cd;--t3:#8b95a1;--line:#2c2c2e;--seg:#2c2c2e}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+/* 글자 선택·복사·길게 눌러 메뉴 차단 (입력칸은 예외) */
+html,body,body *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}input,textarea{-webkit-user-select:text;user-select:text}img,svg{-webkit-user-drag:none;user-drag:none}
 html,body{margin:0;background:var(--bg);color:var(--t1);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic","Noto Sans KR",sans-serif;letter-spacing:-.01em;-webkit-user-select:auto;user-select:auto;font-variant-numeric:tabular-nums}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 button:focus-visible,.sel:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
@@ -46,8 +48,9 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .ftw{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:6px 36px 22px}.ftl{min-width:0}.ftv{font-size:24px;font-weight:700;color:var(--t1);line-height:1.15;white-space:nowrap}.fth{margin-top:6px;font-size:12.5px;line-height:1.5;color:var(--t3)}.ftp{display:flex;flex-direction:column;gap:6px;width:104px;flex:none}.ftp span{font-size:12px;color:var(--t3);padding-left:2px}.ftp select{appearance:none;-webkit-appearance:none;border:0;border-radius:10px;background:var(--seg);color:var(--t1);font:inherit;font-weight:700;font-size:14px;padding:9px 12px;text-align:center;width:100%}
 @media(max-width:360px){.ftw{padding:6px 28px 22px;gap:10px}.ftv{font-size:22px}.ftp{width:104px}}
 .fpsh{width:100%;text-align:left;border-radius:20px;gap:8px}.fpsh>b{flex:1}.fpsum{font-size:13px;font-weight:700;color:var(--t2)}.fpsh[aria-expanded="true"] .fpsum{display:none}.fpsh svg{width:16px;height:16px;fill:none;stroke:var(--t3);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s;flex:none}.fpsh[aria-expanded="true"] svg{transform:rotate(180deg)}.fpbd[hidden]{display:none}.fpsh[aria-expanded="false"]{padding-bottom:12px}
-.wrs{display:flex;align-items:center;justify-content:space-between;background:var(--seg);border-radius:10px;padding:3px}.wrs b{font-size:14px;font-weight:700;color:var(--t1)}.wrl{font-size:12px;color:var(--t3);margin-bottom:4px}#fwr .ftp,#fterm .ftp,#fsm .ftp{width:124px}#fsm .ftv{font-size:21px}.fsub .fcw{padding-top:2px}#fwr .ftw{padding-bottom:12px}#fwr .fcw{padding-bottom:22px}.fcs{font-size:12.5px;color:var(--t2);line-height:1.3}.fcw .wrl{margin-bottom:1px;line-height:1.3}.fst span{font-size:11px;font-weight:400;color:var(--t3)}.srp{margin-top:2px;font-size:12.5px;font-weight:500;color:var(--t2)}.srp[hidden]{display:none}.wrx{display:block;font-style:normal;font-size:11px}.wrs b{padding:0 4px}.wrs button{width:28px;height:30px;border-radius:8px;font-size:18px;line-height:1;color:var(--t2);background:var(--card)}
-@media(max-width:360px){#fwr .ftp,#fterm .ftp,#fsm .ftp{width:116px}#fwr .ftv,#fterm .ftv{font-size:20px}#fsm .ftv{font-size:19px}}
+.wrs{display:flex;align-items:center;justify-content:space-between;background:var(--seg);border-radius:10px;padding:3px}.wrs b{font-size:14px;font-weight:700;color:var(--t1)}.wrl{font-size:12px;color:var(--t3);margin-bottom:4px}#fwr .ftp,#fterm .ftp,#fsm .ftp{width:124px}#fsm .ftv{font-size:21px}.fsub .fcw{padding-top:2px}#fwr .ftw{padding-bottom:12px}#fwr .fcw{padding-bottom:22px}.fcs{font-size:12.5px;color:var(--t2);line-height:1.3}.fcw .wrl{margin-bottom:1px;line-height:1.3}.fst span{font-size:11px;font-weight:400;color:var(--t3)}.srp{margin-top:2px;font-size:12.5px;font-weight:500;color:var(--t2)}.srp[hidden]{display:none}.wrx{display:block;font-style:normal;font-size:11px}.wrs b{padding:0 4px}.wrs button{touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;width:28px;height:30px;border-radius:8px;font-size:18px;line-height:1;color:var(--t2);background:var(--card)}
+#fsm .ftw{padding-bottom:4px}.asg{padding:0 16px 22px}.asg svg{display:block;width:100%;height:auto}.srt{font-size:10px;fill:var(--t3)}.srs{font-size:10px;font-weight:700;fill:var(--t3)}.srb{fill:var(--seg);opacity:.55}.slq{fill:#f04452;opacity:.55}.slv{fill:#ff8ab4;opacity:.7}.asl{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:4px 12px;margin-top:4px;font-size:11px;color:var(--t3)}.asl em{font-style:normal;color:var(--t2);font-weight:600}.asl span{display:flex;align-items:center;gap:4px}.asl i{position:relative;overflow:hidden;width:10px;height:10px;border-radius:3px;--c:#12b76a}.asl i::before,.asl i::after{content:"";position:absolute;inset:0}.asl i::before{background:var(--seg);opacity:.55}.asl i::after{background:var(--c)}.slc{fill:#12b76a;opacity:.7}.asl .lc::after{opacity:.7}.asl .lv::after{--c:#ff8ab4;opacity:.7}.asl .lq::after{--c:#f04452;opacity:.55}.sra{font-size:9px;fill:var(--t3);opacity:.75}.sro{fill:var(--card);stroke-width:1.6}.srv{font-size:9.5px;font-weight:700;fill:var(--t2)}.srd{stroke:var(--t4,var(--t3));stroke-width:1;stroke-dasharray:3 3;opacity:.6}.srx{stroke:var(--line);stroke-width:1}@media(max-width:360px){.asg{padding:0 8px 22px}}.srh{background:var(--seg);border-radius:10px;padding:12px 8px;text-align:center;font-size:12px;line-height:1.6;color:var(--t3)}.srh b{font-size:14px;font-weight:700;color:var(--t1)}#fst .ftw{align-items:center;padding-top:6px}#fst .ftp{width:132px}#fst .wrs button{width:25px}#fst .wrs b{font-size:13px;padding:0;white-space:nowrap}#fst .ftv{font-size:19px}#fst .ftw+.ftw{padding-top:4px}#fst .ftw:not(:last-child){padding-bottom:14px}
+@media(max-width:360px){#fwr .ftp,#fterm .ftp,#fsm .ftp{width:116px}#fst .ftp{width:126px}#fst .wrs button{width:22px}#fst .wrs b{font-size:12px}#fwr .ftv,#fterm .ftv{font-size:20px}#fsm .ftv{font-size:19px}}
 .fsub+.fsub{border-top:1px solid var(--line);margin:0 20px}.fsub+.fsub .ftw{padding-left:16px;padding-right:16px}.fst{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:12px 36px 0;font-size:14px;font-weight:700;color:var(--t1)}.fsub+.fsub .fst{padding:16px 16px 0}.fsub .ftw{align-items:flex-start;padding-top:9px}#fsm .ftp{align-self:center}
 @media(max-width:360px){.fst{padding-left:28px}.fsub+.fsub .fst{padding-left:8px}.fsub+.fsub .ftw{padding-left:8px;padding-right:8px}#fwr .ftv{font-size:19px}}
 .fpf{padding:18px 16px 30px;text-align:center}.fpf p{margin:0 0 12px;font-size:12.5px;color:var(--t3)}.fpf button{padding:11px 22px;border-radius:12px;background:var(--seg);color:var(--t2);font-weight:700;font-size:14px}
@@ -1440,26 +1443,75 @@ const fireWr=()=>{
 const FIRE_INFL=0.02; // 물가상승률 가정
 const srGet=()=>{const n=parseInt(LS.get("sr","70"),10);return n>=0&&n<=150?n:70};
 const fWon=n=>{const a=Math.abs(n);return a>=1e8?(n/1e8).toFixed(1)+"억원":Math.round(n/1e4).toLocaleString("ko-KR")+"만원"};
+// 종목 설정(투트랙): 전반기 VOO, 후반기 QQQ
+// - VOO 배분액 = 전반기 동안 (초기 현금으로 못 채우는) 인출액을 VOO 실질 수익률로 할인한 합계
+// - 나머지는 QQQ에 두고 전반기 내내 굴리다가, 후반기부터 인출 (VOO가 일찍 바닥나면 QQQ에서 인출)
+const qrGet=()=>{const n=parseInt(LS.get("qr","80"),10);return n>=0&&n<=150?n:80};
+const vyGet=n=>{const k=parseInt(LS.get("vm","180"),10);return Math.max(0,Math.min(n,isNaN(k)?180:k))}; // 전반기(VOO) 기간: 개월 단위
+const fyGet=()=>{const v=LS.get("fy","2029-01");return /^\d{4}-\d{2}$/.test(v)?v:"2029-01"};
+const rReal=r=>(1+r/1000/12)/Math.pow(1+FIRE_INFL,1/12)-1;
+const ymT=mo=>mo<=0?"0개월":`${mo>=12?Math.floor(mo/12)+"년":""}${mo%12?(mo>=12?" ":"")+mo%12+"개월":""}`;
+const ymEnd=(fy,k)=>{const [y,m]=fy.split("-").map(Number),t=y*12+m-1+k-1;return `${Math.floor(t/12)}년 ${t%12+1}월까지`};
+function fireCore(){
+ const fy=fyGet(),sp=fireSpan(fy),W=wrCalc(wrGet()).m,cd=1/Math.pow(1+FIRE_INFL,1/12),rv=rReal(srGet()),rq=rReal(qrGet()),nv=vyGet(sp.n),c0=cyCalc().c;
+ let cs=c0,need=0;for(let i=1;i<=nv;i++){cs*=cd;const fc=Math.min(cs,W);cs-=fc;need+=(W-fc)/Math.pow(1+rv,i)}
+ const inv=FIRE_BASE-c0,voo=nv>=sp.n?Math.max(inv,0):Math.min(need,Math.max(inv,0)); // QQQ 기간 0이면 전부 VOO
+ return {fy,sp,W,cd,rv,rq,nv,c0,voo,qqq:inv-voo};
+}
 function fireSim(){
- const fy=(()=>{const v=LS.get("fy","2029-01");return /^\d{4}-\d{2}$/.test(v)?v:"2029-01"})(),sp=fireSpan(fy);
- // 초기 현금: 명목 수익 0% (실질로는 매달 물가만큼 가치 감소), 생활비를 현금에서 먼저 쓰고 부족분은 투자 자산에서 인출
- const W=wrCalc(wrGet()).m,rm=(1+srGet()/1000/12)/Math.pow(1+FIRE_INFL,1/12)-1,cd=1/Math.pow(1+FIRE_INFL,1/12);
- let cash=cyCalc().c,inv=FIRE_BASE-cash,bal=FIRE_BASE,ex=0;
- for(let i=1;i<=sp.n;i++){inv*=1+rm;cash*=cd;const fc=Math.min(cash,W);cash-=fc;inv-=W-fc;bal=inv+cash;if(bal<0){ex=i;break}}
- const h=`만 ${FIRE_END-1992}세 시점<br>수익률 ${(srGet()/10).toFixed(1)}% · 물가 ${FIRE_INFL*100}% 가정`;
+ const k=fireCore(),{sp,W,cd,rv,rq}=k;
+ // 초기 현금: 명목 수익 0% (실질로는 매달 물가만큼 가치 감소). 생활비는 현금 → VOO → QQQ 순서로 인출
+ let cash=k.c0,voo=k.voo,qqq=k.qqq,bal=FIRE_BASE,ex=0;const ser=[FIRE_BASE],sv=[voo],sq=[qqq],sc=[cash];
+ for(let i=1;i<=sp.n;i++){voo*=1+rv;qqq*=1+rq;cash*=cd;const fc=Math.min(cash,W);cash-=fc;let r=W-fc;const t=Math.min(Math.max(voo,0),r);voo-=t;r-=t;qqq-=r;bal=voo+qqq+cash;if(bal<0){ex=i;ser.push(0);sv.push(0);sq.push(0);sc.push(0);break}ser.push(bal);sv.push(voo);sq.push(qqq);sc.push(cash)}
+ const h=`<b>만 ${FIRE_END-1992}세 시점</b><br>물가 ${FIRE_INFL*100}% 가정`;
  if(!ex){
   const nw=new Date(),yrs=FIRE_END+1-(nw.getFullYear()+nw.getMonth()/12); // 오늘부터 80세 되는 해 말까지
-  return {ok:true,l:"자산 잔액 (현재 가치)",t:fWon(bal),p:`명목 ${fWon(bal*Math.pow(1+FIRE_INFL,yrs))}`,h};
+  return {ok:true,l:"자산 잔액 (현재 가치)",t:fWon(bal),p:`명목 ${fWon(bal*Math.pow(1+FIRE_INFL,yrs))}`,h,ser,sv,sq,sc,k};
  }
  const left=sp.n-ex;
- return {ok:false,l:"자산 소진 시점",t:`${left>=12?Math.floor(left/12)+"년":""}${left%12?(left>=12?" ":"")+left%12+"개월":""} 전`,h};
+ return {ok:false,l:"자산 소진 시점",t:`${left>=12?Math.floor(left/12)+"년":""}${left%12?(left>=12?" ":"")+left%12+"개월":""} 전`,h,ser,sv,sq,sc,k};
 }
-const fireSimUpd=()=>{if(!$("srT"))return;const x=fireSim();$("srL").textContent=x.l;$("srP").textContent=x.p||"";$("srP").hidden=!x.ok;$("srT").textContent=x.t;$("srT").style.color=x.ok?"":"var(--up)";$("srH").innerHTML=x.h;$("srV").textContent=(srGet()/10).toFixed(1)+"%"};
+const stSub=(amt,mo,end)=>mo>0?`배분 ${fWon(Math.max(amt,0))}<br>${end}`:"미사용";
+const stUpd=()=>{if(!$("vrV"))return;const k=fireCore(),qm=k.sp.n-k.nv;
+ $("vrV").textContent=(srGet()/10).toFixed(1)+"%";$("qrV").textContent=(qrGet()/10).toFixed(1)+"%";
+ $("vyV").textContent=ymT(k.nv);$("qyV").textContent=ymT(qm);
+ $("vS").innerHTML=stSub(k.voo,k.nv,ymEnd(k.fy,k.nv));$("qS").innerHTML=stSub(k.qqq,qm,ymEnd(k.fy,k.sp.n))};
+const stRow=(nm,sb,rid,rv,yid,yv,sid,sub)=>`<div class="ftw"><div class="ftl"><div class="wrl">${sb}</div><div class="ftv">${nm}</div><div class="fth" id="${sid}">${sub}</div></div><div class="ftp"><span>연 기대 수익률</span><div class="wrs"><button type="button" id="${rid}Dn" aria-label="낮추기">−</button><b id="${rid}V">${rv}</b><button type="button" id="${rid}Up" aria-label="높이기">+</button></div><span>기간</span><div class="wrs"><button type="button" id="${yid}Dn" aria-label="줄이기">−</button><b id="${yid}V">${yv}</b><button type="button" id="${yid}Up" aria-label="늘리기">+</button></div></div></div>`;
+const fireSt=()=>{const k=fireCore(),qm=k.sp.n-k.nv;
+ return `<div class="fsub" id="fst"><div class="fst">종목 설정<span>수익률은 환차익 포함</span></div>${stRow("VOO","전반기","vr",(srGet()/10).toFixed(1)+"%","vy",ymT(k.nv),"vS",stSub(k.voo,k.nv,ymEnd(k.fy,k.nv)))}${stRow("QQQ","후반기","qr",(qrGet()/10).toFixed(1)+"%","qy",ymT(qm),"qS",stSub(k.qqq,qm,ymEnd(k.fy,k.sp.n)))}</div>`};
+// 자산 잔액 추이 (현재 가치): 전반기(VOO)·후반기(QQQ) 구간 표시
+const stGraph=x=>{
+ // 색: 최종 잔액이 원금(파이어 시점 합산 금액)보다 적으면 파랑, 아니면 빨강 (그래프 전체 한 색)
+ const {ser,sv,sq,sc,k}=x,n=k.sp.n,W=300,L=4,R=296,T=32,B=80,mx=Math.max(...ser,1),X=i=>L+(R-L)*i/n,Y=v=>B-(B-T)*Math.max(v,0)/mx;
+ const P=ser[0],col=ser[ser.length-1]<P-1?"var(--down)":"var(--up)";
+ const pts=ser.map((v,i)=>X(i).toFixed(1)+","+Y(v).toFixed(1)),last=ser.length-1;
+ const ln=`M${pts.join("L")}`,ar=`${ln}L${X(last).toFixed(1)},${B}L${L},${B}Z`;
+ const bx=k.nv>0&&k.nv<n?X(k.nv):null,y0=+k.fy.slice(0,4),yr=mo=>{const t=(y0*12+(+k.fy.slice(5))-1)+mo-1;return Math.floor(t/12)};
+ const tx=(xx,t,a)=>`<text x="${xx}" y="94" text-anchor="${a}" class="srt">${t}년</text><text x="${xx}" y="107" text-anchor="${a}" class="sra">${t-1992}세</text>`;
+ const gr=(id,c)=>`<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:${c};stop-opacity:.22"/><stop offset="1" style="stop-color:${c};stop-opacity:0"/></linearGradient>`;
+ let o=`<svg viewBox="0 0 ${W} 112" role="img" aria-label="자산 잔액 추이"><defs>${gr("srgd",col)}</defs>`;
+ if(bx!==null)o+=`<rect x="${L}" y="8" width="${(bx-L-1.5).toFixed(1)}" height="${B-8}" rx="6" class="srb"/><rect x="${(bx+1.5).toFixed(1)}" y="8" width="${(R-bx-1.5).toFixed(1)}" height="${B-8}" rx="6" class="srb"/><line x1="${bx.toFixed(1)}" y1="8" x2="${bx.toFixed(1)}" y2="${B}" class="srd"/>`;else o+=`<rect x="${L}" y="8" width="${R-L}" height="${B-8}" rx="6" class="srb"/>`;
+ const sec=(a,b,t)=>b-a>46?`<text x="${((a+b)/2).toFixed(1)}" y="26" text-anchor="middle" class="srs">${t}</text>`:"";
+ if(k.nv>0)o+=sec(L,bx===null?R:bx,"전반기");if(k.nv<n)o+=sec(bx===null?L:bx,R,"후반기");
+ // 종목별 잔액 층: 아래 QQQ, 가운데 VOO, 위 현금(초록)
+ const up=sq.map((q,i)=>X(i).toFixed(1)+","+Y(Math.max(q,0)).toFixed(1)),tp=sq.map((q,i)=>X(i).toFixed(1)+","+Y(Math.max(q,0)+Math.max(sv[i],0)).toFixed(1));
+ const cp=sq.map((q,i)=>X(i).toFixed(1)+","+Y(Math.max(q,0)+Math.max(sv[i],0)+Math.max(sc[i],0)).toFixed(1));
+ o+=`<path d="M${up.join("L")}L${X(last).toFixed(1)},${B}L${L},${B}Z" class="slq"/><path d="M${cp.join("L")}L${tp.slice().reverse().join("L")}Z" class="slc"/><path d="M${tp.join("L")}L${up.slice().reverse().join("L")}Z" class="slv"/>`;
+ o+=`<path d="${ln}" fill="none" style="stroke:${col}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+ const dot=(xx,v)=>`<circle cx="${xx}" cy="${Y(v).toFixed(1)}" r="2.6" class="sro" style="stroke:${col}"/>`;
+ if(bx!==null&&k.nv<ser.length)o+=dot(bx.toFixed(1),ser[k.nv]);
+ const ce=col;
+ o+=`<circle cx="${X(last).toFixed(1)}" cy="${Y(ser[last]).toFixed(1)}" r="5.5" style="fill:${ce}" opacity=".2"/><circle cx="${X(last).toFixed(1)}" cy="${Y(ser[last]).toFixed(1)}" r="3.2" style="fill:${ce}"/><line x1="${L}" y1="${B}" x2="${R}" y2="${B}" class="srx"/>`;
+ {const xl=X(last),nr=xl>R-40;o+=`<text x="${(nr?R:xl+8).toFixed(1)}" y="${(Y(ser[last])+(nr?-9:3.5)).toFixed(1)}" text-anchor="${nr?"end":"start"}" class="srv">${ser[last]>0?fWon(ser[last]):"0원"}</text>`}
+ o+=tx(L,y0,"start")+tx(R,yr(n),"end");
+ if(bx!==null&&bx>46&&R-bx>46)o+=tx(bx.toFixed(1),yr(k.nv),"middle");
+ return o+`</svg><div class="asl"><em>종목별 남은 잔액</em><span><i class="lc"></i>현금</span><span><i class="lv"></i>VOO</span><span><i class="lq"></i>QQQ</span></div>`};
+const fireSimUpd=()=>{if(!$("srT"))return;const x=fireSim();$("srL").textContent=x.l;$("srP").textContent=x.p||"";$("srP").hidden=!x.ok;$("srT").textContent=x.t;$("srT").style.color=x.ok?"":"var(--up)";$("srH").innerHTML=x.h;$("srG").innerHTML=stGraph(x);stUpd()};
 const fireSm=()=>{
  const x=fireSim();
- return `<div class="fsub" id="fsm"><div class="fst">자산 수명<span>(합산 금액 − 초기 현금) 기준</span></div><div class="ftw"><div class="ftl"><div class="wrl" id="srL">${x.l}</div><div class="ftv" id="srT"${x.ok?"":' style="color:var(--up)"'}>${x.t}</div><div class="srp" id="srP"${x.ok?"":" hidden"}>${x.p||""}</div><div class="fth" id="srH">${x.h}</div></div><div class="ftp"><span>연 기대 수익률 <i class="wrx">(환차익 포함)</i></span><div class="wrs"><button type="button" id="srDn" aria-label="낮추기">−</button><b id="srV">${(srGet()/10).toFixed(1)}%</b><button type="button" id="srUp" aria-label="높이기">+</button></div></div></div></div>`};
+ return `<div class="fsub" id="fsm"><div class="fst">자산 수명<span>(합산 금액 − 초기 현금) 기준</span></div><div class="ftw"><div class="ftl"><div class="wrl" id="srL">${x.l}</div><div class="ftv" id="srT"${x.ok?"":' style="color:var(--up)"'}>${x.t}</div><div class="srp" id="srP"${x.ok?"":" hidden"}>${x.p||""}</div></div><div class="ftp"><div class="srh" id="srH">${x.h}</div></div></div><div class="asg" id="srG">${stGraph(x)}</div></div>`};
 const fireHTML=()=>`<section class="sec ov"><button type="button" class="sh fpsh" id="fpHd" aria-expanded="${LS.get("fo","1")==="1"}"><b>파이어 자산</b><span class="fpsum">1,069,280,672원</span><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button><div class="fpbd"${LS.get("fo","1")==="1"?"":" hidden"}>
-<div class="fpm"><div class="fpt"><span>합산 금액</span><b>1,069,280,672원</b></div><div class="fpb"><div class="fph"><span>기타 자산금액</span><b>1,408,000,000원</b></div><div class="fpn">토지보상금 · 결혼지원금 · 아파트 지분 · 임대보증금</div></div><div class="fpb"><div class="fph"><span>미국지수 종목</span><b>178,097,108원</b></div><div class="fpi"><span>QLD</span><span>38,999,109원</span></div><div class="fpi"><span>KODEX 미국나스닥100</span><span>59,507,200원</span></div><div class="fpi"><span>QQQM</span><span>10,520,204원</span></div><div class="fpi"><span>TIGER 미국S&amp;P500</span><span>41,633,340원</span></div><div class="fpi"><span>VOO</span><span>27,437,255원</span></div></div><div class="fpb"><div class="fph"><span>가치주 종목</span><b>83,183,564원</b></div><div class="fpi"><span>버크셔 해서웨이</span><span>46,692,701원</span></div><div class="fpi"><span>월마트</span><span>26,585,630원</span></div><div class="fpi"><span>알파벳</span><span>9,905,233원</span></div></div><div class="fpb"><div class="fph"><span>주거 예상 비용</span><b style="color:var(--down)">-600,000,000원</b></div><div class="fpi"><span>아파트</span><span>540,000,000원</span></div><div class="fpi"><span>인테리어</span><span>50,000,000원</span></div><div class="fpi"><span>가전·가구</span><span>10,000,000원</span></div></div></div></div></section><section class="sec ov"><div class="sh"><b>인출 계획</b><span style="font-size:11px">파이어 자산 합산금액 기준</span></div>${fireTerm()}${fireWr()}${fireSm()}</section>${fireWt()}<div class="fpf"><p>파이어 탭을 벗어나면 ${FIRE_KEEP>=60000?FIRE_KEEP/60000+"분":FIRE_KEEP/1000+"초"} 뒤 잠겨요</p><button id="fpLock" type="button">바로 잠그기</button></div>`;
+<div class="fpm"><div class="fpt"><span>합산 금액</span><b>1,069,280,672원</b></div><div class="fpb"><div class="fph"><span>기타 자산금액</span><b>1,408,000,000원</b></div><div class="fpn">토지보상금 · 결혼지원금 · 아파트 지분 · 임대보증금</div></div><div class="fpb"><div class="fph"><span>미국지수 종목</span><b>178,097,108원</b></div><div class="fpi"><span>QLD</span><span>38,999,109원</span></div><div class="fpi"><span>KODEX 미국나스닥100</span><span>59,507,200원</span></div><div class="fpi"><span>QQQM</span><span>10,520,204원</span></div><div class="fpi"><span>TIGER 미국S&amp;P500</span><span>41,633,340원</span></div><div class="fpi"><span>VOO</span><span>27,437,255원</span></div></div><div class="fpb"><div class="fph"><span>가치주 종목</span><b>83,183,564원</b></div><div class="fpi"><span>버크셔 해서웨이</span><span>46,692,701원</span></div><div class="fpi"><span>월마트</span><span>26,585,630원</span></div><div class="fpi"><span>알파벳</span><span>9,905,233원</span></div></div><div class="fpb"><div class="fph"><span>주거 예상 비용</span><b style="color:var(--down)">-600,000,000원</b></div><div class="fpi"><span>아파트</span><span>540,000,000원</span></div><div class="fpi"><span>인테리어</span><span>50,000,000원</span></div><div class="fpi"><span>가전·가구</span><span>10,000,000원</span></div></div></div></div></section><section class="sec ov"><div class="sh"><b>인출 계획</b><span style="font-size:11px">파이어 자산 합산금액 기준</span></div>${fireTerm()}${fireWr()}${fireSt()}${fireSm()}</section>${fireWt()}<div class="fpf"><p>파이어 탭을 벗어나면 ${FIRE_KEEP>=60000?FIRE_KEEP/60000+"분":FIRE_KEEP/1000+"초"} 뒤 잠겨요</p><button id="fpLock" type="button">바로 잠그기</button></div>`;
 // 파이어 탭 잠금: 탭엔 들어가되 카드는 숨기고 중앙 비밀번호 입력만 보여줘요 (금액 숨김 팝업과 별개)
 function fireRender(){
  const f=$("firep");
@@ -1480,12 +1532,31 @@ $("firep").onchange=e=>{
  const v=$("fyY").value+"-"+String($("fyM").value).padStart(2,"0");LS.set("fy",v);
  const sp=fireSpan(v);$("ftv").textContent=sp.t;fireSimUpd();$("fth").innerHTML=fireHint(sp);
 };
-$("firep").onclick=e=>{const wb=e.target.closest("#wrUp,#wrDn");if(wb){let n=wrGet()+(wb.id==="wrUp"?1:-1);n=Math.max(5,Math.min(100,n));LS.set("wr",String(n));const c=wrCalc(n);$("wrV").textContent=c.t;$("wrM").textContent=c.m.toLocaleString("ko-KR")+"원";$("wrY").innerHTML=wrSub(c);cyUpd();fireSimUpd();return}
- const cb=e.target.closest("#cyUp,#cyDn");if(cb){let n=cyGet()+(cb.id==="cyUp"?1:-1);n=Math.max(0,Math.min(5,n));LS.set("cy",String(n));cyUpd();fireSimUpd();return}
- const sb=e.target.closest("#srUp,#srDn");if(sb){let n=srGet()+(sb.id==="srUp"?1:-1);n=Math.max(0,Math.min(150,n));LS.set("sr",String(n));fireSimUpd();return}
+// 스테퍼 동작 (한 번 누르면 1칸, 꾹 누르면 연속)
+const stepAct=id=>{
+ const up=id.endsWith("Up");
+ if(id[0]==="w"){let n=wrGet()+(up?1:-1);n=Math.max(5,Math.min(100,n));LS.set("wr",String(n));const c=wrCalc(n);$("wrV").textContent=c.t;$("wrM").textContent=c.m.toLocaleString("ko-KR")+"원";$("wrY").innerHTML=wrSub(c);cyUpd();fireSimUpd();return true}
+ if(id[0]==="c"){let n=cyGet()+(up?1:-1);n=Math.max(0,Math.min(5,n));LS.set("cy",String(n));cyUpd();fireSimUpd();return true}
+ if(id[1]==="r"){const q=id[0]==="q";let n=(q?qrGet():srGet())+(up?1:-1);n=Math.max(0,Math.min(150,n));LS.set(q?"qr":"sr",String(n));fireSimUpd();return true}
+ if(id[1]==="y"){const n=fireSpan(fyGet()).n,u=up===(id[0]==="v");LS.set("vm",String(Math.max(0,Math.min(n,vyGet(n)+(u?1:-1)))));fireSimUpd();return true}
+ return false};
+const STEP_IDS=/^(wr|cy|vr|qr|vy|qy)(Up|Dn)$/;
+let stT=0,stI=0,stSkip=0;
+const stStop=()=>{clearTimeout(stT);stT=0};
+$("firep").addEventListener("pointerdown",e=>{
+ const bt=e.target.closest(".wrs button");if(!bt||!STEP_IDS.test(bt.id)||(e.pointerType==="mouse"&&e.button))return;
+ stStop();stepAct(bt.id);stSkip=Date.now();stI=0;
+ const loop=()=>{stI++;stepAct(bt.id);stT=setTimeout(loop,stI<8?150:stI<20?90:55)}; // 점점 살짝 빨라져요
+ stT=setTimeout(loop,420);
+});
+["pointerup","pointercancel","pointerleave","contextmenu"].forEach(t=>$("firep").addEventListener(t,stStop,true));
+document.addEventListener("visibilitychange",stStop);
+$("firep").onclick=e=>{const sb=e.target.closest(".wrs button");if(sb&&STEP_IDS.test(sb.id)){if(e.detail===0)stepAct(sb.id);return} // 포인터로 이미 처리됨(키보드 클릭만 여기서)
  const hd=e.target.closest("#fpHd");if(hd){const o=hd.getAttribute("aria-expanded")!=="true";hd.setAttribute("aria-expanded",o);hd.nextElementSibling.hidden=!o;LS.set("fo",o?"1":"0");return}
  if(e.target.closest("#fpLock")){fireOk=false;fireRender()}};
 // 해제 유지: 파이어 탭/앱을 벗어난 시각을 저장해 두고 돌아올 때 시계로 비교 (백그라운드에서 타이머가 멈춰도 정확)
+// 복사·선택·길게 눌러 메뉴·드래그 차단 (입력칸은 예외)
+["copy","cut","selectstart","contextmenu","dragstart"].forEach(t=>document.addEventListener(t,e=>{const x=e.target&&e.target.closest?e.target:e.target&&e.target.parentElement;if(x&&x.closest("input,textarea"))return;e.preventDefault()},true));
 const FIRE_KEEP=60000;let fireLeft=0;
 document.addEventListener("visibilitychange",()=>{
  if(lview!=="fire")return;
