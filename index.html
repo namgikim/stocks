@@ -41,7 +41,8 @@ header h1{font-size:20px;margin:0;font-weight:700}
 .pwin{width:100%;font-size:24px;letter-spacing:.5em;text-align:center;padding:12px 0 12px .5em;border:1.5px solid var(--seg);border-radius:12px;background:var(--bg);color:var(--t1);outline:none}
 .pwin:focus{border-color:var(--blue)}
 .pwerr{min-height:18px;margin:8px 0 14px;font-size:13px;color:var(--up);text-align:center}
-.fpg{min-height:62vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 40px;text-align:center}.fpg p{margin:0 0 16px;font-size:14px;color:var(--t2);line-height:1.5}.fpg .pwin{max-width:240px;background:var(--card)}.fpg .pwerr{margin:10px 0 0}
+.fpg{min-height:62vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 40px;text-align:center}.fpg p{margin:0 0 16px;font-size:14px;color:var(--t2);line-height:1.5}.fpf{padding:18px 16px 30px;text-align:center}.fpf p{margin:0 0 12px;font-size:12.5px;color:var(--t3)}.fpf button{padding:11px 22px;border-radius:12px;background:var(--seg);color:var(--t2);font-weight:700;font-size:14px}
+.fpg .pwin{max-width:240px;background:var(--card)}.fpg .pwerr{margin:10px 0 0}
 .pwb{display:flex;gap:8px}.pwb button{flex:1;padding:13px 0;border-radius:12px;font-weight:700;font-size:15px}.pwb .no{background:var(--seg);color:var(--t2)}
 .shake{animation:shk .3s}@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 .sl{animation:sli .22s ease-out}
@@ -1396,7 +1397,7 @@ async function load(manual){
 
 const TABS=["list","chart","pnl","fire"];
 let fireOk=false;
-const fireHTML=()=>`<section class="sec ov"><div class="sh"><b>파이어</b></div><div style="padding:6px 16px 22px;font-size:13px;color:var(--t3)">준비 중이에요.</div></section>`;
+const fireHTML=()=>`<section class="sec ov"><div class="sh"><b>파이어</b></div><div style="padding:6px 16px 22px;font-size:13px;color:var(--t3)">준비 중이에요.</div></section><div class="fpf"><p>파이어 탭을 벗어나면 ${FIRE_KEEP>=60000?FIRE_KEEP/60000+"분":FIRE_KEEP/1000+"초"} 뒤 잠겨요</p><button id="fpLock" type="button">바로 잠그기</button></div>`;
 // 파이어 탭 잠금: 탭엔 들어가되 카드는 숨기고 중앙 비밀번호 입력만 보여줘요 (금액 숨김 팝업과 별개)
 function fireRender(){
  const f=$("firep");
@@ -1412,8 +1413,9 @@ function fireRender(){
  i.onkeydown=e=>{if(e.key==="Enter")go()};
 }
 fireRender();
+$("firep").onclick=e=>{if(e.target.closest("#fpLock")){fireOk=false;fireRender()}};
 // 해제 유지: 파이어 탭/앱을 벗어난 시각을 저장해 두고 돌아올 때 시계로 비교 (백그라운드에서 타이머가 멈춰도 정확)
-const FIRE_KEEP=5000;let fireLeft=0;
+const FIRE_KEEP=60000;let fireLeft=0;
 document.addEventListener("visibilitychange",()=>{
  if(lview!=="fire")return;
  if(document.hidden){fireLeft=Date.now();return}
